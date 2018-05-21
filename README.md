@@ -4,6 +4,11 @@ RelationMapper
 
 (Don't know the complete syntax for .md files at this time so this will be ugly for a while)
 
+Project Paths are not relative at this point.
+C:\Projects is the base
+C:\Projects\automatic-graph-layout - is needed for project references (Enables stepping in to DLLS)
+C:\Projects\RelationMapper - is needed because paths are currently absolute.
+
 
 ## Source Dependencies - for Debugging
 [Automatic Graph Layout Source](https://github.com/Microsoft/automatic-graph-layout.git)
