@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-
+using System.Windows.Forms;
 namespace RelationMap
 {
     /// <summary>
@@ -19,7 +19,16 @@ namespace RelationMap
         public static string GetTMDBApiKey()
         {
             //File Path 
-            return File.ReadAllText(@"C:\projects\RelationMapper\Private\tmdbAPIKey.txt");
+            try
+            {
+                return File.ReadAllText(@"C:\projects\RelationMapper\Private\tmdbAPIKey.txt");
+            }
+            catch
+            {
+                MessageBox.Show(@"C:\projects\RelationMapper\Private\tmdbAPIKey.txt" + " Not Found. You need to provide your own API Key for TMDB");
+                return "NoAPIKey";
+            }
         }
+
     }
 }
