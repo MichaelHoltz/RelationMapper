@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelationMap", "RelationMap\RelationMap.csproj", "{8AEAF33E-79DC-4163-8295-025009388BAC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelationMap", "RelationMap.csproj", "{8AEAF33E-79DC-4163-8295-025009388BAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "drawing", "automatic-graph-layout\GraphLayout\Drawing\drawing.csproj", "{B76F8F71-4B00-4242-BE36-C9F0732511F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "drawing", "..\automatic-graph-layout\GraphLayout\Drawing\drawing.csproj", "{B76F8F71-4B00-4242-BE36-C9F0732511F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphViewerGDI", "automatic-graph-layout\GraphLayout\tools\GraphViewerGDI\GraphViewerGDI.csproj", "{725CD2CB-CF37-414E-A5A6-F1D87D4D6EDE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphViewerGDI", "..\automatic-graph-layout\GraphLayout\tools\GraphViewerGDI\GraphViewerGDI.csproj", "{725CD2CB-CF37-414E-A5A6-F1D87D4D6EDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Msagl", "automatic-graph-layout\GraphLayout\MSAGL\Msagl.csproj", "{415D3E3F-7105-46C1-84D2-7ECB34213D92}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Msagl", "..\automatic-graph-layout\GraphLayout\MSAGL\Msagl.csproj", "{415D3E3F-7105-46C1-84D2-7ECB34213D92}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TmdbWrapper", "TMDbWrapper\TmdbWrapper.csproj", "{73D732A9-4AA2-4BB8-BD34-7A70F170472D}"
 EndProject

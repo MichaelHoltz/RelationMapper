@@ -142,7 +142,7 @@
       <Project>{725cd2cb-cf37-414e-a5a6-f1d87d4d6ede}</Project>
       <Name>GraphViewerGDI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TMDbWrapper\TmdbWrapper.csproj">
+    <ProjectReference Include="TMDbWrapper\TmdbWrapper.csproj">
       <Project>{73d732a9-4aa2-4bb8-bd34-7a70f170472d}</Project>
       <Name>TmdbWrapper</Name>
     </ProjectReference>
