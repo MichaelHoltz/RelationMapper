@@ -26,7 +26,7 @@ namespace RelationMap
         public CharacterFinder()
         {
             InitializeComponent();
-            u = PersistanceBase.Load<Universe>(@"C:\projects\RelationMapper\Cache\universe.json");
+            u = PersistanceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\universe.json"));
             InitTheMovieDb();        
         }
         public CharacterFinder(Movie m1, Universe u1)

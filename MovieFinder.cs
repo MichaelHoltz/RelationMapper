@@ -20,7 +20,7 @@ namespace RelationMap
         public MovieFinder()
         {
             InitializeComponent();
-            u = PersistanceBase.Load<Universe>(@"C:\projects\RelationMapper\Cache\universe.json");
+            u = PersistanceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\universe.json"));
             TheMovieDb.Initialise(PrivateData.GetTMDBApiKey(), "english", true);
         }
 
@@ -85,7 +85,7 @@ namespace RelationMap
                         item.PosterPath = ms.PosterPath;
                         if (MessageBox.Show("Are you sure you want to update: " + item.Title, "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
-                            PersistanceBase.Save(@"C:\projects\RelationMapper\Cache\universe.json", u);
+                            PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\universe.json"), u);
                         }
 
                         break;

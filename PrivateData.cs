@@ -18,16 +18,29 @@ namespace RelationMap
         /// <returns></returns>
         public static string GetTMDBApiKey()
         {
+            String filePath = GetAppPath() + @"\Private\tmdbAPIKey.txt";
             //File Path 
             try
             {
-                return File.ReadAllText(@"C:\projects\RelationMapper\Private\tmdbAPIKey.txt");
+                return File.ReadAllText(filePath);
             }
             catch
             {
-                MessageBox.Show(@"C:\projects\RelationMapper\Private\tmdbAPIKey.txt" + " Not Found. You need to provide your own API Key for TMDB");
+                MessageBox.Show(filePath + " Not Found. You need to provide your own API Key for TMDB");
                 return "NoAPIKey";
             }
+        }
+        public static string GetAppPath()
+        {
+            string[] s = { "\\bin" };
+            string path = Application.StartupPath.Split(s, StringSplitOptions.None)[0];
+            return path;
+        }
+        public static string GetRelativePath(String filePath)
+        {
+            string[] s = { "\\bin" };
+            string path = Application.StartupPath.Split(s, StringSplitOptions.None)[0] + filePath;
+            return path;
         }
 
     }

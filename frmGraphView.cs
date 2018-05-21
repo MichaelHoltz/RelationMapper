@@ -104,8 +104,8 @@ namespace RelationMap
 
         private void frmGraphView_Load(object sender, EventArgs e)
         {
-            LoadImages(@"C:\projects\RelationMapper\Cache\Images\"); // Load all known images for use in the Graph
-            u = PersistanceBase.Load<Universe>(@"C:\projects\RelationMapper\Cache\universe.json");
+            LoadImages(PrivateData.GetRelativePath(@"\Cache\Images\")); // Load all known images for use in the Graph
+            u = PersistanceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\universe.json"));
             refreshLists();
             //viewer.Graph = SetViewAll();
             lblSelectedNode.Text = "Selected Node: " + selectedNode;
@@ -822,7 +822,7 @@ namespace RelationMap
 
 
         #region Application Specific Code to handle nodes in non-default ways
-        private void LoadImages(string path = @"C:\projects\RelationMapSolution\RelationMap\Images\")
+        private void LoadImages(string path)
         {
             Image img = Image.FromFile(path + @"movie-icon-1.png");
             img.Tag = "Default"; //Tag image for later retrieval
@@ -881,10 +881,7 @@ namespace RelationMap
                 i = imageList.Find(o => o.Tag.ToString() == "Default");
             }
             return ScaleImage(i, 80, 30);
-            //String baseImagePath = @"\\tocsrapp03\L\FWDM\FWDMConfig\group";
-            //String imagePath = baseImagePath + groupNum.ToString() + ".png";
-            //return Image.FromFile(@"C:\System_Test\FWDM\TDYTools\Resources\FWDM.png");
-            ////return Image.FromFile(imagePath);
+
         }
 
         #region Universal Code to handle nodes in non-default ways.

@@ -110,7 +110,7 @@ namespace RelationMap
             batman.AddCharacter("Catwoman", "Michelle Pfeiffer");
             batman.AddCharacter("Penguin", "Danny DeVito");
             dc.AddMovieToFranchise(batman, "DC Batman");
-            PersistanceBase.Save(@"C:\projects\RelationMapper\Cache\universe.json", u);
+            PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\universe.json"), u);
         }
         private void BuildFranchise()
         {
@@ -139,9 +139,9 @@ namespace RelationMap
         }
         private void btnLoadFranchise_Click(object sender, EventArgs e)
         {
-            u = PersistanceBase.Load<Universe>(@"C:\projects\RelationMapper\Cache\universe.json");
+            u = PersistanceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\universe.json"));
 
-            //PersistanceBase.Save(@"C:\projects\RelationMapper\Cache\universeBackup.json", u); // Save a backup
+            //PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\universeBackup.json"), u); // Save a backup
             lbActors.Items.Clear();
             lbCharacters.Items.Clear();
             tbActor.Clear();
@@ -215,7 +215,7 @@ namespace RelationMap
         private void btnSaveFranchise_Click(object sender, EventArgs e)
         {
             ////BuildFranchise();
-            PersistanceBase.Save(@"C:\projects\RelationMapper\Cache\universe.json", u);
+            PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\universe.json"), u);
         }
 
         private void button1_Click(object sender, EventArgs e)
