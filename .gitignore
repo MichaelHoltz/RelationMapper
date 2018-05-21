@@ -3,6 +3,9 @@
 
 # Private Folder
 Private/
+
+# Image Cache
+Cache/Images
 # User-specific files
 *.suo
 *.user
