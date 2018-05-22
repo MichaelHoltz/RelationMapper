@@ -2,6 +2,7 @@
   "Studios": [
     {
       "Name": "Marvel",
+      "Id": 0,
       "Franchises": [
         {
           "Movies": [
@@ -24,9 +25,34 @@
           "BackdropPath": "/kVxquPLBzAIq2NmlbWjTsfZBFh5.jpg",
           "PosterPath": "/ogCQV6mnLtCJuiiHtMB83jvSRfY.jpg",
           "DmdbId": 1927,
+          "ImdbId": "tt0286716",
+          "ProductionCompanies": [
+            {
+              "Name": "Marvel Enterprises",
+              "Id": 19551
+            },
+            {
+              "Name": "Universal Pictures",
+              "Id": 33
+            },
+            {
+              "Name": "Good Machine",
+              "Id": 10565
+            },
+            {
+              "Name": "Valhalla Motion Pictures",
+              "Id": 11533
+            }
+          ],
+          "Overview": "Bruce Banner, a genetics researcher with a tragic past, suffers massive radiation exposure in his laboratory that causes him to transform into a raging green monster when he gets angry.",
+          "Runtime": 138,
+          "Revenue": 245360480,
           "Characters": [
             {
               "Name": "Hulk",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -41,6 +67,9 @@
             },
             {
               "Name": "Betty Ross",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -55,6 +84,9 @@
             },
             {
               "Name": "Thunderbolt Ross",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -69,6 +101,9 @@
             },
             {
               "Name": "Brian Banner",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -92,9 +127,22 @@
           "BackdropPath": "/ZQixhAZx6fH1VNafFXsqa1B8QI.jpg",
           "PosterPath": "/848chlIWVT41VtAAgyh9bWymAYb.jpg",
           "DmdbId": 1726,
+          "ImdbId": "tt0371746",
+          "ProductionCompanies": [
+            {
+              "Name": "Marvel Studios",
+              "Id": 420
+            }
+          ],
+          "Overview": "After being held captive in an Afghan cave, billionaire engineer Tony Stark creates a unique weaponized suit of armor to fight evil.",
+          "Runtime": 126,
+          "Revenue": 585174222,
           "Characters": [
             {
               "Name": "Iron Man",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -109,6 +157,9 @@
             },
             {
               "Name": "Happy Hogan",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -123,6 +174,9 @@
             },
             {
               "Name": "Pepper Potts",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -137,6 +191,9 @@
             },
             {
               "Name": "War Machine",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -151,6 +208,9 @@
             },
             {
               "Name": "Iron Monger",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -174,9 +234,22 @@
           "BackdropPath": "/jxdSxqAFrdioKgXwgTs5Qfbazjq.jpg",
           "PosterPath": "/ArqpkNYGfcTIA6umWt6xihfIZZv.jpg",
           "DmdbId": 10138,
+          "ImdbId": "tt1228705",
+          "ProductionCompanies": [
+            {
+              "Name": "Marvel Studios",
+              "Id": 420
+            }
+          ],
+          "Overview": "With the world now aware of his dual life as the armored superhero Iron Man, billionaire inventor Tony Stark faces pressure from the government, the press and the public to share his technology with the military. Unwilling to let go of his invention, Stark, with Pepper Potts and James 'Rhodey' Rhodes at his side, must forge new alliances – and confront powerful enemies.",
+          "Runtime": 124,
+          "Revenue": 623933331,
           "Characters": [
             {
               "Name": "Iron Man",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -191,6 +264,9 @@
             },
             {
               "Name": "Black Widow",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -213,6 +289,9 @@
             },
             {
               "Name": "Happy Hogan",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -227,6 +306,9 @@
             },
             {
               "Name": "War Machine",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -241,6 +323,9 @@
             },
             {
               "Name": "Ivan Vanko",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -255,6 +340,9 @@
             },
             {
               "Name": "Pepper Potts",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -269,6 +357,9 @@
             },
             {
               "Name": "Nick Fury",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -283,6 +374,9 @@
             },
             {
               "Name": "Justin Hammer",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -297,6 +391,9 @@
             },
             {
               "Name": "Agent Phil Coulson",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -311,6 +408,9 @@
             },
             {
               "Name": "Phil Coulson",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -334,9 +434,22 @@
           "BackdropPath": "/n9X2DKItL3V0yq1q1jrk8z5UAki.jpg",
           "PosterPath": "/1Ilv6ryHUv6rt9zIsbSEJUmmbEi.jpg",
           "DmdbId": 68721,
+          "ImdbId": "tt1300854",
+          "ProductionCompanies": [
+            {
+              "Name": "Marvel Studios",
+              "Id": 420
+            }
+          ],
+          "Overview": "When Tony Stark's world is torn apart by a formidable terrorist called the Mandarin, he starts an odyssey of rebuilding and retribution.",
+          "Runtime": 130,
+          "Revenue": 1215439994,
           "Characters": [
             {
               "Name": "Iron Man",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -360,9 +473,26 @@
           "BackdropPath": "/kaIfm5ryEOwYg8mLbq8HkPuM1Fo.jpg",
           "PosterPath": "/rzRwTcFvttcN1ZpX2xv4j3tSdJu.jpg",
           "DmdbId": 284053,
+          "ImdbId": "tt3501632",
+          "ProductionCompanies": [
+            {
+              "Name": "Marvel Studios",
+              "Id": 420
+            },
+            {
+              "Name": "Walt Disney Pictures",
+              "Id": 2
+            }
+          ],
+          "Overview": "Thor is imprisoned on the other side of the universe and finds himself in a race against time to get back to Asgard to stop Ragnarok, the prophecy of destruction to his homeworld and the end of Asgardian civilization, at the hands of an all-powerful new threat, the ruthless Hela.",
+          "Runtime": 130,
+          "Revenue": 853977126,
           "Characters": [
             {
               "Name": "Thor",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -377,6 +507,9 @@
             },
             {
               "Name": "Hela",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -391,6 +524,9 @@
             },
             {
               "Name": "Valkyrie",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -405,6 +541,9 @@
             },
             {
               "Name": "Loki",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -419,6 +558,9 @@
             },
             {
               "Name": "Korg",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -433,6 +575,9 @@
             },
             {
               "Name": "Hulk",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -447,6 +592,9 @@
             },
             {
               "Name": "Executioner",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -461,6 +609,9 @@
             },
             {
               "Name": "Grandmaster",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -475,6 +626,9 @@
             },
             {
               "Name": "Heimdall",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -489,6 +643,9 @@
             },
             {
               "Name": "Odin",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -503,6 +660,9 @@
             },
             {
               "Name": "Sif",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -517,6 +677,9 @@
             },
             {
               "Name": "Doctor Steven Strange",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -540,9 +703,38 @@
           "BackdropPath": "/n1y094tVDFATSzkTnFxoGZ1qNsG.jpg",
           "PosterPath": "/inVq3FRqcYIRl2la8iZikYYxFNR.jpg",
           "DmdbId": 293660,
+          "ImdbId": "tt1431045",
+          "ProductionCompanies": [
+            {
+              "Name": "Marvel Entertainment",
+              "Id": 7505
+            },
+            {
+              "Name": "TSG Entertainment",
+              "Id": 22213
+            },
+            {
+              "Name": "20th Century Fox",
+              "Id": 25
+            },
+            {
+              "Name": "Genre Films",
+              "Id": 28788
+            },
+            {
+              "Name": "The Donners' Company",
+              "Id": 431
+            }
+          ],
+          "Overview": "Deadpool tells the origin story of former Special Forces operative turned mercenary Wade Wilson, who after being subjected to a rogue experiment that leaves him with accelerated healing powers, adopts the alter ego Deadpool. Armed with his new abilities and a dark, twisted sense of humor, Deadpool hunts down the man who nearly destroyed his life.",
+          "Runtime": 108,
+          "Revenue": 783100000,
           "Characters": [
             {
               "Name": "Deadpool",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -557,6 +749,9 @@
             },
             {
               "Name": "Copycat",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -571,6 +766,9 @@
             },
             {
               "Name": "Weasel",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -585,6 +783,9 @@
             },
             {
               "Name": "Negasonic Teenage Warhead",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -599,6 +800,9 @@
             },
             {
               "Name": "Angel Dust",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -613,6 +817,9 @@
             },
             {
               "Name": "Ajax",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -627,6 +834,9 @@
             },
             {
               "Name": "Strip Club DJ",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -650,9 +860,42 @@
           "BackdropPath": "/3P52oz9HPQWxcwHOwxtyrVV1LKi.jpg",
           "PosterPath": "/to0spRl1CMDvyUbOnbb4fTk3VAd.jpg",
           "DmdbId": 383498,
+          "ImdbId": "tt5463162",
+          "ProductionCompanies": [
+            {
+              "Name": "Genre Films",
+              "Id": 28788
+            },
+            {
+              "Name": "Simon Kinberg Productions",
+              "Id": 31076
+            },
+            {
+              "Name": "The Donners' Company",
+              "Id": 431
+            },
+            {
+              "Name": "Maximum Effort",
+              "Id": 104228
+            },
+            {
+              "Name": "Marvel Entertainment",
+              "Id": 7505
+            },
+            {
+              "Name": "20th Century Fox",
+              "Id": 25
+            }
+          ],
+          "Overview": "Wisecracking mercenary Deadpool battles the evil and powerful Cable and other bad guys to save a boy's life.",
+          "Runtime": 119,
+          "Revenue": 301336221,
           "Characters": [
             {
               "Name": "Deadpool",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -667,6 +910,9 @@
             },
             {
               "Name": "Cable",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -681,6 +927,9 @@
             },
             {
               "Name": "Vanessa",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -695,6 +944,9 @@
             },
             {
               "Name": "Vanisher",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -717,6 +969,9 @@
           "Characters": [
             {
               "Name": "Bruce Banner",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -731,6 +986,9 @@
             },
             {
               "Name": "Hulk",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -750,6 +1008,7 @@
     },
     {
       "Name": "DC",
+      "Id": 0,
       "Franchises": [
         {
           "Movies": [
@@ -768,9 +1027,30 @@
           "BackdropPath": "/reQewz6KndV7Js2mfLfaaX8Rj0T.jpg",
           "PosterPath": "/ifzddUhnsTf1h6guBUKBlDwuS1t.jpg",
           "DmdbId": 364,
+          "ImdbId": "tt0103776",
+          "ProductionCompanies": [
+            {
+              "Name": "DC Comics",
+              "Id": 429
+            },
+            {
+              "Name": "PolyGram Filmed Entertainment",
+              "Id": 1382
+            },
+            {
+              "Name": "Warner Bros. Pictures",
+              "Id": 174
+            }
+          ],
+          "Overview": "Having defeated the Joker, Batman now faces the Penguin - a warped and deformed individual who is intent on being accepted into Gotham society. Crooked businessman Max Schreck is coerced into helping him become Mayor of Gotham and they both attempt to expose Batman in a different light. Selina Kyle, Max's secretary, is thrown from the top of a building and is transformed into Catwoman - a mysterious figure who has the same personality disorder as Batman. Batman must attempt to clear his name, all the time deciding just what must be done with the Catwoman.",
+          "Runtime": 126,
+          "Revenue": 280000000,
           "Characters": [
             {
               "Name": "Batman",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -785,6 +1065,9 @@
             },
             {
               "Name": "Catwoman",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -799,6 +1082,9 @@
             },
             {
               "Name": "Penguin",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -819,6 +1105,7 @@
     },
     {
       "Name": "TestStudio",
+      "Id": 0,
       "Franchises": [
         {
           "Movies": [
@@ -838,9 +1125,17 @@
           "BackdropPath": null,
           "PosterPath": null,
           "DmdbId": 0,
+          "ImdbId": null,
+          "ProductionCompanies": null,
+          "Overview": null,
+          "Runtime": 0,
+          "Revenue": 0,
           "Characters": [
             {
               "Name": "Character1",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -855,6 +1150,9 @@
             },
             {
               "Name": "Character2",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -869,6 +1167,9 @@
             },
             {
               "Name": "CharacterA",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -892,9 +1193,17 @@
           "BackdropPath": null,
           "PosterPath": null,
           "DmdbId": 0,
+          "ImdbId": null,
+          "ProductionCompanies": null,
+          "Overview": null,
+          "Runtime": 0,
+          "Revenue": 0,
           "Characters": [
             {
               "Name": "Character1",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -909,6 +1218,9 @@
             },
             {
               "Name": "Character2",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {
@@ -923,6 +1235,9 @@
             },
             {
               "Name": "CharacterB",
+              "Id": 0,
+              "Order": 0,
+              "ProfilePath": null,
               "Aliases": [],
               "Actors": [
                 {

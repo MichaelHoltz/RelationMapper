@@ -18,7 +18,7 @@ namespace TmdbWrapper.Search
         /// <summary>
         /// Path of the backdrop image
         /// </summary>
-        public string BackdropPath { get; private set; }
+        public string BackdropPath { get; set; }
         /// <summary>
         /// Id of this movie
         /// </summary>
@@ -34,7 +34,7 @@ namespace TmdbWrapper.Search
         /// <summary>
         /// Path of the poster for this movie.
         /// </summary>
-        public string PosterPath { get; private set; }
+        public string PosterPath { get; set; }
         /// <summary>
         /// Popularity of this movie.
         /// </summary>

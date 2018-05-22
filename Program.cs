@@ -16,8 +16,8 @@ namespace RelationMap
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new frmMain());
-            Application.Run(new MovieFinder());
+            Application.Run(new frmMain());
+            //Application.Run(new MovieFinder());
         }
     }
 }

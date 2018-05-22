@@ -110,6 +110,20 @@ namespace RelationMap
             batman.AddCharacter("Catwoman", "Michelle Pfeiffer");
             batman.AddCharacter("Penguin", "Danny DeVito");
             dc.AddMovieToFranchise(batman, "DC Batman");
+
+            //Studio testStudio = u.AddStudio("TestStudio"); // Add Studio to Universe
+            ////Movies in MCU
+            //Movie TestMovie1 = testStudio.AddMovie("TestMovie1", 2018);
+            //TestMovie1.AddCharacter("Character1", "Actor1");
+            //TestMovie1.AddCharacter("Character2", "Actor2");
+            //TestMovie1.AddCharacter("CharacterA", "ActorA");
+            //testStudio.AddMovieToFranchise(TestMovie1, "TestFranchise");
+
+            //Movie TestMovie2 = testStudio.AddMovie("TestMovie2", 2017);
+            //TestMovie2.AddCharacter("Character1", "Actor1");
+            //TestMovie2.AddCharacter("Character2", "Actor2");
+            //TestMovie2.AddCharacter("CharacterB", "ActorB");
+            //testStudio.AddMovieToFranchise(TestMovie2, "TestFranchise");
             PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\universe.json"), u);
         }
         private void BuildFranchise()
@@ -241,18 +255,7 @@ namespace RelationMap
 
         }
 
-        private void btnAddMovie_Click(object sender, EventArgs e)
-        {
-            //Must have a selected Studio
-            Studio s = u.GetStudio(cbStudios.SelectedItem.ToString());
-            Movie m = s.AddMovie(tbMovieTitle.Text, Convert.ToInt32(tbReleaseYear.Text));
-            String fr = cbFranchises.SelectedItem.ToString();
 
-            if (fr != "All" && fr != "None")
-            {
-                s.AddMovieToFranchise(m, fr);
-            }
-        }
 
         /// <summary>
         /// Show the Character(s) played by this actor
@@ -470,7 +473,7 @@ namespace RelationMap
 
         private async void button2_Click(object sender, EventArgs e)
         {
-            TheMovieDb.Initialise(PrivateData.GetTMDBApiKey(), "english", true);
+            TheMovieDb.Initialise(PrivateData.GetTMDBApiKey(), "en-US", true);
            TmdbWrapper.Movies.Credits c = await TmdbWrapper.TheMovieDb.GetMovieCastAsync(299536); // ID for 
             foreach (var item in c.Cast)
             {
@@ -479,29 +482,41 @@ namespace RelationMap
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            //Studio testStudio = u.AddStudio("TestStudio"); // Add Studio to Universe
-            ////Movies in MCU
-            //Movie TestMovie1 = testStudio.AddMovie("TestMovie1", 2018);
-            //TestMovie1.AddCharacter("Character1", "Actor1");
-            //TestMovie1.AddCharacter("Character2", "Actor2");
-            //TestMovie1.AddCharacter("CharacterA", "ActorA");
-            //testStudio.AddMovieToFranchise(TestMovie1, "TestFranchise");
 
-            //Movie TestMovie2 = testStudio.AddMovie("TestMovie2", 2017);
-            //TestMovie2.AddCharacter("Character1", "Actor1");
-            //TestMovie2.AddCharacter("Character2", "Actor2");
-            //TestMovie2.AddCharacter("CharacterB", "ActorB");
-            //testStudio.AddMovieToFranchise(TestMovie2, "TestFranchise");
-
-        }
 
         private void btnCharacterEditor_Click(object sender, EventArgs e)
         {
             Movie m = u.GetMovie(lbMovies.SelectedItem.ToString());
             CharacterFinder cf = new CharacterFinder(m, u);
             cf.ShowDialog();
+
+        }
+        private void btnAddMovie_Click(object sender, EventArgs e)
+        {
+            //Must have a selected Studio for relationships to work
+            Studio s = u.GetStudio(cbStudios.SelectedItem.ToString());
+
+            Movie m = s.AddMovie(tbMovieTitle.Text, Convert.ToInt32(tbReleaseYear.Text));
+
+            String fr = cbFranchises.SelectedItem.ToString();
+
+            if (fr != "All" && fr != "None")
+            {
+                s.AddMovieToFranchise(m, fr);
+            }
+        }
+        private void btnFindMovie_Click(object sender, EventArgs e)
+        {
+            if (lbMovies.SelectedIndex >= 0)
+            {
+                MovieFinder mf = new MovieFinder(lbMovies.SelectedItem.ToString());
+                mf.ShowDialog();
+            }
+            else
+            {
+                MovieFinder mf = new MovieFinder();
+                mf.ShowDialog();
+            }
 
         }
     }

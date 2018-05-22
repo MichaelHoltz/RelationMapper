@@ -15,6 +15,11 @@ namespace RelationMap.Models
 
         public String Name { get; set; }
         /// <summary>
+        /// Id of the production company
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// All Franchises in Studio
         /// EX X-Men, Avengers, Batman, Superman
         /// </summary>

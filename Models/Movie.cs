@@ -14,11 +14,30 @@ namespace RelationMap.Models
 
         //public DateTime ReleaseDate {get; set; }
         public int ReleaseYear { get; set; }
-        public DateTime ReleaseDate { get; set; }
+        public DateTime? ReleaseDate { get; set; }
         public String BackdropPath { get; set; }
         public String PosterPath { get; set; }
         public int DmdbId { get; set; }
-
+        /// <summary>
+        /// Id of this movie in the IMDB.
+        /// </summary>
+        public string ImdbId { get; set; }
+        public HashSet<ProductionCompany> ProductionCompanies { get; set; }
+        /// <summary>
+        /// Overview of this movie.
+        /// </summary>
+        public string Overview { get; set; }
+        /// <summary>
+        /// Original runtime in minutes.
+        /// </summary>
+        public int Runtime { get; set; }
+        /// <summary>
+        /// Revenue that this movie gathered.
+        /// </summary>
+        public Int64 Revenue { get; set; }
+        /// <summary>
+        /// Characters in the movie
+        /// </summary>
         public HashSet<Character> Characters { get; set; }
         public int HashCode
         {

@@ -110,19 +110,20 @@ namespace TmdbWrapper.Movies
         /// </summary>
         public int VoteCount { get; private set; }
 
-        /// <summary>
-        /// Gets the credits associated to this movie.
-        /// </summary>
-        public Credits Credits {
-            get
-            {
-                if (_credits == null)
-                {
-                    _credits = TheMovieDb.GetMovieCastAsync(Id).Result;
-                }
-                return _credits;
-            }
-        }
+        ///// <summary>
+        ///// Gets the credits associated to this movie.
+        ///// </summary>
+        //public async Task<Credits> Credits {
+        //    get
+        //    {
+        //        if (_credits == null)
+        //        {
+
+        //            Movies.Credits _credits = await TheMovieDb.GetMovieCastAsync(Id); //.Result; // Doesn't work correctly even though it should
+        //        }
+        //        return _credits;
+        //    }
+        //}
 
         #endregion
 

@@ -56,6 +56,12 @@
     <Compile Include="CharacterFinder.Designer.cs">
       <DependentUpon>CharacterFinder.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\MovieInfoTip.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MovieInfoTip.Designer.cs">
+      <DependentUpon>MovieInfoTip.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmGraphView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -68,10 +74,10 @@
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="InfoTip.cs">
+    <Compile Include="Controls\InfoTip.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="InfoTip.designer.cs">
+    <Compile Include="Controls\InfoTip.designer.cs">
       <DependentUpon>InfoTip.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Actor.cs" />
@@ -79,6 +85,7 @@
     <Compile Include="Models\Fanchise.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\PersistanceBase.cs" />
+    <Compile Include="Models\ProductionCompany.cs" />
     <Compile Include="Models\Studio.cs" />
     <Compile Include="Models\TvShow.cs" />
     <Compile Include="Models\Universe.cs" />
@@ -94,13 +101,16 @@
     <EmbeddedResource Include="CharacterFinder.resx">
       <DependentUpon>CharacterFinder.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MovieInfoTip.resx">
+      <DependentUpon>MovieInfoTip.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmGraphView.resx">
       <DependentUpon>frmGraphView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InfoTip.resx">
+    <EmbeddedResource Include="Controls\InfoTip.resx">
       <DependentUpon>InfoTip.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MovieFinder.resx">

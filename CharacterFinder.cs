@@ -38,7 +38,7 @@ namespace RelationMap
         }
         private void InitTheMovieDb()
         {
-            TheMovieDb.Initialise(PrivateData.GetTMDBApiKey(), "english", true);
+            TheMovieDb.Initialise(PrivateData.GetTMDBApiKey(), "en-US", true);
         }
 
         private void CharacterFinder_Load(object sender, EventArgs e)
