@@ -33,18 +33,21 @@
             this.lblRunTime = new System.Windows.Forms.Label();
             this.lblRevenue = new System.Windows.Forms.Label();
             this.flpProductionCompanies = new System.Windows.Forms.FlowLayoutPanel();
+            this.lblReleaseDate = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbPoster)).BeginInit();
             this.SuspendLayout();
             // 
             // pbPoster
             // 
             this.pbPoster.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pbPoster.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pbPoster.Dock = System.Windows.Forms.DockStyle.Left;
             this.pbPoster.Location = new System.Drawing.Point(0, 0);
             this.pbPoster.Name = "pbPoster";
-            this.pbPoster.Size = new System.Drawing.Size(119, 149);
+            this.pbPoster.Size = new System.Drawing.Size(119, 150);
             this.pbPoster.TabIndex = 0;
             this.pbPoster.TabStop = false;
+            this.pbPoster.Click += new System.EventHandler(this.pbPoster_Click);
             // 
             // lblTitle
             // 
@@ -59,7 +62,7 @@
             // lblRunTime
             // 
             this.lblRunTime.AutoSize = true;
-            this.lblRunTime.Location = new System.Drawing.Point(120, 21);
+            this.lblRunTime.Location = new System.Drawing.Point(120, 35);
             this.lblRunTime.Name = "lblRunTime";
             this.lblRunTime.Size = new System.Drawing.Size(50, 13);
             this.lblRunTime.TabIndex = 2;
@@ -68,7 +71,7 @@
             // lblRevenue
             // 
             this.lblRevenue.AutoSize = true;
-            this.lblRevenue.Location = new System.Drawing.Point(120, 37);
+            this.lblRevenue.Location = new System.Drawing.Point(120, 51);
             this.lblRevenue.Name = "lblRevenue";
             this.lblRevenue.Size = new System.Drawing.Size(51, 13);
             this.lblRevenue.TabIndex = 3;
@@ -77,15 +80,25 @@
             // flpProductionCompanies
             // 
             this.flpProductionCompanies.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.flpProductionCompanies.Location = new System.Drawing.Point(119, 99);
+            this.flpProductionCompanies.Location = new System.Drawing.Point(119, 100);
             this.flpProductionCompanies.Name = "flpProductionCompanies";
-            this.flpProductionCompanies.Size = new System.Drawing.Size(329, 50);
+            this.flpProductionCompanies.Size = new System.Drawing.Size(481, 50);
             this.flpProductionCompanies.TabIndex = 4;
+            // 
+            // lblReleaseDate
+            // 
+            this.lblReleaseDate.AutoSize = true;
+            this.lblReleaseDate.Location = new System.Drawing.Point(120, 19);
+            this.lblReleaseDate.Name = "lblReleaseDate";
+            this.lblReleaseDate.Size = new System.Drawing.Size(69, 13);
+            this.lblReleaseDate.TabIndex = 5;
+            this.lblReleaseDate.Text = "ReleaseDate";
             // 
             // MovieInfoTip
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lblReleaseDate);
             this.Controls.Add(this.flpProductionCompanies);
             this.Controls.Add(this.lblRevenue);
             this.Controls.Add(this.lblRunTime);
@@ -93,7 +106,7 @@
             this.Controls.Add(this.pbPoster);
             this.DoubleBuffered = true;
             this.Name = "MovieInfoTip";
-            this.Size = new System.Drawing.Size(448, 149);
+            this.Size = new System.Drawing.Size(600, 150);
             ((System.ComponentModel.ISupportInitialize)(this.pbPoster)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -107,5 +120,6 @@
         private System.Windows.Forms.Label lblRunTime;
         private System.Windows.Forms.Label lblRevenue;
         private System.Windows.Forms.FlowLayoutPanel flpProductionCompanies;
+        private System.Windows.Forms.Label lblReleaseDate;
     }
 }

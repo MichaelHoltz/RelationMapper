@@ -27,34 +27,38 @@ namespace RelationMap.Models
             Name = name;
             Characters = new HashSet<Character>();
         }
-        public Character AddCharacter(String characterName, String actorName)
-        {
-            Character c = new Character(characterName, actorName);
-            Characters.Add(c);
-            return c;
-        }
-        public Character GetCharacter(String characterName)
-        {
-            return Characters.First(o => o.Name == characterName);
-        }
-        public HashSet<Actor> GetActorsWhoPlayedCharacter(String characterName)
-        {
-            Character c = Characters.First(o => o.Name == characterName);
-            Actor a = c.Actors.First(); //First Actor need to fix this
-            return c.Actors;
-        }
-        public HashSet<Character> GetCharactersPlayedByActor(String actorName)
-        {
-            HashSet<Character> cs = new HashSet<Character>();
-            foreach (Character c in Characters)
-            {
-                if (c.Actors.Select(o => o.Name).Contains(actorName))
-                {
-                    cs.Add(c);
-                }
-            }
-            return cs;
-        }
+        /// <summary>
+        /// Compile Error now.
+        /// </summary>
+        /// <returns></returns>
+        //////public Character AddCharacter(String characterName, String actorName, int order =0)
+        //////{
+        //////    Character c = new Character(characterName, actorName, order);
+        //////    Characters.Add(c);
+        //////    return c;
+        //////}
+        //////public Character GetCharacter(String characterName)
+        //////{
+        //////    return Characters.First(o => o.Name == characterName);
+        //////}
+        //////public HashSet<Person> GetActorsWhoPlayedCharacter(String characterName)
+        //////{
+        //////    Character c = Characters.First(o => o.Name == characterName);
+        //////    Person a = c.Actors.First(); //First Actor need to fix this
+        //////    return c.Actors;
+        //////}
+        //////public HashSet<Character> GetCharactersPlayedByActor(String actorName)
+        //////{
+        //////    HashSet<Character> cs = new HashSet<Character>();
+        //////    foreach (Character c in Characters)
+        //////    {
+        //////        if (c.Actors.Select(o => o.Name).Contains(actorName))
+        //////        {
+        //////            cs.Add(c);
+        //////        }
+        //////    }
+        //////    return cs;
+        //////}
         public override int GetHashCode()
         {
             System.Security.Cryptography.MD5 md5Hasher = System.Security.Cryptography.MD5.Create();

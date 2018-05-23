@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheMovieDb = TmdbWrapper.TheMovieDb;
+using TmdbSearch = TmdbWrapper.Search;
 
 namespace RelationMap.Models
 {
@@ -12,21 +14,102 @@ namespace RelationMap.Models
     public class Universe
     {
         public HashSet<Studio> Studios { get; set; }
+        public HashSet<ProductionCompany> ProductionCompanies { get; set; }
+
+        public HashSet<Movie> Movies { get; set; }
+        public HashSet<Person> People { get; set; }
 
         public Universe()
         {
             Studios = new HashSet<Studio>();
+            ProductionCompanies = new HashSet<ProductionCompany>();
+            Movies = new HashSet<Movie>();
+            People = new HashSet<Person>();
         }
+        #region People
+        public Boolean AddPerson(Person person)
+        {
+            Boolean result = People.Add(person);
+            if (!result) // Movie already there, but need to update
+            {
+                People.Remove(person); // Hack at update by just replacing.
+                result = People.Add(person);
+            }
+            return result;
+        }
+
+        #endregion
+        #region Movie
+        public Boolean AddMovie(Movie movie)
+        {
+            Boolean result = Movies.Add(movie);
+            if (!result) // Movie already there, but need to update
+            {
+                Movies.Remove(movie); // Hack at update by just replacing.
+                result = Movies.Add(movie);
+            }
+            return result;
+        }
+
+        ////Function for Universe which will find a movie and return a Search Result list.
+        //public async Task<TmdbSearch.SearchResult<TmdbSearch.MovieSummary>> FindMovie(String movieName)
+        //{
+        //    TmdbSearch.SearchResult<TmdbSearch.MovieSummary> movieSummaryList = await TheMovieDb.SearchMovieAsync(movieName);
+        //    return movieSummaryList;
+        //}
+        #endregion Movie
+
+        #region Production Company 
+
+        public ProductionCompany AddProductionCompany(String pcName, int pcId)
+        {
+            ProductionCompany pc = new ProductionCompany(pcName, pcId);
+            Boolean result = AddProductionCompany(pc);
+            return pc;
+        }
+        public Boolean AddProductionCompany(ProductionCompany pc)
+        {
+            Boolean result = ProductionCompanies.Add(pc);
+            if (!result)
+            {
+                ProductionCompanies.Remove(pc);
+                result = ProductionCompanies.Add(pc);
+            }
+            return result;
+        }
+
+        public ProductionCompany GetProductionCompany(String pcName)
+        {
+            return ProductionCompanies.First(o => o.Name == pcName);
+        }
+        public ProductionCompany GetProductionCompany(int pcId)
+        {
+            return ProductionCompanies.First(o => o.Id == pcId);
+        }
+        #endregion Production Company
+
+        #region Studio (One or more Production Company grouped into one)
         public Studio AddStudio(String studioName)
         {
             Studio s = new Studio(studioName);
-            Studios.Add(s);
+            Boolean result = Studios.Add(s);
             return s;
         }
         public Studio GetStudio(String studioName)
         {
             return Studios.First(o => o.Name == studioName);
         }
+        public Studio GetStudio(int studioId)
+        {
+            return Studios.First(o => o.Id == studioId);
+        }
+
+        #endregion Studio
+
+        /// <summary>
+        /// Franchise is a Collection or List
+        /// </summary>
+        /// <returns></returns>
         public HashSet<Franchise> GetAllFranchises()
         {
             HashSet<Franchise> f = new HashSet<Franchise>();
@@ -130,6 +213,16 @@ namespace RelationMap.Models
             if(allMovies.Select(o => o.Title).Contains(movieName))
             {
                 m = allMovies.First(o => o.Title == movieName);
+            }
+            return m;
+        }
+        public Movie GetMovie(int movieId)
+        {
+
+            Movie m = null;
+            if (Movies.Select(o => o.DmdbId).Contains(movieId))
+            {
+                m = Movies.First(o => o.DmdbId == movieId);
             }
             return m;
         }

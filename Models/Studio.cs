@@ -8,6 +8,15 @@ namespace RelationMap.Models
 {
     /// <summary>
     /// Studio has Franchise
+    /// 
+    /// Studio is one or more Production Companies rolled into one.
+    /// 
+    /// Major re-think based on hooking up to TheMoveDB data.
+    /// They only have Collections and (custom) lists to represent the idea of a Franchise.
+    /// 
+    /// Also Since moves are producted by more than one studio (Production Company) Studio will need to have a collection of Production Companies..
+    /// Further - In an attempt to normalize the data it will be necessary to make many more changes.
+    /// 
     /// </summary>
     public class Studio
     {
@@ -148,7 +157,7 @@ namespace RelationMap.Models
 
         public override int GetHashCode()
         {
-
+            //THis is expensive and should be done only once since it will not be changing
             System.Security.Cryptography.MD5 md5Hasher = System.Security.Cryptography.MD5.Create();
             var hashed = md5Hasher.ComputeHash(Encoding.UTF8.GetBytes(this.GetType().Name + Name));
             int ivalue = BitConverter.ToInt32(hashed, 0);
@@ -157,6 +166,7 @@ namespace RelationMap.Models
         }
         public override bool Equals(object obj)
         {
+            //return obj.GetHashCode().Equals(GetHashCode());
             return obj.GetHashCode() == this.GetHashCode();
             //return base.Equals(obj);
         }

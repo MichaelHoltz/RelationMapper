@@ -113,15 +113,11 @@ namespace TmdbWrapper.Movies
         ///// <summary>
         ///// Gets the credits associated to this movie.
         ///// </summary>
-        //public async Task<Credits> Credits {
+        //public async Credits Credits
+        //{
         //    get
         //    {
-        //        if (_credits == null)
-        //        {
-
-        //            Movies.Credits _credits = await TheMovieDb.GetMovieCastAsync(Id); //.Result; // Doesn't work correctly even though it should
-        //        }
-        //        return _credits;
+        //        return await CastAsync();
         //    }
         //}
 

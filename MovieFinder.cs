@@ -1,34 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-using System.Windows.Forms;
-using TmdbWrapper;
-using System.Net;
 using RelationMap.Models;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Net;
+using System.Windows.Forms;
+//using TmdbWrapper;
+using TheMovieDb = TmdbWrapper.TheMovieDb;
+using TmdbSearch = TmdbWrapper.Search;
+
 namespace RelationMap
 {
     public partial class MovieFinder : Form
     {
-        TmdbWrapper.Search.SearchResult<TmdbWrapper.Search.MovieSummary> movieSummaryList;
+        TmdbSearch.SearchResult<TmdbSearch.MovieSummary> movieSummaryList;
         TmdbWrapper.Movies.Movie selectedMovieInfo;
         Universe u;
         String movieToFind = String.Empty;
         public MovieFinder()
         {
             InitializeComponent();
-            u = PersistanceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\universe.json"));
+            //This could be large and possibly altered so it should be passed in by reference.
+            u = PersistanceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\uinverse2.json"));
             TheMovieDb.Initialise(PrivateData.GetTMDBApiKey(), "en-US", true);
+        }
+        public MovieFinder(ref Universe universe)
+        {
+            u = universe;
         }
         public MovieFinder(String movieName)
         {
             InitializeComponent();
-            u = PersistanceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\universe.json"));
+            u = PersistanceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\uinverse2.json"));
             TheMovieDb.Initialise(PrivateData.GetTMDBApiKey(), "en-US", true);
             movieToFind = movieName;
         }
@@ -48,8 +56,8 @@ namespace RelationMap
         {
             lbMovies.Items.Clear();
 
-            TmdbWrapper.Search.SearchResult<TmdbWrapper.Search.MovieSummary> movieSummaryList = await TmdbWrapper.TheMovieDb.SearchMovieAsync(movieName);
-            foreach (TmdbWrapper.Search.MovieSummary item in movieSummaryList.Results)
+            TmdbSearch.SearchResult<TmdbSearch.MovieSummary> movieSummaryList = await TheMovieDb.SearchMovieAsync(movieName);
+            foreach (TmdbSearch.MovieSummary item in movieSummaryList.Results)
             {
                 lbMovies.Items.Add(item);
             }
@@ -81,19 +89,19 @@ namespace RelationMap
         {
             if (lbMovies.SelectedIndex >= 0)
             {
-                int movieId = (lbMovies.SelectedItem as TmdbWrapper.Search.MovieSummary).Id;
+                int movieId = (lbMovies.SelectedItem as TmdbSearch.MovieSummary).Id;
                 //propertyGrid1.SelectedObject = lbMovies.SelectedItem; // Show the properties of the movie
-                if ((lbMovies.SelectedItem as TmdbWrapper.Search.MovieSummary).PosterPath != null)
+                if ((lbMovies.SelectedItem as TmdbSearch.MovieSummary).PosterPath != null)
                 {
                     TmdbWrapper.Images.Image i = await TheMovieDb.GetMovieImagesAsync(movieId);
-                    Uri uri = (lbMovies.SelectedItem as TmdbWrapper.Search.MovieSummary).Uri(TmdbWrapper.Utilities.PosterSize.w342);
+                    Uri uri = (lbMovies.SelectedItem as TmdbSearch.MovieSummary).Uri(TmdbWrapper.Utilities.PosterSize.w342);
                     var wc = new WebClient();
                     Image x = Image.FromStream(wc.OpenRead(uri)); // TODO-Implement Image Cache
                     pbMoviePoster.BackgroundImage = x;
 
                 }
                 //Get Full movie information
-                selectedMovieInfo = await TmdbWrapper.TheMovieDb.GetMovieAsync(movieId);
+                selectedMovieInfo = await TheMovieDb.GetMovieAsync(movieId);
 
                 listBox1.Items.Clear();
                 foreach (TmdbWrapper.Movies.ProductionCompany pc in selectedMovieInfo.ProductionCompanies)
@@ -111,9 +119,9 @@ namespace RelationMap
         {
             if (lbMovies.SelectedIndex >= 0)
             {
-                int movieId = (lbMovies.SelectedItem as TmdbWrapper.Search.MovieSummary).Id;
+                int movieId = (lbMovies.SelectedItem as TmdbSearch.MovieSummary).Id;
 
-                selectedMovieInfo = await TmdbWrapper.TheMovieDb.GetMovieAsync(movieId, MovieExtras.Casts);
+                selectedMovieInfo = await TheMovieDb.GetMovieAsync(movieId, TmdbWrapper.MovieExtras.Casts);
 
                 listBox1.Items.Clear();
                 foreach (TmdbWrapper.Movies.ProductionCompany pc in selectedMovieInfo.ProductionCompanies)
@@ -140,10 +148,11 @@ namespace RelationMap
                 //TmdbWrapper.Movies.Movie selectedMovieInfo
                 foreach (Movie item in u.GetAllMovies())
                 {
+                    Movie m = item;
                     //Find Match
                     if (item.Title == selectedMovieInfo.Title && item.ReleaseYear == selectedMovieInfo.ReleaseDate.Value.Year)
                     {
-                        movieInfoTip1.LoadMovieInfo(item);
+                        movieInfoTip1.LoadMovieInfo(ref m, ref u);
                         if (MessageBox.Show("Are you sure you want to update: " + item.Title, "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
 
@@ -156,14 +165,16 @@ namespace RelationMap
                             item.Overview = selectedMovieInfo.Overview;
                             item.Runtime = selectedMovieInfo.Runtime;
                             item.Revenue = selectedMovieInfo.Revenue;
-                            item.ProductionCompanies = new HashSet<ProductionCompany>(); // Clear existing
+                            item.ProductionCompanies = new HashSet<int>(); // Clear existing
                             foreach (var pc in selectedMovieInfo.ProductionCompanies)
                             {
                                 ProductionCompany s = new ProductionCompany(pc.Name);
                                 s.Id = pc.Id;
-                                item.ProductionCompanies.Add(s);
+                                //u.AddProductionCompany?
+                                //More Production Company Info and need to save / update the Production company
+                                item.ProductionCompanies.Add(s.Id);
                             }
-                            PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\universe.json"), u);
+                            PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\uinverse2.json"), u);
                         }
 
                         break;

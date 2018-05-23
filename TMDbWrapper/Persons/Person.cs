@@ -71,7 +71,10 @@ namespace TmdbWrapper.Persons
             Biography = jsonObject.GetSafeString("biography");
             Birthday = jsonObject.GetSafeDateTime("birthday");
             Deathday = jsonObject.GetSafeDateTime("deathday");
-            Homepage = new Uri(jsonObject.GetSafeString("homepage"));
+            //Bug Fix for homepage
+            String homepage = jsonObject.GetSafeString("homepage");
+            if(homepage != null)
+                Homepage = new Uri(homepage);
             Id = (int)jsonObject.GetSafeNumber("id");
             Name = jsonObject.GetSafeString("name");
             PlaceOfBirth = jsonObject.GetSafeString("place_of_birth");

@@ -38,7 +38,11 @@ namespace TmdbWrapper.Companies
         /// <summary>
         /// Id of the parentcompany.
         /// </summary>
-        public int ParentCompany { get; private set; }
+        public ParentCompany ParentCompany { get; private set; }
+        /// <summary>
+        /// Country of origin
+        /// </summary>
+        public string OriginCountry { get; private set; }
         #endregion
 
         #region interface implementations
@@ -50,7 +54,8 @@ namespace TmdbWrapper.Companies
             Id = (int)jsonObject.GetSafeNumber("id");
             LogoPath = jsonObject.GetSafeString("logo_path");
             Name = jsonObject.GetSafeString("name");
-            ParentCompany = (int)jsonObject.GetSafeNumber("parent_company");
+            ParentCompany = jsonObject.ProcessObject<ParentCompany>("parent_company");
+            OriginCountry = jsonObject.GetSafeString("origin_country");
         }
         #endregion
         

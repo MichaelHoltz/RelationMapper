@@ -26,7 +26,7 @@ namespace RelationMap
         public CharacterFinder()
         {
             InitializeComponent();
-            u = PersistanceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\universe.json"));
+            u = PersistanceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\uinverse2.json"));
             InitTheMovieDb();        
         }
         public CharacterFinder(Movie m1, Universe u1)
@@ -88,8 +88,8 @@ namespace RelationMap
         {
             if (lbActors.SelectedIndex >= 0)
             {
-                HashSet<Actor> allActors = m.GetAllActors();
-                foreach (Actor a in allActors)
+                HashSet<Person> allActors = m.GetAllActors();
+                foreach (Person a in allActors)
                 {
                     if (a.Name == lbActors.SelectedItem.ToString())
                     {
@@ -107,14 +107,14 @@ namespace RelationMap
             //All Existing Characters
             foreach (Character c in m.Characters)
             {
-                foreach (Actor a in c.Actors)
-                {
-                    TmdbWrapper.Movies.CastPerson cp = credits.Cast.First(o => o.Name == a.Name); // Match Actor To Character..
-                    //Some Cases where "Security Guard" is listed in Credits multiple times 1 for each actor, but that would mess up the ids and 
-                    //possibility of looking up an image as they are actually different security guards.. so probably include sort ID as part of 
-                    //Hash code to allow duplicate looking characters.
+                ////////foreach (Person a in c.Actors)
+                ////////{
+                ////////    TmdbWrapper.Movies.CastPerson cp = credits.Cast.First(o => o.Name == a.Name); // Match Actor To Character..
+                ////////    //Some Cases where "Security Guard" is listed in Credits multiple times 1 for each actor, but that would mess up the ids and 
+                ////////    //possibility of looking up an image as they are actually different security guards.. so probably include sort ID as part of 
+                ////////    //Hash code to allow duplicate looking characters.
 
-                }
+                ////////}
 
             }
             //Movie m = u.GetMovie(lbMovies.SelectedItem.ToString());

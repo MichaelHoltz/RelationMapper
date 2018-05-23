@@ -43,88 +43,88 @@ namespace RelationMap
         /// </summary>
         private void InitializeStudio()
         {
-            //TvShow Example added to Studio
-            TvShow IncredibleHulk = marvel.AddTvShow("Incredible Hulk");
-            IncredibleHulk.AddCharacter("Bruce Banner", "Bill Bixby");
-            IncredibleHulk.AddCharacter("Hulk", "Lou Ferrigno");
-            marvel.AddTvShow(IncredibleHulk);
+            ////TvShow Example added to Studio
+            //TvShow IncredibleHulk = marvel.AddTvShow("Incredible Hulk");
+            //IncredibleHulk.AddCharacter("Bruce Banner", "Bill Bixby");
+            //IncredibleHulk.AddCharacter("Hulk", "Lou Ferrigno");
+            //marvel.AddTvShow(IncredibleHulk);
 
             
-            //Movies in MCU
-            Movie Hulk = marvel.AddMovie("Hulk", 2003);
-            Hulk.AddCharacter("Hulk", "Eric Bana");
-            Hulk.AddCharacter("Betty Ross", "Jennifer Connelly");
-            Hulk.AddCharacter("Thunderbolt Ross", "Sam Elliott");
-            Hulk.AddCharacter("Brian Banner", "Nick Nolte");
-            marvel.AddMovieToFranchise(Hulk, "Marvel Cinematic Universe");
-
-            //Google: iron man 2008 cast
-            Movie IronMan = marvel.AddMovie("Iron Man", 2008);
-            IronMan.AddCharacter("Iron Man", "Robert Downey Jr.");
-            IronMan.AddCharacter("Happy Hogan", "Jon Favreau");
-            IronMan.AddCharacter("Pepper Potts", "Gwyneth Paltrow");
-            IronMan.AddCharacter("War Machine", "Terrence Howard");
-            IronMan.AddCharacter("Iron Monger", "Jeff Bridges");
-            marvel.AddMovieToFranchise(IronMan, "Marvel Cinematic Universe");
-            //Google iron man 2 cast
-
-            Movie IronMan2 = marvel.AddMovie("Iron Man 2", 2010);
-            IronMan2.AddCharacter("Iron Man", "Robert Downey Jr.");
-            IronMan2.AddCharacter("Black Widow", "Scarlett Johansson");
-            IronMan2.AddCharacter("Black Widow", "Charity Holtz"); // Testing multiple actors playing same role
-            IronMan2.AddCharacter("Happy Hogan", "Jon Favreau");
-            IronMan2.AddCharacter("War Machine", "Don Cheadle");
-            IronMan2.AddCharacter("Ivan Vanko", "Mickey Rourke");
-            IronMan2.AddCharacter("Pepper Potts", "Gwyneth Paltrow");
-            IronMan2.AddCharacter("Nick Fury", "Samuel L. Jackson");
-            IronMan2.AddCharacter("Justin Hammer", "Sam Rockwell");
-            IronMan2.AddCharacter("Agent Phil Coulson", "Clark Gregg"); // Agent I believe..
-            IronMan2.AddCharacter("Phil Coulson", "Clark Gregg"); // Test actor playing multiple roles
-            //Console.WriteLine(marvel.GetFranchise("Marvel Cinematic Universe").IsMovieInFranchise(IronMan2));
-            marvel.AddMovieToFranchise(IronMan2, "Marvel Cinematic Universe");
-            //Console.WriteLine(marvel.GetFranchise("Marvel Cinematic Universe").IsMovieInFranchise(IronMan2));
-
-            Movie IronMan3 = marvel.AddMovie("Iron Man 3", 2013);
-            IronMan3.AddCharacter("Iron Man", "Robert Downey Jr.");
-            marvel.AddMovieToFranchise(IronMan3, "Marvel Cinematic Universe");
-
-            //Connected Data Idea https://www.themoviedb.org/person/74568-chris-hemsworth see also
-            Movie ThorRagnorok = marvel.AddMovie("Thor: Ragnorok", 2017);
-            ThorRagnorok.AddCharacter("Thor", "Chris Hemsworth");
-            ThorRagnorok.AddCharacter("Hela", "Cate Blanchett");
-            ThorRagnorok.AddCharacter("Valkyrie", "Tessa Thompson");
-            ThorRagnorok.AddCharacter("Loki", "Tom Hiddleston");
-            ThorRagnorok.AddCharacter("Korg", "Taika Waititi");
-            ThorRagnorok.AddCharacter("Hulk", "Mark Ruffalo");
-            ThorRagnorok.AddCharacter("Executioner", "Karl Urban");
-            ThorRagnorok.AddCharacter("Grandmaster", "Jeff Goldblum");
-            ThorRagnorok.AddCharacter("Heimdall", "Idris Elba");
-            ThorRagnorok.AddCharacter("Odin", "Anthony Hopkins");
-            ThorRagnorok.AddCharacter("Sif", "Jaimie Alexander");
-            ThorRagnorok.AddCharacter("Doctor Steven Strange", "Benedict Cumberbatch");
-            marvel.AddMovieToFranchise(ThorRagnorok, "Marvel Cinematic Universe");
-            //Movies in DC and DCBatman
-            //Change Studio 
-            Movie batman = dc.AddMovie("Batman Returns", 1992);
-            batman.AddCharacter("Batman", "Michael Keaton");
-            batman.AddCharacter("Catwoman", "Michelle Pfeiffer");
-            batman.AddCharacter("Penguin", "Danny DeVito");
-            dc.AddMovieToFranchise(batman, "DC Batman");
-
-            //Studio testStudio = u.AddStudio("TestStudio"); // Add Studio to Universe
             ////Movies in MCU
-            //Movie TestMovie1 = testStudio.AddMovie("TestMovie1", 2018);
-            //TestMovie1.AddCharacter("Character1", "Actor1");
-            //TestMovie1.AddCharacter("Character2", "Actor2");
-            //TestMovie1.AddCharacter("CharacterA", "ActorA");
-            //testStudio.AddMovieToFranchise(TestMovie1, "TestFranchise");
+            //Movie Hulk = marvel.AddMovie("Hulk", 2003);
+            //Hulk.AddCharacter("Hulk", "Eric Bana");
+            //Hulk.AddCharacter("Betty Ross", "Jennifer Connelly");
+            //Hulk.AddCharacter("Thunderbolt Ross", "Sam Elliott");
+            //Hulk.AddCharacter("Brian Banner", "Nick Nolte");
+            //marvel.AddMovieToFranchise(Hulk, "Marvel Cinematic Universe");
 
-            //Movie TestMovie2 = testStudio.AddMovie("TestMovie2", 2017);
-            //TestMovie2.AddCharacter("Character1", "Actor1");
-            //TestMovie2.AddCharacter("Character2", "Actor2");
-            //TestMovie2.AddCharacter("CharacterB", "ActorB");
-            //testStudio.AddMovieToFranchise(TestMovie2, "TestFranchise");
-            PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\universe.json"), u);
+            ////Google: iron man 2008 cast
+            //Movie IronMan = marvel.AddMovie("Iron Man", 2008);
+            //IronMan.AddCharacter("Iron Man", "Robert Downey Jr.");
+            //IronMan.AddCharacter("Happy Hogan", "Jon Favreau");
+            //IronMan.AddCharacter("Pepper Potts", "Gwyneth Paltrow");
+            //IronMan.AddCharacter("War Machine", "Terrence Howard");
+            //IronMan.AddCharacter("Iron Monger", "Jeff Bridges");
+            //marvel.AddMovieToFranchise(IronMan, "Marvel Cinematic Universe");
+            ////Google iron man 2 cast
+
+            //Movie IronMan2 = marvel.AddMovie("Iron Man 2", 2010);
+            //IronMan2.AddCharacter("Iron Man", "Robert Downey Jr.");
+            //IronMan2.AddCharacter("Black Widow", "Scarlett Johansson");
+            //IronMan2.AddCharacter("Black Widow", "Charity Holtz"); // Testing multiple actors playing same role
+            //IronMan2.AddCharacter("Happy Hogan", "Jon Favreau");
+            //IronMan2.AddCharacter("War Machine", "Don Cheadle");
+            //IronMan2.AddCharacter("Ivan Vanko", "Mickey Rourke");
+            //IronMan2.AddCharacter("Pepper Potts", "Gwyneth Paltrow");
+            //IronMan2.AddCharacter("Nick Fury", "Samuel L. Jackson");
+            //IronMan2.AddCharacter("Justin Hammer", "Sam Rockwell");
+            //IronMan2.AddCharacter("Agent Phil Coulson", "Clark Gregg"); // Agent I believe..
+            //IronMan2.AddCharacter("Phil Coulson", "Clark Gregg"); // Test actor playing multiple roles
+            ////Console.WriteLine(marvel.GetFranchise("Marvel Cinematic Universe").IsMovieInFranchise(IronMan2));
+            //marvel.AddMovieToFranchise(IronMan2, "Marvel Cinematic Universe");
+            ////Console.WriteLine(marvel.GetFranchise("Marvel Cinematic Universe").IsMovieInFranchise(IronMan2));
+
+            //Movie IronMan3 = marvel.AddMovie("Iron Man 3", 2013);
+            //IronMan3.AddCharacter("Iron Man", "Robert Downey Jr.");
+            //marvel.AddMovieToFranchise(IronMan3, "Marvel Cinematic Universe");
+
+            ////Connected Data Idea https://www.themoviedb.org/person/74568-chris-hemsworth see also
+            //Movie ThorRagnorok = marvel.AddMovie("Thor: Ragnorok", 2017);
+            //ThorRagnorok.AddCharacter("Thor", "Chris Hemsworth");
+            //ThorRagnorok.AddCharacter("Hela", "Cate Blanchett");
+            //ThorRagnorok.AddCharacter("Valkyrie", "Tessa Thompson");
+            //ThorRagnorok.AddCharacter("Loki", "Tom Hiddleston");
+            //ThorRagnorok.AddCharacter("Korg", "Taika Waititi");
+            //ThorRagnorok.AddCharacter("Hulk", "Mark Ruffalo");
+            //ThorRagnorok.AddCharacter("Executioner", "Karl Urban");
+            //ThorRagnorok.AddCharacter("Grandmaster", "Jeff Goldblum");
+            //ThorRagnorok.AddCharacter("Heimdall", "Idris Elba");
+            //ThorRagnorok.AddCharacter("Odin", "Anthony Hopkins");
+            //ThorRagnorok.AddCharacter("Sif", "Jaimie Alexander");
+            //ThorRagnorok.AddCharacter("Doctor Steven Strange", "Benedict Cumberbatch");
+            //marvel.AddMovieToFranchise(ThorRagnorok, "Marvel Cinematic Universe");
+            ////Movies in DC and DCBatman
+            ////Change Studio 
+            //Movie batman = dc.AddMovie("Batman Returns", 1992);
+            //batman.AddCharacter("Batman", "Michael Keaton");
+            //batman.AddCharacter("Catwoman", "Michelle Pfeiffer");
+            //batman.AddCharacter("Penguin", "Danny DeVito");
+            //dc.AddMovieToFranchise(batman, "DC Batman");
+
+            ////Studio testStudio = u.AddStudio("TestStudio"); // Add Studio to Universe
+            //////Movies in MCU
+            ////Movie TestMovie1 = testStudio.AddMovie("TestMovie1", 2018);
+            ////TestMovie1.AddCharacter("Character1", "Actor1");
+            ////TestMovie1.AddCharacter("Character2", "Actor2");
+            ////TestMovie1.AddCharacter("CharacterA", "ActorA");
+            ////testStudio.AddMovieToFranchise(TestMovie1, "TestFranchise");
+
+            ////Movie TestMovie2 = testStudio.AddMovie("TestMovie2", 2017);
+            ////TestMovie2.AddCharacter("Character1", "Actor1");
+            ////TestMovie2.AddCharacter("Character2", "Actor2");
+            ////TestMovie2.AddCharacter("CharacterB", "ActorB");
+            ////testStudio.AddMovieToFranchise(TestMovie2, "TestFranchise");
+            //PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\uinverse2.json"), u);
         }
         private void BuildFranchise()
         {
@@ -153,7 +153,7 @@ namespace RelationMap
         }
         private void btnLoadFranchise_Click(object sender, EventArgs e)
         {
-            u = PersistanceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\universe.json"));
+            u = PersistanceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\uinverse2.json"));
 
             //PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\universeBackup.json"), u); // Save a backup
             lbActors.Items.Clear();
@@ -187,11 +187,11 @@ namespace RelationMap
                 foreach (Character c in m.Characters)
                 {
                     lbCharacters.Items.Add(c.Name);
-                    foreach (Actor a in c.Actors)
-                    {
-                        actors.Add(a.Name); // Use hash set to prevent duplicates
+                    //////foreach (Person a in c.Actors)
+                    //////{
+                    //////    actors.Add(a.Name); // Use hash set to prevent duplicates
                         
-                    }
+                    //////}
                 }
                 foreach (String item in actors)
                 {
@@ -212,10 +212,10 @@ namespace RelationMap
                 foreach (Character c in tvs.Characters)
                 {
                     lbCharacters.Items.Add(c.Name);
-                    foreach (Actor a in c.Actors)
-                    {
-                        lbActors.Items.Add(a.Name);
-                    }
+                    ////foreach (Person a in c.Actors)
+                    ////{
+                    ////    lbActors.Items.Add(a.Name);
+                    ////}
                 }
                 HandleAddingButtons();
             }
@@ -229,7 +229,7 @@ namespace RelationMap
         private void btnSaveFranchise_Click(object sender, EventArgs e)
         {
             ////BuildFranchise();
-            PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\universe.json"), u);
+            PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\uinverse2.json"), u);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -241,7 +241,7 @@ namespace RelationMap
         private void btnAddToMovie_Click(object sender, EventArgs e)
         {
             Movie m = u.GetMovie(lbMovies.SelectedItem.ToString());
-            m.AddCharacter(tbCharacter.Text, tbActor.Text);
+            //////m.AddCharacter(tbCharacter.Text, tbActor.Text);
             lbCharacters.Items.Add(tbCharacter.Text);
             lbActors.Items.Add(tbActor.Text);
         }
@@ -249,7 +249,7 @@ namespace RelationMap
         private void btnAddToTvShow_Click(object sender, EventArgs e)
         {
             TvShow tvs = u.GetTvShow(lbTvShows.SelectedItem.ToString());
-            tvs.AddCharacter(tbCharacter.Text, tbActor.Text);
+            //////tvs.AddCharacter(tbCharacter.Text, tbActor.Text);
             lbCharacters.Items.Add(tbCharacter.Text);
             lbActors.Items.Add(tbActor.Text);
 
@@ -272,13 +272,13 @@ namespace RelationMap
                 if (lbMovies.SelectedItems.Count > 0)
                 {
                     Movie m = u.GetMovie(lbMovies.SelectedItem.ToString());
-                    cs = m.GetCharactersPlayedByActor(tbActor.Text);
+                    //////cs = m.GetCharactersPlayedByActor(tbActor.Text);
                     
                 }
                 else if(lbTvShows.SelectedItems.Count > 0)
                 {
                     TvShow tv = u.GetTvShow(lbTvShows.SelectedItem.ToString());
-                    cs = tv.GetCharactersPlayedByActor(tbActor.Text);
+                    //////cs = tv.GetCharactersPlayedByActor(tbActor.Text);
                 }
                 if (cs != null)
                 {
@@ -300,7 +300,7 @@ namespace RelationMap
             {
                 lbActors.Items.Clear();
                 tbCharacter.Text = lbCharacters.SelectedItem.ToString();
-                HashSet<Actor> a = null;
+                HashSet<Person> a = null;
                 if (lbMovies.SelectedItems.Count > 0)
                 {
                     Movie m = u.GetMovie(lbMovies.SelectedItem.ToString());
@@ -309,11 +309,11 @@ namespace RelationMap
                 else if (lbTvShows.SelectedItems.Count > 0)
                 {
                     TvShow tv = u.GetTvShow(lbTvShows.SelectedItem.ToString());
-                    a = tv.GetActorsWhoPlayedCharacter(tbCharacter.Text);
+                    //////a = tv.GetActorsWhoPlayedCharacter(tbCharacter.Text);
                 }
                 if (a != null)
                 {
-                    foreach (Actor item in a)
+                    foreach (Person item in a)
                     {
                         lbActors.Items.Add(item.Name);
                     }

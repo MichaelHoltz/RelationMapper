@@ -1,88 +1,80 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
+
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 using System.Windows.Forms;
 using TmdbWrapper;
-using RelationMap.Models;
 using System.IO;
 using System.Net;
+using RelationMap.Models;
 namespace RelationMap.Controls
 {
     public partial class MovieInfoTip : UserControl
     {
         private Movie selectedMovie;
+        private Universe u;
         public MovieInfoTip()
         {
             InitializeComponent();
         }
-        public void LoadMovieInfo(Movie movie)
+        /// <summary>
+        /// Universe Reference should only be used for Movies in the my Universe.
+        /// </summary>
+        /// <param name="movie"></param>
+        /// <param name="univ"></param>
+        public void LoadMovieInfo(ref Movie movie, ref Universe univ)
         {
             selectedMovie = movie;
+            u = univ;
             lblTitle.Text = movie.Title;
+            lblReleaseDate.Text = movie.ReleaseDate.Value.ToShortDateString();
             lblRunTime.Text = movie.Runtime.ToString() + " minutes";
             lblRevenue.Text = movie.Revenue.ToString("C0"); // Currancy no cents.
-            GetMoviePoster();
-            GetProductionCompanyLogos();
-        }
-        private async void GetMoviePoster()
-        {
-            //THis is cached already.. 
-           // TmdbWrapper.Images.Image i = await TheMovieDb.GetMovieImagesAsync(selectedMovie.DmdbId);
-           // selectedMovie.PosterPath
-
-            String cachePath = PrivateData.GetAppPath() + @"\Cache\Images\Movie\" + selectedMovie.PosterPath.Replace("/","");
-            Image x;
-            if (File.Exists(cachePath))
+            if (movie.HomePage != null)
             {
-                x = Image.FromFile(cachePath);
+                pbPoster.Tag = movie.HomePage.AbsoluteUri;
             }
             else
             {
-                //Need to fix this hack.. had to remove private set from base..
-                TmdbWrapper.Search.MovieSummary ms = new TmdbWrapper.Search.MovieSummary();
-                ms.PosterPath = selectedMovie.PosterPath;
-
-                Uri uri = ms.Uri(TmdbWrapper.Utilities.PosterSize.w185);
-                
-                var wc = new WebClient();
-                x = Image.FromStream(wc.OpenRead(uri)); // TODO-Implement Image Cache
-                x.Save(cachePath);
+                pbPoster.Tag = null;
             }
-            pbPoster.BackgroundImage = x;
+            GetMoviePoster();
+            GetProductionCompanyLogos();
+        }
+        private void GetMoviePoster()
+        {
+           
+            pbPoster.BackgroundImage = selectedMovie.GetMoviePoster(TmdbWrapper.Utilities.PosterSize.w185);
         }
         public async void GetProductionCompanyLogos()
         {
             flpProductionCompanies.Controls.Clear(); // Remove any Images from previous load
-            foreach (ProductionCompany pc in selectedMovie.ProductionCompanies)
+            //Loop through each production Company IDs
+            foreach (int pcId in selectedMovie.ProductionCompanies)
             {
-                //TODO - need to do something about the time it takes to get Company info over and over..
-                TmdbWrapper.Companies.Company c = await TheMovieDb.GetCompanyAsync(pc.Id);
-                if (c.LogoPath != null)
+                Image x;
+                ProductionCompany c = u.GetProductionCompany(pcId); //Cached Version
+                if (c != null)
+                    x = await c.GetLogo(TmdbWrapper.Utilities.LogoSize.w45);
+                else
+                    x = await ProductionCompany.GetLogo(pcId, TmdbWrapper.Utilities.LogoSize.w45);
+                if (x != null)
                 {
                     PictureBox pb = new PictureBox();
                     pb.BackgroundImageLayout = ImageLayout.Zoom;
                     pb.Width = 45;
                     pb.Height = 45;
-
-                    String cachePath = PrivateData.GetAppPath() + @"\Cache\Images\production\" + c.LogoPath.Replace("/", "");
-                    Image x;
-                    if (File.Exists(cachePath))
+                    if (c.Homepage != null)
                     {
-                        x = Image.FromFile(cachePath);
+                        pb.Cursor = Cursors.Hand;
+                        pb.Click += Pb_Click;
+                        pb.Tag = c.Homepage;
                     }
-                    else
-                    {
-                        Uri uri = c.Uri(TmdbWrapper.Utilities.LogoSize.w45);
-                        var wc = new WebClient();
-                        x = Image.FromStream(wc.OpenRead(uri)); // TODO-Implement Image Cache
-                        x.Save(cachePath);
-                    }
-                    
                     pb.BackgroundImage = x;
 
                     flpProductionCompanies.Controls.Add(pb);
@@ -92,6 +84,21 @@ namespace RelationMap.Controls
             
         }
 
-
+        private void Pb_Click(object sender, EventArgs e)
+        {
+            if ((sender as PictureBox).Tag != null)
+            {
+                String url = (sender as PictureBox).Tag.ToString();
+                System.Diagnostics.Process.Start(url);
+            }
+        }
+        private void pbPoster_Click(object sender, EventArgs e)
+        {
+            if ((sender as PictureBox).Tag != null)
+            {
+                String url = (sender as PictureBox).Tag.ToString();
+                System.Diagnostics.Process.Start(url);
+            }
+        }
     }
 }

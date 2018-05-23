@@ -9,40 +9,55 @@ namespace RelationMap.Models
     /// <summary>
     /// Characters are in Movies and TvShows,
     /// Characters are played by Actors
+    /// 
+    /// Characters are people and people play roles so this should be role
     /// </summary>
     public class Character
     {
+        /// <summary>
+        /// Name of Character (Varies from movie to movie so see Aliases
+        /// </summary>
         public String Name { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public int Id { get; set; } //Can't find character ID only Actor so far
+        /// <summary>
+        /// Order of Apperence in Movie
+        /// </summary>
         public int Order { get; set; }
-        public String ProfilePath { get; set; } // Same ID.
-        
-        //public String FirstName { get; set; }
-        //public String MiddleName { get; set; } // Samuel L. Jackson
-        //public String LastName { get; set; }
-        //public String Suffix { get; set; } //Robert Downey Jr.
-        public HashSet<String> Aliases {get; set;} // 
-        public HashSet<Actor> Actors { get; set; } // Character has Actors.
+        /// <summary>
+        /// Path to Picture of Character - But that would need to be manual and marked as such
+        /// </summary>
+        public String ProfilePath { get; set; } 
+       
+        /// <summary>
+        /// Character Aliases
+        /// </summary>
+        public HashSet<String> Aliases {get; set;} 
+
+        /// <summary>
+        /// Actors that play this Character in this movie
+        /// </summary>
+        public HashSet<int> Actors { get; set; } 
 
         public Character()
         {
             Aliases = new HashSet<string>();
-            Actors = new HashSet<Actor>();
+            Actors = new HashSet<int>();
         }
-        public Character(String characterName)
+        public Character(String characterName, int actorId, int order)
         {
+            Actors = new HashSet<int>();
             Aliases = new HashSet<string>();
-            Actors = new HashSet<Actor>();
+            Order = order;
             assignCharacter(characterName);
-            
+            Actors.Add(actorId);
         }
-        public Character(String characterName, String actorName)
-        {
-            Actors = new HashSet<Actor>();
-            assignCharacter(characterName);
-            Actors.Add(new Actor(actorName));
-        }
-
+        /// <summary>
+        /// Function to split names into aliases
+        /// </summary>
+        /// <param name="characterName"></param>
         private void assignCharacter(String characterName)
         {
             if (characterName != null)
@@ -50,32 +65,57 @@ namespace RelationMap.Models
                 Name = characterName;
                 Char delimiter = '/'; // Alias Splitter
                 String[] substrings = characterName.Split(delimiter);
-                //if (substrings.Length > 1)
-                //{
-                //    FirstName = substrings[0];
-                //    LastName = substrings[1];
-                //}
-                //else
-                //{
-                //    FirstName = LastName = characterName;
-                //}
-                //Actors = new HashSet<Actor>();
-                //Movies = new HashSet<Movie>();
+                foreach (String item in substrings)
+                {
+                    Aliases.Add(item.Trim());
+                }
             }
 
         }
+        #region Overrides
+        /// <summary>
+        /// Returns this instance ToString
+        /// </summary>
+        public override string ToString()
+        {
+            return Name;
+        }
+        #endregion
+        #region HashCodes / Object Identification
+        //TODO - use / include the "correct" id..
+        private int _hashCode = 0;
+        public int HashCode
+        {
+            get
+            {
+                return _hashCode == 0 ? generateHashCode() : _hashCode;
+            }
+            //Need set for persistance to restore 
+            set
+            {
+                _hashCode = value;
+            }
+        }
+        private int generateHashCode()
+        {
+            //THis is expensive and should be done only once since it will not be changing
+            //TODO - use / include the "correct" id..
+            String key = this.GetType().Name + Name;
+            //Google: "disable fips mode" if the line below fails
+            System.Security.Cryptography.MD5 md5Hasher = System.Security.Cryptography.MD5.Create();
+            var hashed = md5Hasher.ComputeHash(Encoding.UTF8.GetBytes(key));
+            int ivalue = BitConverter.ToInt32(hashed, 0);
+            return ivalue;
 
+        }
         public override int GetHashCode()
         {
-            System.Security.Cryptography.MD5 md5Hasher = System.Security.Cryptography.MD5.Create();
-            var hashed = md5Hasher.ComputeHash(Encoding.UTF8.GetBytes(this.GetType().Name + Name ));
-            int ivalue = BitConverter.ToInt32(hashed, 0);
-            Console.WriteLine(ivalue);
-            return ivalue;
+            return HashCode;
         }
         public override bool Equals(object obj)
         {
-            return obj.GetHashCode() == this.GetHashCode();
+            return obj.GetHashCode().Equals(HashCode); // == this.GetHashCode();
         }
+        #endregion
     }
 }

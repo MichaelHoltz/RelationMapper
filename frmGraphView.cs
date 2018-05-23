@@ -105,7 +105,7 @@ namespace RelationMap
         private void frmGraphView_Load(object sender, EventArgs e)
         {
             LoadImages(PrivateData.GetRelativePath(@"\Cache\Images\")); // Load all known images for use in the Graph
-            u = PersistanceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\universe.json"));
+            u = PersistanceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\uinverse2.json"));
             refreshLists();
             //viewer.Graph = SetViewAll();
             lblSelectedNode.Text = "Selected Node: " + selectedNode;
@@ -406,19 +406,20 @@ namespace RelationMap
             {
                 Character c = n.UserData as Character;
                 String movieID = c.Name; // + " (" + m.ReleaseYear + ")";
-                foreach (Actor a in c.Actors)
-                {
-                    AE(master, aeMaster, movieID, a.Name, ActorColor, a);
-                    SetNodeDelegate(FN(master, a.Name)); // Allows this node to be custom draw
+                //////Compile Error now that Character has Actor ID.
+                ////foreach (Person a in c.Actors)
+                ////{
+                ////    AE(master, aeMaster, movieID, a.Name, ActorColor, a);
+                ////    SetNodeDelegate(FN(master, a.Name)); // Allows this node to be custom draw
 
-                    //    foreach (Actor a in m.GetActorsWhoPlayedCharacter(c.Name))
-                    //    {
-                    //        AE(master, aeMaster, c.Name, a.Name, ActorColor, a);
-                    //        SetNodeDelegate(FN(master, a.Name)); // Allows this node to be custom draw
+                ////    //    foreach (Actor a in m.GetActorsWhoPlayedCharacter(c.Name))
+                ////    //    {
+                ////    //        AE(master, aeMaster, c.Name, a.Name, ActorColor, a);
+                ////    //        SetNodeDelegate(FN(master, a.Name)); // Allows this node to be custom draw
 
-                    //    }
+                ////    //    }
 
-                }
+                ////}
             }
         }
         /// <summary>
