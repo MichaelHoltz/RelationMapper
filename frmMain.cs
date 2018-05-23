@@ -43,74 +43,6 @@ namespace RelationMap
         /// </summary>
         private void InitializeStudio()
         {
-            ////TvShow Example added to Studio
-            //TvShow IncredibleHulk = marvel.AddTvShow("Incredible Hulk");
-            //IncredibleHulk.AddCharacter("Bruce Banner", "Bill Bixby");
-            //IncredibleHulk.AddCharacter("Hulk", "Lou Ferrigno");
-            //marvel.AddTvShow(IncredibleHulk);
-
-            
-            ////Movies in MCU
-            //Movie Hulk = marvel.AddMovie("Hulk", 2003);
-            //Hulk.AddCharacter("Hulk", "Eric Bana");
-            //Hulk.AddCharacter("Betty Ross", "Jennifer Connelly");
-            //Hulk.AddCharacter("Thunderbolt Ross", "Sam Elliott");
-            //Hulk.AddCharacter("Brian Banner", "Nick Nolte");
-            //marvel.AddMovieToFranchise(Hulk, "Marvel Cinematic Universe");
-
-            ////Google: iron man 2008 cast
-            //Movie IronMan = marvel.AddMovie("Iron Man", 2008);
-            //IronMan.AddCharacter("Iron Man", "Robert Downey Jr.");
-            //IronMan.AddCharacter("Happy Hogan", "Jon Favreau");
-            //IronMan.AddCharacter("Pepper Potts", "Gwyneth Paltrow");
-            //IronMan.AddCharacter("War Machine", "Terrence Howard");
-            //IronMan.AddCharacter("Iron Monger", "Jeff Bridges");
-            //marvel.AddMovieToFranchise(IronMan, "Marvel Cinematic Universe");
-            ////Google iron man 2 cast
-
-            //Movie IronMan2 = marvel.AddMovie("Iron Man 2", 2010);
-            //IronMan2.AddCharacter("Iron Man", "Robert Downey Jr.");
-            //IronMan2.AddCharacter("Black Widow", "Scarlett Johansson");
-            //IronMan2.AddCharacter("Black Widow", "Charity Holtz"); // Testing multiple actors playing same role
-            //IronMan2.AddCharacter("Happy Hogan", "Jon Favreau");
-            //IronMan2.AddCharacter("War Machine", "Don Cheadle");
-            //IronMan2.AddCharacter("Ivan Vanko", "Mickey Rourke");
-            //IronMan2.AddCharacter("Pepper Potts", "Gwyneth Paltrow");
-            //IronMan2.AddCharacter("Nick Fury", "Samuel L. Jackson");
-            //IronMan2.AddCharacter("Justin Hammer", "Sam Rockwell");
-            //IronMan2.AddCharacter("Agent Phil Coulson", "Clark Gregg"); // Agent I believe..
-            //IronMan2.AddCharacter("Phil Coulson", "Clark Gregg"); // Test actor playing multiple roles
-            ////Console.WriteLine(marvel.GetFranchise("Marvel Cinematic Universe").IsMovieInFranchise(IronMan2));
-            //marvel.AddMovieToFranchise(IronMan2, "Marvel Cinematic Universe");
-            ////Console.WriteLine(marvel.GetFranchise("Marvel Cinematic Universe").IsMovieInFranchise(IronMan2));
-
-            //Movie IronMan3 = marvel.AddMovie("Iron Man 3", 2013);
-            //IronMan3.AddCharacter("Iron Man", "Robert Downey Jr.");
-            //marvel.AddMovieToFranchise(IronMan3, "Marvel Cinematic Universe");
-
-            ////Connected Data Idea https://www.themoviedb.org/person/74568-chris-hemsworth see also
-            //Movie ThorRagnorok = marvel.AddMovie("Thor: Ragnorok", 2017);
-            //ThorRagnorok.AddCharacter("Thor", "Chris Hemsworth");
-            //ThorRagnorok.AddCharacter("Hela", "Cate Blanchett");
-            //ThorRagnorok.AddCharacter("Valkyrie", "Tessa Thompson");
-            //ThorRagnorok.AddCharacter("Loki", "Tom Hiddleston");
-            //ThorRagnorok.AddCharacter("Korg", "Taika Waititi");
-            //ThorRagnorok.AddCharacter("Hulk", "Mark Ruffalo");
-            //ThorRagnorok.AddCharacter("Executioner", "Karl Urban");
-            //ThorRagnorok.AddCharacter("Grandmaster", "Jeff Goldblum");
-            //ThorRagnorok.AddCharacter("Heimdall", "Idris Elba");
-            //ThorRagnorok.AddCharacter("Odin", "Anthony Hopkins");
-            //ThorRagnorok.AddCharacter("Sif", "Jaimie Alexander");
-            //ThorRagnorok.AddCharacter("Doctor Steven Strange", "Benedict Cumberbatch");
-            //marvel.AddMovieToFranchise(ThorRagnorok, "Marvel Cinematic Universe");
-            ////Movies in DC and DCBatman
-            ////Change Studio 
-            //Movie batman = dc.AddMovie("Batman Returns", 1992);
-            //batman.AddCharacter("Batman", "Michael Keaton");
-            //batman.AddCharacter("Catwoman", "Michelle Pfeiffer");
-            //batman.AddCharacter("Penguin", "Danny DeVito");
-            //dc.AddMovieToFranchise(batman, "DC Batman");
-
             ////Studio testStudio = u.AddStudio("TestStudio"); // Add Studio to Universe
             //////Movies in MCU
             ////Movie TestMovie1 = testStudio.AddMovie("TestMovie1", 2018);
@@ -126,31 +58,7 @@ namespace RelationMap
             ////testStudio.AddMovieToFranchise(TestMovie2, "TestFranchise");
             //PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\uinverse2.json"), u);
         }
-        private void BuildFranchise()
-        {
-            //foreach (Movie m in f.Movies)
-            //{
-            //    foreach (Actor a in m.Actors)
-            //    {
-            //        f.Actors.Add(a);
-            //    }
-            //    foreach (Character c in m.Characters)
-            //    {
-            //        f.Characters.Add(c);
-            //    }
-            //}
-            //foreach (TvShow tv in f.TvShows)
-            //{
-            //    foreach (Actor a in tv.Actors)
-            //    {
-            //        f.Actors.Add(a);
-            //    }
-            //    foreach (Character c in tv.Characters)
-            //    {
-            //        f.Characters.Add(c);
-            //    }
-            //}
-        }
+
         private void btnLoadFranchise_Click(object sender, EventArgs e)
         {
             u = PersistanceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\uinverse2.json"));
@@ -163,7 +71,6 @@ namespace RelationMap
             tbMovieTitle.Clear();
             tbReleaseYear.Clear();
             lbMovies.Items.Clear();
-            lbTvShows.Items.Clear();
             refreshLists();
         }
         private void refreshLists()
@@ -179,7 +86,6 @@ namespace RelationMap
         {
             if (lbMovies.SelectedIndex >= 0)
             {
-                lbTvShows.SelectedItems.Clear();
                 Movie m = u.GetMovie(lbMovies.SelectedItem.ToString());
                 lbActors.Items.Clear();
                 lbCharacters.Items.Clear();
@@ -201,42 +107,18 @@ namespace RelationMap
             }
 
         }
-        private void lbTvShows_SelectedValueChanged(object sender, EventArgs e)
-        {
-            if (lbTvShows.SelectedIndex >= 0)
-            {
-                lbMovies.SelectedItems.Clear();
-                TvShow tvs = u.GetTvShow(lbTvShows.SelectedItem.ToString());
-                lbActors.Items.Clear();
-                lbCharacters.Items.Clear();
-                foreach (Character c in tvs.Characters)
-                {
-                    lbCharacters.Items.Add(c.Name);
-                    ////foreach (Person a in c.Actors)
-                    ////{
-                    ////    lbActors.Items.Add(a.Name);
-                    ////}
-                }
-                HandleAddingButtons();
-            }
-        }
         private void HandleAddingButtons()
         {
             btnAddToMovie.Enabled = lbMovies.SelectedIndex >= 0 && tbCharacter.TextLength > 0 && tbActor.TextLength > 0;
-            btnAddToTvShow.Enabled = lbMovies.SelectedIndex >= 0 && tbCharacter.TextLength > 0 && tbActor.TextLength > 0;
             btnAddMovie.Enabled = cbStudios.SelectedItem.ToString() != "All" && tbMovieTitle.TextLength > 0 && tbReleaseYear.TextLength > 0; ; // Handle Toggle on Button
         }
-        private void btnSaveFranchise_Click(object sender, EventArgs e)
+        private void btnSaveUniverse_Click(object sender, EventArgs e)
         {
-            ////BuildFranchise();
+
             PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\uinverse2.json"), u);
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            InitializeUniverse();
-           // InitializeFranchise();
-        }
+
 
         private void btnAddToMovie_Click(object sender, EventArgs e)
         {
@@ -245,16 +127,6 @@ namespace RelationMap
             lbCharacters.Items.Add(tbCharacter.Text);
             lbActors.Items.Add(tbActor.Text);
         }
-
-        private void btnAddToTvShow_Click(object sender, EventArgs e)
-        {
-            TvShow tvs = u.GetTvShow(lbTvShows.SelectedItem.ToString());
-            //////tvs.AddCharacter(tbCharacter.Text, tbActor.Text);
-            lbCharacters.Items.Add(tbCharacter.Text);
-            lbActors.Items.Add(tbActor.Text);
-
-        }
-
 
 
         /// <summary>
@@ -274,11 +146,6 @@ namespace RelationMap
                     Movie m = u.GetMovie(lbMovies.SelectedItem.ToString());
                     //////cs = m.GetCharactersPlayedByActor(tbActor.Text);
                     
-                }
-                else if(lbTvShows.SelectedItems.Count > 0)
-                {
-                    TvShow tv = u.GetTvShow(lbTvShows.SelectedItem.ToString());
-                    //////cs = tv.GetCharactersPlayedByActor(tbActor.Text);
                 }
                 if (cs != null)
                 {
@@ -306,11 +173,7 @@ namespace RelationMap
                     Movie m = u.GetMovie(lbMovies.SelectedItem.ToString());
                     a = m.GetActorsWhoPlayedCharacter(tbCharacter.Text);
                 }
-                else if (lbTvShows.SelectedItems.Count > 0)
-                {
-                    TvShow tv = u.GetTvShow(lbTvShows.SelectedItem.ToString());
-                    //////a = tv.GetActorsWhoPlayedCharacter(tbCharacter.Text);
-                }
+
                 if (a != null)
                 {
                     foreach (Person item in a)
@@ -330,7 +193,6 @@ namespace RelationMap
             if (cbStudios.SelectedIndex >= 0)
             {
                 //lbMovies.Items.Clear();
-                //lbTvShows.Items.Clear();
 
                 cbFranchises.Items.Clear();
                 cbFranchises.Items.Add("All");
@@ -356,7 +218,7 @@ namespace RelationMap
             if (cbFranchises.SelectedIndex >= 0)
             {
                 lbMovies.Items.Clear();
-                lbTvShows.Items.Clear();
+
                 String studioStr = cbStudios.SelectedItem.ToString();
                 String franchiseStr = cbFranchises.SelectedItem.ToString();
 
@@ -381,7 +243,7 @@ namespace RelationMap
 
                     }
                 }
-                else // Sepecific Franchise Choosen.
+                else // Specific Franchise Chosen.
                 {
                     Studio s = u.GetStudio(studioStr);
                     if (franchiseStr == "All")
@@ -411,14 +273,14 @@ namespace RelationMap
                 }
                 
             }
-            foreach (TvShow item in s.TvShows)
-            {
-                if (f == null || f.IsTvShowInFranchise(item))
-                {
+            //foreach (TvShow item in s.TvShows)
+            //{
+            //    if (f == null || f.IsTvShowInFranchise(item))
+            //    {
 
-                    lbTvShows.Items.Add(item.Name);
-                }
-            }
+            //        lbTvShows.Items.Add(item.Name);
+            //    }
+            //}
         }
         private void addNoFranchiseItems(Studio s)
         {
@@ -433,14 +295,14 @@ namespace RelationMap
                     }
 
                 }
-                foreach (TvShow item in s.TvShows)
-                {
-                    if (!f.IsTvShowInFranchise(item))
-                    {
+                //foreach (TvShow item in s.TvShows)
+                //{
+                //    if (!f.IsTvShowInFranchise(item))
+                //    {
 
-                        lbTvShows.Items.Add(item.Name);
-                    }
-                }
+                //        lbTvShows.Items.Add(item.Name);
+                //    }
+                //}
             }
 
         }
@@ -471,16 +333,7 @@ namespace RelationMap
             fgv.ShowDialog();
         }
 
-        private async void button2_Click(object sender, EventArgs e)
-        {
-            TheMovieDb.Initialise(PrivateData.GetTMDBApiKey(), "en-US", true);
-           TmdbWrapper.Movies.Credits c = await TmdbWrapper.TheMovieDb.GetMovieCastAsync(299536); // ID for 
-            foreach (var item in c.Cast)
-            {
-                lbCharacters.Items.Add(item.Character);
-                lbActors.Items.Add(item.Name);
-            }
-        }
+
 
 
 
@@ -519,5 +372,7 @@ namespace RelationMap
             }
 
         }
+
+
     }
 }

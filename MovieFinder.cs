@@ -134,12 +134,6 @@ namespace RelationMap
         }
 
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            frmMain fm = new frmMain();
-            fm.Show();
-        }
-
         private void btnUpdateMovie_Click(object sender, EventArgs e)
         {
             if (lbMovies.SelectedIndex >= 0)

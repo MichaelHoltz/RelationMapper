@@ -14,7 +14,7 @@ namespace RelationMap.Models
     /// Major re-think based on hooking up to TheMoveDB data.
     /// They only have Collections and (custom) lists to represent the idea of a Franchise.
     /// 
-    /// Also Since moves are producted by more than one studio (Production Company) Studio will need to have a collection of Production Companies..
+    /// Also Since moves are produced by more than one studio (Production Company) Studio will need to have a collection of Production Companies..
     /// Further - In an attempt to normalize the data it will be necessary to make many more changes.
     /// 
     /// </summary>
@@ -37,10 +37,7 @@ namespace RelationMap.Models
         /// All Movies in the Studio
         /// </summary>
         public HashSet<Movie> Movies { get; set; }
-        /// <summary>
-        /// All TV Shows in Studio
-        /// </summary>
-        public HashSet<TvShow> TvShows { get; set; }
+
 
         public Studio()
         {
@@ -55,7 +52,7 @@ namespace RelationMap.Models
         {
             Franchises = new HashSet<Franchise>();
             Movies = new HashSet<Movie>();
-            TvShows = new HashSet<TvShow>();
+            //TvShows = new HashSet<TvShow>();
 
         }
         public Franchise AddFranchise(String franchiseName)
@@ -116,44 +113,44 @@ namespace RelationMap.Models
             return Movies.First(o => o.Title == name);
         }
         
-        public TvShow AddTvShow(String name)
-        {
-            TvShow tv = new TvShow(name);
-            TvShows.Add(tv);
-            return tv;
+        //public TvShow AddTvShow(String name)
+        //{
+        //    TvShow tv = new TvShow(name);
+        //    TvShows.Add(tv);
+        //    return tv;
 
-        }
-        public Boolean AddTvShow(TvShow tvShow)
-        {
-            return TvShows.Add(tvShow);
-        }
-        public TvShow GetTvShow(String name)
-        {
-            return TvShows.First(o => o.Name == name);
-        }
-        public TvShow AddTvShowToFranchise(String showName, String franchiseName)
-        {
-            TvShow m = AddTvShow(showName);
-            Franchise f = GetFranchise(franchiseName);
-            if (f == null)
-                f = AddFranchise(franchiseName);
-            f.AddTvShow(m.GetHashCode());
-            return m;
-        }
-        public Franchise AddTvShowToFranchise(TvShow tvShow, String franchiseName)
-        {
-            Franchise f = GetFranchise(franchiseName);
-            if (f == null)
-            {
-                f = AddFranchise(franchiseName);
-            }
-            f.AddTvShow(tvShow.GetHashCode());
-            return f;
-        }
-        public Boolean AddTvShowToFranchise(TvShow tvShow, Franchise franchise)
-        {
-            return franchise.AddMovie(tvShow.GetHashCode());
-        }
+        //}
+        //public Boolean AddTvShow(TvShow tvShow)
+        //{
+        //    return TvShows.Add(tvShow);
+        //}
+        //public TvShow GetTvShow(String name)
+        //{
+        //    return TvShows.First(o => o.Name == name);
+        //}
+        //public TvShow AddTvShowToFranchise(String showName, String franchiseName)
+        //{
+        //    TvShow m = AddTvShow(showName);
+        //    Franchise f = GetFranchise(franchiseName);
+        //    if (f == null)
+        //        f = AddFranchise(franchiseName);
+        //    f.AddTvShow(m.GetHashCode());
+        //    return m;
+        //}
+        //public Franchise AddTvShowToFranchise(TvShow tvShow, String franchiseName)
+        //{
+        //    Franchise f = GetFranchise(franchiseName);
+        //    if (f == null)
+        //    {
+        //        f = AddFranchise(franchiseName);
+        //    }
+        //    f.AddTvShow(tvShow.GetHashCode());
+        //    return f;
+        //}
+        //public Boolean AddTvShowToFranchise(TvShow tvShow, Franchise franchise)
+        //{
+        //    return franchise.AddTvShow(tvShow.GetHashCode());
+        //}
 
         public override int GetHashCode()
         {

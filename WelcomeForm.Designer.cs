@@ -35,11 +35,12 @@
             this.btnSaveToMyMovies = new System.Windows.Forms.Button();
             this.lbActors = new System.Windows.Forms.ListBox();
             this.personInfoTip1 = new RelationMap.Controls.PersonInfoTip();
+            this.btnFrmMain = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnTempGetStarted
             // 
-            this.btnTempGetStarted.Location = new System.Drawing.Point(21, 36);
+            this.btnTempGetStarted.Location = new System.Drawing.Point(272, 12);
             this.btnTempGetStarted.Name = "btnTempGetStarted";
             this.btnTempGetStarted.Size = new System.Drawing.Size(161, 23);
             this.btnTempGetStarted.TabIndex = 0;
@@ -65,6 +66,8 @@
             // 
             // tbTitleSearch
             // 
+            this.tbTitleSearch.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.tbTitleSearch.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.tbTitleSearch.Location = new System.Drawing.Point(21, 12);
             this.tbTitleSearch.Name = "tbTitleSearch";
             this.tbTitleSearch.Size = new System.Drawing.Size(245, 20);
@@ -72,7 +75,7 @@
             // 
             // btnSaveToMyMovies
             // 
-            this.btnSaveToMyMovies.Location = new System.Drawing.Point(441, 36);
+            this.btnSaveToMyMovies.Location = new System.Drawing.Point(525, 12);
             this.btnSaveToMyMovies.Name = "btnSaveToMyMovies";
             this.btnSaveToMyMovies.Size = new System.Drawing.Size(106, 23);
             this.btnSaveToMyMovies.TabIndex = 4;
@@ -96,11 +99,22 @@
             this.personInfoTip1.Size = new System.Drawing.Size(600, 150);
             this.personInfoTip1.TabIndex = 8;
             // 
+            // btnFrmMain
+            // 
+            this.btnFrmMain.Location = new System.Drawing.Point(678, 12);
+            this.btnFrmMain.Name = "btnFrmMain";
+            this.btnFrmMain.Size = new System.Drawing.Size(105, 23);
+            this.btnFrmMain.TabIndex = 9;
+            this.btnFrmMain.Text = "Show Main Form";
+            this.btnFrmMain.UseVisualStyleBackColor = true;
+            this.btnFrmMain.Click += new System.EventHandler(this.btnFrmMain_Click);
+            // 
             // WelcomeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1263, 652);
+            this.Controls.Add(this.btnFrmMain);
             this.Controls.Add(this.personInfoTip1);
             this.Controls.Add(this.lbActors);
             this.Controls.Add(this.btnSaveToMyMovies);
@@ -125,5 +139,6 @@
         private System.Windows.Forms.Button btnSaveToMyMovies;
         private System.Windows.Forms.ListBox lbActors;
         private Controls.PersonInfoTip personInfoTip1;
+        private System.Windows.Forms.Button btnFrmMain;
     }
 }

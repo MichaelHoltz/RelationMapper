@@ -35,7 +35,12 @@ namespace RelationMap
             //   System.Threading.Thread.Sleep(2000);
             await TheMovieDb.Initialise(PrivateData.GetTMDBApiKey(), "en-US", true);
             Uri burl = TheMovieDb.GetConfigurationSecureBaseUrl();
-            tbTitleSearch.Text = "Iron Man";
+           // tbTitleSearch.Text = "Iron Man";
+
+            AutoCompleteStringCollection acsc = new AutoCompleteStringCollection();
+            acsc.AddRange(u.Movies.Select(o => o.Title).ToArray());
+            
+            tbTitleSearch.AutoCompleteCustomSource = acsc;
         }
 
         private async void btnTempGetStarted_Click(object sender, EventArgs e)
@@ -203,6 +208,12 @@ namespace RelationMap
                 Person p = (lbActors.SelectedItem as Person);
                 personInfoTip1.LoadPersonInfo(ref p, ref selectedMovie, ref u);
             }
+        }
+
+        private void btnFrmMain_Click(object sender, EventArgs e)
+        {
+            frmMain fm = new frmMain();
+            fm.ShowDialog();
         }
 
         //public async Task<TmdbWrapper.Movies.Movie> FindFullMovieInfo(int movieId)

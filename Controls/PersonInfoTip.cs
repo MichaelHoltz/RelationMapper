@@ -15,6 +15,13 @@ using RelationMap.Models;
 
 namespace RelationMap.Controls
 {
+    /// <summary>
+    /// Graphical Display of Person information
+    /// 
+    /// Wanting to display Character in role for Character 
+    /// Ex. Drax the Destroyer vs Dave Bautista
+    ///     War Machine vs. Don Cheadle
+    /// </summary>
     public partial class PersonInfoTip : UserControl
     {
         private Movie selectedMovie;

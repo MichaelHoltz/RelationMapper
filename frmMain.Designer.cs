@@ -32,17 +32,13 @@
             this.lbMovies = new System.Windows.Forms.ListBox();
             this.lbActors = new System.Windows.Forms.ListBox();
             this.lblMovies = new System.Windows.Forms.Label();
-            this.btnSaveFranchise = new System.Windows.Forms.Button();
+            this.btnSaveUniverse = new System.Windows.Forms.Button();
             this.lbCharacters = new System.Windows.Forms.ListBox();
             this.btnAddToMovie = new System.Windows.Forms.Button();
             this.lblActors = new System.Windows.Forms.Label();
             this.lblCharacters = new System.Windows.Forms.Label();
             this.tbActor = new System.Windows.Forms.TextBox();
             this.tbCharacter = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.lblTvShows = new System.Windows.Forms.Label();
-            this.lbTvShows = new System.Windows.Forms.ListBox();
-            this.btnAddToTvShow = new System.Windows.Forms.Button();
             this.tbMovieTitle = new System.Windows.Forms.TextBox();
             this.lblMovieName = new System.Windows.Forms.Label();
             this.btnAddMovie = new System.Windows.Forms.Button();
@@ -53,14 +49,13 @@
             this.lblFranchises = new System.Windows.Forms.Label();
             this.cbFranchises = new System.Windows.Forms.ComboBox();
             this.btnShowGraph = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.btnCharacterEditor = new System.Windows.Forms.Button();
             this.btnFindMovie = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnLoadFranchise
             // 
-            this.btnLoadFranchise.Location = new System.Drawing.Point(16, 42);
+            this.btnLoadFranchise.Location = new System.Drawing.Point(12, 12);
             this.btnLoadFranchise.Name = "btnLoadFranchise";
             this.btnLoadFranchise.Size = new System.Drawing.Size(125, 23);
             this.btnLoadFranchise.TabIndex = 0;
@@ -71,7 +66,7 @@
             // lbMovies
             // 
             this.lbMovies.FormattingEnabled = true;
-            this.lbMovies.Location = new System.Drawing.Point(209, 268);
+            this.lbMovies.Location = new System.Drawing.Point(15, 240);
             this.lbMovies.Name = "lbMovies";
             this.lbMovies.Size = new System.Drawing.Size(188, 407);
             this.lbMovies.TabIndex = 1;
@@ -81,7 +76,7 @@
             // lbActors
             // 
             this.lbActors.FormattingEnabled = true;
-            this.lbActors.Location = new System.Drawing.Point(586, 268);
+            this.lbActors.Location = new System.Drawing.Point(392, 240);
             this.lbActors.Name = "lbActors";
             this.lbActors.Size = new System.Drawing.Size(167, 407);
             this.lbActors.TabIndex = 2;
@@ -90,26 +85,26 @@
             // lblMovies
             // 
             this.lblMovies.AutoSize = true;
-            this.lblMovies.Location = new System.Drawing.Point(210, 252);
+            this.lblMovies.Location = new System.Drawing.Point(16, 224);
             this.lblMovies.Name = "lblMovies";
             this.lblMovies.Size = new System.Drawing.Size(41, 13);
             this.lblMovies.TabIndex = 3;
             this.lblMovies.Text = "Movies";
             // 
-            // btnSaveFranchise
+            // btnSaveUniverse
             // 
-            this.btnSaveFranchise.Location = new System.Drawing.Point(1068, 27);
-            this.btnSaveFranchise.Name = "btnSaveFranchise";
-            this.btnSaveFranchise.Size = new System.Drawing.Size(147, 23);
-            this.btnSaveFranchise.TabIndex = 4;
-            this.btnSaveFranchise.Text = "Save Franchise";
-            this.btnSaveFranchise.UseVisualStyleBackColor = true;
-            this.btnSaveFranchise.Click += new System.EventHandler(this.btnSaveFranchise_Click);
+            this.btnSaveUniverse.Location = new System.Drawing.Point(1068, 12);
+            this.btnSaveUniverse.Name = "btnSaveUniverse";
+            this.btnSaveUniverse.Size = new System.Drawing.Size(147, 23);
+            this.btnSaveUniverse.TabIndex = 4;
+            this.btnSaveUniverse.Text = "Save The Universe";
+            this.btnSaveUniverse.UseVisualStyleBackColor = true;
+            this.btnSaveUniverse.Click += new System.EventHandler(this.btnSaveUniverse_Click);
             // 
             // lbCharacters
             // 
             this.lbCharacters.FormattingEnabled = true;
-            this.lbCharacters.Location = new System.Drawing.Point(413, 268);
+            this.lbCharacters.Location = new System.Drawing.Point(219, 240);
             this.lbCharacters.Name = "lbCharacters";
             this.lbCharacters.Size = new System.Drawing.Size(167, 407);
             this.lbCharacters.TabIndex = 5;
@@ -118,7 +113,7 @@
             // btnAddToMovie
             // 
             this.btnAddToMovie.Enabled = false;
-            this.btnAddToMovie.Location = new System.Drawing.Point(772, 240);
+            this.btnAddToMovie.Location = new System.Drawing.Point(578, 212);
             this.btnAddToMovie.Name = "btnAddToMovie";
             this.btnAddToMovie.Size = new System.Drawing.Size(105, 23);
             this.btnAddToMovie.TabIndex = 9;
@@ -129,7 +124,7 @@
             // lblActors
             // 
             this.lblActors.AutoSize = true;
-            this.lblActors.Location = new System.Drawing.Point(583, 229);
+            this.lblActors.Location = new System.Drawing.Point(389, 201);
             this.lblActors.Name = "lblActors";
             this.lblActors.Size = new System.Drawing.Size(37, 13);
             this.lblActors.TabIndex = 7;
@@ -138,7 +133,7 @@
             // lblCharacters
             // 
             this.lblCharacters.AutoSize = true;
-            this.lblCharacters.Location = new System.Drawing.Point(410, 229);
+            this.lblCharacters.Location = new System.Drawing.Point(216, 201);
             this.lblCharacters.Name = "lblCharacters";
             this.lblCharacters.Size = new System.Drawing.Size(58, 13);
             this.lblCharacters.TabIndex = 8;
@@ -146,7 +141,7 @@
             // 
             // tbActor
             // 
-            this.tbActor.Location = new System.Drawing.Point(586, 245);
+            this.tbActor.Location = new System.Drawing.Point(392, 217);
             this.tbActor.Name = "tbActor";
             this.tbActor.Size = new System.Drawing.Size(167, 20);
             this.tbActor.TabIndex = 8;
@@ -154,53 +149,11 @@
             // 
             // tbCharacter
             // 
-            this.tbCharacter.Location = new System.Drawing.Point(413, 245);
+            this.tbCharacter.Location = new System.Drawing.Point(219, 217);
             this.tbCharacter.Name = "tbCharacter";
             this.tbCharacter.Size = new System.Drawing.Size(167, 20);
             this.tbCharacter.TabIndex = 7;
             this.tbCharacter.TextChanged += new System.EventHandler(this.tbCharacter_TextChanged);
-            // 
-            // button1
-            // 
-            this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(12, 759);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(94, 23);
-            this.button1.TabIndex = 11;
-            this.button1.TabStop = false;
-            this.button1.Text = "Generate Seed";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // lblTvShows
-            // 
-            this.lblTvShows.AutoSize = true;
-            this.lblTvShows.Location = new System.Drawing.Point(16, 252);
-            this.lblTvShows.Name = "lblTvShows";
-            this.lblTvShows.Size = new System.Drawing.Size(56, 13);
-            this.lblTvShows.TabIndex = 13;
-            this.lblTvShows.Text = "TV Shows";
-            // 
-            // lbTvShows
-            // 
-            this.lbTvShows.FormattingEnabled = true;
-            this.lbTvShows.Location = new System.Drawing.Point(15, 268);
-            this.lbTvShows.Name = "lbTvShows";
-            this.lbTvShows.Size = new System.Drawing.Size(188, 407);
-            this.lbTvShows.TabIndex = 12;
-            this.lbTvShows.TabStop = false;
-            this.lbTvShows.SelectedValueChanged += new System.EventHandler(this.lbTvShows_SelectedValueChanged);
-            // 
-            // btnAddToTvShow
-            // 
-            this.btnAddToTvShow.Enabled = false;
-            this.btnAddToTvShow.Location = new System.Drawing.Point(772, 281);
-            this.btnAddToTvShow.Name = "btnAddToTvShow";
-            this.btnAddToTvShow.Size = new System.Drawing.Size(105, 23);
-            this.btnAddToTvShow.TabIndex = 10;
-            this.btnAddToTvShow.Text = "Add to TV Show";
-            this.btnAddToTvShow.UseVisualStyleBackColor = true;
-            this.btnAddToTvShow.Click += new System.EventHandler(this.btnAddToTvShow_Click);
             // 
             // tbMovieTitle
             // 
@@ -295,19 +248,9 @@
             this.btnShowGraph.UseVisualStyleBackColor = true;
             this.btnShowGraph.Click += new System.EventHandler(this.btnShowGraph_Click);
             // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(487, 170);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(133, 23);
-            this.button2.TabIndex = 25;
-            this.button2.Text = "Get Avengers Cast";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // btnCharacterEditor
             // 
-            this.btnCharacterEditor.Location = new System.Drawing.Point(494, 221);
+            this.btnCharacterEditor.Location = new System.Drawing.Point(300, 193);
             this.btnCharacterEditor.Name = "btnCharacterEditor";
             this.btnCharacterEditor.Size = new System.Drawing.Size(75, 23);
             this.btnCharacterEditor.TabIndex = 27;
@@ -332,7 +275,6 @@
             this.ClientSize = new System.Drawing.Size(1227, 794);
             this.Controls.Add(this.btnFindMovie);
             this.Controls.Add(this.btnCharacterEditor);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.btnShowGraph);
             this.Controls.Add(this.lblFranchises);
             this.Controls.Add(this.cbFranchises);
@@ -343,17 +285,13 @@
             this.Controls.Add(this.tbMovieTitle);
             this.Controls.Add(this.lblMovieName);
             this.Controls.Add(this.btnAddMovie);
-            this.Controls.Add(this.btnAddToTvShow);
-            this.Controls.Add(this.lblTvShows);
-            this.Controls.Add(this.lbTvShows);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.tbCharacter);
             this.Controls.Add(this.tbActor);
             this.Controls.Add(this.lblCharacters);
             this.Controls.Add(this.lblActors);
             this.Controls.Add(this.btnAddToMovie);
             this.Controls.Add(this.lbCharacters);
-            this.Controls.Add(this.btnSaveFranchise);
+            this.Controls.Add(this.btnSaveUniverse);
             this.Controls.Add(this.lblMovies);
             this.Controls.Add(this.lbActors);
             this.Controls.Add(this.lbMovies);
@@ -374,17 +312,13 @@
         private System.Windows.Forms.ListBox lbMovies;
         private System.Windows.Forms.ListBox lbActors;
         private System.Windows.Forms.Label lblMovies;
-        private System.Windows.Forms.Button btnSaveFranchise;
+        private System.Windows.Forms.Button btnSaveUniverse;
         private System.Windows.Forms.ListBox lbCharacters;
         private System.Windows.Forms.Button btnAddToMovie;
         private System.Windows.Forms.Label lblActors;
         private System.Windows.Forms.Label lblCharacters;
         private System.Windows.Forms.TextBox tbActor;
         private System.Windows.Forms.TextBox tbCharacter;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label lblTvShows;
-        private System.Windows.Forms.ListBox lbTvShows;
-        private System.Windows.Forms.Button btnAddToTvShow;
         private System.Windows.Forms.TextBox tbMovieTitle;
         private System.Windows.Forms.Label lblMovieName;
         private System.Windows.Forms.Button btnAddMovie;
@@ -395,7 +329,6 @@
         private System.Windows.Forms.Label lblFranchises;
         private System.Windows.Forms.ComboBox cbFranchises;
         private System.Windows.Forms.Button btnShowGraph;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btnCharacterEditor;
         private System.Windows.Forms.Button btnFindMovie;
     }

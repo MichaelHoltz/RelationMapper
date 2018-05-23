@@ -9,14 +9,38 @@ using TmdbSearch = TmdbWrapper.Search;
 namespace RelationMap.Models
 {
     /// <summary>
-    /// All Studios are in here
+    /// 
+    /// Universe can be thought of as all Movies the user is interested in. Probably should have called it MyMovies (Inspiration was from Marvel Cinematic Universe)
+    /// 
+    /// This is the Root Class and contains everything pertaining to a Movie (and later.. possibly TV Shows will be completed)
+    /// 
+    /// This is also an exercise in seeing how far I can push JSON Persistence and direct Object usage for in memory database usage.
+    /// 
     /// </summary>
     public class Universe
     {
+        /// <summary>
+        /// A Studio is a collection of Production Companies 
+        /// Ex. "Marvel" is Marvel Enterprises, Marvel Studios, Marvel Entertainment. 
+        /// The purpose is to address that a "Marvel" movie is actually all the above and even side Production Companies Like Disney but the common thread
+        /// is Marvel movie is intended, vs the minutia of the full Production Company name for a given movie.
+        /// </summary>
         public HashSet<Studio> Studios { get; set; }
+
+        /// <summary>
+        /// All Production Companies which produce a movie 
+        /// </summary>
         public HashSet<ProductionCompany> ProductionCompanies { get; set; }
 
         public HashSet<Movie> Movies { get; set; }
+        
+        ///// <summary>
+        ///// All TV Shows (Refactor - not implemented yet)
+        ///// </summary>
+        //public HashSet<TvShow> TvShows { get; set; }
+        /// <summary>
+        /// All Actual People related to movies, TV Shows, and the production of them.
+        /// </summary>
         public HashSet<Person> People { get; set; }
 
         public Universe()
@@ -226,68 +250,68 @@ namespace RelationMap.Models
             }
             return m;
         }
-        /// <summary>
-        /// Get all TvShows in all Studios
-        /// </summary>
-        /// <returns></returns>
-        public HashSet<TvShow> GetAllTvShows()
-        {
-            HashSet<TvShow> tv = new HashSet<TvShow>();
-            foreach (Studio s in Studios)
-            {
-                foreach (TvShow item in s.TvShows)
-                {
-                    tv.Add(item);
-                }
-            }
-            return tv;
-        }
-        /// <summary>
-        /// Get all TvShows in a given Studio
-        /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        public HashSet<TvShow> GetAllTvShows(Studio s)
-        {
-            HashSet<TvShow> tv = new HashSet<TvShow>();
-            foreach (TvShow item in s.TvShows)
-            {
-                tv.Add(item);
-            }
-            return tv;
-        }
-        /// <summary>
-        /// Get all TvShows in a given Franchise
-        /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        public HashSet<TvShow> GetAllTvShows(Franchise f)
-        {
-            HashSet<TvShow> tv = new HashSet<TvShow>();
-            foreach (Studio s in Studios)
-            {
-                if (s.Franchises.Contains(f))
-                {
-                    foreach (TvShow item in s.TvShows)
-                    {
-                        if (f.TvShows.Contains(item.HashCode)) // Only add if TvShow in Franchise
-                        {
-                            tv.Add(item);
-                        }
-                    }
-                }
-            }
-            return tv;
-        }
-        public TvShow GetTvShow(String tvShowName)
-        {
-            TvShow tv = null;
-            HashSet<TvShow> alltvShows = GetAllTvShows();
-            if (alltvShows.Select(o => o.Name).Contains(tvShowName))
-            {
-                tv = alltvShows.First(o => o.Name == tvShowName);
-            }
-            return tv;
-        }
+        ///// <summary>
+        ///// Get all TvShows in all Studios
+        ///// </summary>
+        ///// <returns></returns>
+        //public HashSet<TvShow> GetAllTvShows()
+        //{
+        //    HashSet<TvShow> tv = new HashSet<TvShow>();
+        //    foreach (Studio s in Studios)
+        //    {
+        //        foreach (TvShow item in s.TvShows)
+        //        {
+        //            tv.Add(item);
+        //        }
+        //    }
+        //    return tv;
+        //}
+        ///// <summary>
+        ///// Get all TvShows in a given Studio
+        ///// </summary>
+        ///// <param name="s"></param>
+        ///// <returns></returns>
+        //public HashSet<TvShow> GetAllTvShows(Studio s)
+        //{
+        //    HashSet<TvShow> tv = new HashSet<TvShow>();
+        //    foreach (TvShow item in s.TvShows)
+        //    {
+        //        tv.Add(item);
+        //    }
+        //    return tv;
+        //}
+        ///// <summary>
+        ///// Get all TvShows in a given Franchise
+        ///// </summary>
+        ///// <param name="s"></param>
+        ///// <returns></returns>
+        //public HashSet<TvShow> GetAllTvShows(Franchise f)
+        //{
+        //    HashSet<TvShow> tv = new HashSet<TvShow>();
+        //    foreach (Studio s in Studios)
+        //    {
+        //        if (s.Franchises.Contains(f))
+        //        {
+        //            foreach (TvShow item in s.TvShows)
+        //            {
+        //                if (f.TvShows.Contains(item.HashCode)) // Only add if TvShow in Franchise
+        //                {
+        //                    tv.Add(item);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return tv;
+        //}
+        //public TvShow GetTvShow(String tvShowName)
+        //{
+        //    TvShow tv = null;
+        //    HashSet<TvShow> alltvShows = GetAllTvShows();
+        //    if (alltvShows.Select(o => o.Name).Contains(tvShowName))
+        //    {
+        //        tv = alltvShows.First(o => o.Name == tvShowName);
+        //    }
+        //    return tv;
+        //}
     }
 }

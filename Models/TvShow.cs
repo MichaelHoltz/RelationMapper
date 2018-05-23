@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace RelationMap.Models
 {
+    /// <summary>
+    /// Abandoned for now as the base structure is not finalized and it's too much to maintain both for refactoring.
+    /// </summary>
     public class TvShow
     {
         public String Name { get; set; }
