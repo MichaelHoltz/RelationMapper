@@ -81,11 +81,13 @@
             // lblPlaceOfBirth
             // 
             this.lblPlaceOfBirth.AutoSize = true;
+            this.lblPlaceOfBirth.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblPlaceOfBirth.Location = new System.Drawing.Point(122, 52);
             this.lblPlaceOfBirth.Name = "lblPlaceOfBirth";
             this.lblPlaceOfBirth.Size = new System.Drawing.Size(70, 13);
             this.lblPlaceOfBirth.TabIndex = 5;
             this.lblPlaceOfBirth.Text = "Place of Birth";
+            this.lblPlaceOfBirth.Click += new System.EventHandler(this.lblPlaceOfBirth_Click);
             // 
             // lblBiography
             // 

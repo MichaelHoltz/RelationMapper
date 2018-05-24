@@ -28,9 +28,20 @@ namespace TmdbWrapper.Movies
         /// </summary>
         public int Order { get; private set; }
         /// <summary>
-        /// Path of the profile picture
+        /// Path of the profile picture of the Person (Not Character)
         /// </summary>
         public string ProfilePath { get; private set; }
+        #region Added / Missing
+        /// <summary>
+        /// Not sure what this is at this time but appears to be tied to character
+        /// </summary>
+        public int CastId { get; private set; }
+        /// <summary>
+        /// Appears to be a hash Code for something.. ??
+        /// </summary>
+        public string CreditId { get; private set; }
+        public int Gender { get; private set; }
+        #endregion
         #endregion
 
         #region overrides
@@ -51,6 +62,9 @@ namespace TmdbWrapper.Movies
             Character = jsonObject.GetSafeString("character");
             Order = (int)jsonObject.GetSafeNumber("order");
             ProfilePath = jsonObject.GetSafeString("profile_path");
+            CastId = (int)jsonObject.GetSafeNumber("cast_id");
+            CreditId = jsonObject.GetSafeString("credit_id");
+            Gender = (int)jsonObject.GetSafeNumber("gender");
         }
         #endregion
 

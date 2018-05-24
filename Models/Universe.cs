@@ -20,13 +20,16 @@ namespace RelationMap.Models
     public class Universe
     {
         /// <summary>
-        /// A Studio is a collection of Production Companies 
+        /// A StudioGroup is a collection of Production Companies 
         /// Ex. "Marvel" is Marvel Enterprises, Marvel Studios, Marvel Entertainment. 
         /// The purpose is to address that a "Marvel" movie is actually all the above and even side Production Companies Like Disney but the common thread
         /// is Marvel movie is intended, vs the minutia of the full Production Company name for a given movie.
         /// </summary>
-        public HashSet<Studio> Studios { get; set; }
-
+        public HashSet<StudioGroup> StudioGroups { get; set; }
+        /// <summary>
+        /// Movie Collections found by Movie Lookup
+        /// </summary>
+        public HashSet<MovieCollection> MovieCollections { get; set; }
         /// <summary>
         /// All Production Companies which produce a movie 
         /// </summary>
@@ -34,10 +37,6 @@ namespace RelationMap.Models
 
         public HashSet<Movie> Movies { get; set; }
         
-        ///// <summary>
-        ///// All TV Shows (Refactor - not implemented yet)
-        ///// </summary>
-        //public HashSet<TvShow> TvShows { get; set; }
         /// <summary>
         /// All Actual People related to movies, TV Shows, and the production of them.
         /// </summary>
@@ -45,7 +44,8 @@ namespace RelationMap.Models
 
         public Universe()
         {
-            Studios = new HashSet<Studio>();
+            StudioGroups = new HashSet<StudioGroup>();
+            MovieCollections = new HashSet<MovieCollection>();
             ProductionCompanies = new HashSet<ProductionCompany>();
             Movies = new HashSet<Movie>();
             People = new HashSet<Person>();
@@ -54,10 +54,18 @@ namespace RelationMap.Models
         public Boolean AddPerson(Person person)
         {
             Boolean result = People.Add(person);
-            if (!result) // Movie already there, but need to update
+            if (!result) // Movie already there, but need to update (If they aren't already) //But I could be passing in a person with basic info and t
             {
-                People.Remove(person); // Hack at update by just replacing.
-                result = People.Add(person);
+                Person existingPerson =  People.First(o => o.Id == person.Id);
+                if (existingPerson.Updated)
+                {
+                    result = true;
+                }
+                else
+                {
+                    People.Remove(person); // Hack at update by just replacing. 
+                    result = People.Add(person);
+                }
             }
             return result;
         }
@@ -83,11 +91,42 @@ namespace RelationMap.Models
         //}
         #endregion Movie
 
+        #region MovieCollection
+        /// <summary>
+        /// Adds or updates a movie collection
+        /// if Update only poster and backdrop are updated
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="id"></param>
+        /// <param name="posterPath"></param>
+        /// <param name="backdropPath"></param>
+        /// <returns></returns>
+        public MovieCollection AddMovieCollection(String name, int id, String posterPath, String backdropPath)
+        {
+            MovieCollection mc = new MovieCollection(name, id, posterPath, backdropPath);
+            Boolean result = MovieCollections.Add(mc);
+            if (!result) // Collection already exists and I believe has more than the basic information here
+            {
+                mc = MovieCollections.First(o => o.Id == id); // Update things that can be; (Name is part of hash code)
+                mc.PosterPath = posterPath;
+                mc.BackdropPath = backdropPath;
+            }
+            return mc;
+        }
+        //public MovieCollection UpdateMovieCollection(String name)
+        //{
+        //}
+        //public MovieCollection UpdateMovieCollection(int id)
+        //{
+
+        //}
+        #endregion
+
         #region Production Company 
 
-        public ProductionCompany AddProductionCompany(String pcName, int pcId)
+        public ProductionCompany AddProductionCompany(String pcName, int pcId, String logoPath, String originCountry)
         {
-            ProductionCompany pc = new ProductionCompany(pcName, pcId);
+            ProductionCompany pc = new ProductionCompany(pcName, pcId, logoPath, originCountry);
             Boolean result = AddProductionCompany(pc);
             return pc;
         }
@@ -96,7 +135,7 @@ namespace RelationMap.Models
             Boolean result = ProductionCompanies.Add(pc);
             if (!result)
             {
-                ProductionCompanies.Remove(pc);
+                ProductionCompanies.Remove(pc); //Force Replace
                 result = ProductionCompanies.Add(pc);
             }
             return result;
@@ -112,79 +151,79 @@ namespace RelationMap.Models
         }
         #endregion Production Company
 
-        #region Studio (One or more Production Company grouped into one)
-        public Studio AddStudio(String studioName)
+        #region StudioGroup (One or more Production Company grouped into one)
+        public StudioGroup AddStudio(String studioName)
         {
-            Studio s = new Studio(studioName);
-            Boolean result = Studios.Add(s);
+            StudioGroup s = new StudioGroup(studioName);
+            Boolean result = StudioGroups.Add(s);
             return s;
         }
-        public Studio GetStudio(String studioName)
+        public StudioGroup GetStudio(String studioName)
         {
-            return Studios.First(o => o.Name == studioName);
+            return StudioGroups.First(o => o.Name == studioName);
         }
-        public Studio GetStudio(int studioId)
+        public StudioGroup GetStudio(int studioId)
         {
-            return Studios.First(o => o.Id == studioId);
+            return StudioGroups.First(o => o.Id == studioId);
         }
 
-        #endregion Studio
+        #endregion StudioGroup
 
-        /// <summary>
-        /// Franchise is a Collection or List
-        /// </summary>
-        /// <returns></returns>
-        public HashSet<Franchise> GetAllFranchises()
-        {
-            HashSet<Franchise> f = new HashSet<Franchise>();
-            foreach (Studio s in Studios)
-            {
+        ///// <summary>
+        ///// Franchise is a Collection or List
+        ///// </summary>
+        ///// <returns></returns>
+        //public HashSet<Franchise> GetAllFranchises()
+        //{
+        //    HashSet<Franchise> f = new HashSet<Franchise>();
+        //    foreach (StudioGroup s in StudioGroups)
+        //    {
                 
-                foreach (Franchise sf in s.Franchises)
-                {
-                    f.Add(sf);
-                }
-            }
-            return f;
-        }
-        public HashSet<Franchise> GetAllFranchises(Studio s)
-        {
-            HashSet<Franchise> f = new HashSet<Franchise>();
-            foreach (Franchise sf in s.Franchises)
-            {
-                f.Add(sf);
-            }
-            return f;
-        }
+        //        foreach (Franchise sf in s.Franchises)
+        //        {
+        //            f.Add(sf);
+        //        }
+        //    }
+        //    return f;
+        //}
+        //public HashSet<Franchise> GetAllFranchises(StudioGroup s)
+        //{
+        //    HashSet<Franchise> f = new HashSet<Franchise>();
+        //    foreach (Franchise sf in s.Franchises)
+        //    {
+        //        f.Add(sf);
+        //    }
+        //    return f;
+        //}
 
         /// <summary>
-        /// Get all Movies in all Studios
+        /// Get all Movies in the "known Universe"
         /// </summary>
         /// <returns></returns>
         public HashSet<Movie> GetAllMovies()
         {
-            HashSet<Movie> m = new HashSet<Movie>();
-            foreach (Studio s in Studios)
-            {
-                foreach (Movie item in s.Movies)
-                {
-                    m.Add(item);
-                }
-            }
-            return m;
+            //HashSet<Movie> m = new HashSet<Movie>();
+            //foreach (StudioGroup s in StudioGroups)
+            //{
+            //    foreach (Movie item in s.Movies)
+            //    {
+            //        m.Add(item);
+            //    }
+            //}
+            return Movies;
         }
         /// <summary>
-        /// Get all Movies in a given Studio
+        /// Get all Movies in a given StudioGroup
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public HashSet<Movie> GetAllMovies(Studio s)
+        public HashSet<Movie> GetAllMovies(StudioGroup s)
         {
             HashSet<Movie> m = new HashSet<Movie>();
-            foreach (Movie item in s.Movies)
-            {
-                m.Add(item);
-            }
+            //foreach (Movie item in s.Movies)
+            //{
+            //    m.Add(item);
+            //}
             return m;
         }
         /// <summary>
@@ -195,19 +234,19 @@ namespace RelationMap.Models
         public HashSet<Movie> GetAllMovies(Franchise f)
         {
             HashSet<Movie> m = new HashSet<Movie>();
-            foreach (Studio s in Studios)
-            {
-                if (s.Franchises.Contains(f))
-                {
-                    foreach (Movie item in s.Movies)
-                    {
-                        if (f.Movies.Contains(item.HashCode)) // Only add if movie in Franchise
-                        {
-                            m.Add(item);
-                        }
-                    }
-                }
-            }
+            //foreach (StudioGroup s in StudioGroups)
+            //{
+            //    if (s.Franchises.Contains(f))
+            //    {
+            //        foreach (Movie item in s.Movies)
+            //        {
+            //            if (f.Movies.Contains(item.HashCode)) // Only add if movie in Franchise
+            //            {
+            //                m.Add(item);
+            //            }
+            //        }
+            //    }
+            //}
             return m;
         }
         /// <summary>
@@ -215,19 +254,19 @@ namespace RelationMap.Models
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public HashSet<Movie> GetAllMoviesNotInAnyFranchise(Studio s)
+        public HashSet<Movie> GetAllMoviesNotInAnyFranchise(StudioGroup s)
         {
             HashSet<Movie> m = new HashSet<Movie>();
-            foreach (Franchise f in s.Franchises) // All studio Franchises
-            {
-                foreach (Movie item in s.Movies)
-                {
-                    if (!f.Movies.Contains(item.HashCode)) // Only add if movie not in any franchise
-                    {
-                        m.Add(item);
-                    }
-                }
-            }
+            //foreach (Franchise f in s.Franchises) // All StudioGroup Franchises
+            //{
+            //    foreach (Movie item in s.Movies)
+            //    {
+            //        if (!f.Movies.Contains(item.HashCode)) // Only add if movie not in any franchise
+            //        {
+            //            m.Add(item);
+            //        }
+            //    }
+            //}
             return m;
         }
         public Movie GetMovie(String movieName)
@@ -251,13 +290,13 @@ namespace RelationMap.Models
             return m;
         }
         ///// <summary>
-        ///// Get all TvShows in all Studios
+        ///// Get all TvShows in all StudioGroups
         ///// </summary>
         ///// <returns></returns>
         //public HashSet<TvShow> GetAllTvShows()
         //{
         //    HashSet<TvShow> tv = new HashSet<TvShow>();
-        //    foreach (Studio s in Studios)
+        //    foreach (StudioGroup s in StudioGroups)
         //    {
         //        foreach (TvShow item in s.TvShows)
         //        {
@@ -267,11 +306,11 @@ namespace RelationMap.Models
         //    return tv;
         //}
         ///// <summary>
-        ///// Get all TvShows in a given Studio
+        ///// Get all TvShows in a given StudioGroup
         ///// </summary>
         ///// <param name="s"></param>
         ///// <returns></returns>
-        //public HashSet<TvShow> GetAllTvShows(Studio s)
+        //public HashSet<TvShow> GetAllTvShows(StudioGroup s)
         //{
         //    HashSet<TvShow> tv = new HashSet<TvShow>();
         //    foreach (TvShow item in s.TvShows)
@@ -288,7 +327,7 @@ namespace RelationMap.Models
         //public HashSet<TvShow> GetAllTvShows(Franchise f)
         //{
         //    HashSet<TvShow> tv = new HashSet<TvShow>();
-        //    foreach (Studio s in Studios)
+        //    foreach (StudioGroup s in StudioGroups)
         //    {
         //        if (s.Franchises.Contains(f))
         //        {

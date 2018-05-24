@@ -27,18 +27,18 @@ namespace RelationMap
         {
             InitializeComponent();
             u = PersistanceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\uinverse2.json"));
-            InitTheMovieDb();        
+            //InitTheMovieDb();        
         }
         public CharacterFinder(Movie m1, Universe u1)
         {
             InitializeComponent();
             u = u1;
             m = m1;
-            InitTheMovieDb();
+           // InitTheMovieDb();
         }
         private void InitTheMovieDb()
         {
-            TheMovieDb.Initialise(PrivateData.GetTMDBApiKey(), "en-US", true);
+           // TheMovieDb.Initialise(PrivateData.GetTMDBApiKey(), "en-US", true);
         }
 
         private void CharacterFinder_Load(object sender, EventArgs e)
@@ -61,7 +61,7 @@ namespace RelationMap
                 lbActors.Items.Clear(); ;
 
                 m = u.GetMovie(cbMovie.SelectedItem.ToString());
-                credits = await TmdbWrapper.TheMovieDb.GetMovieCastAsync(m.DmdbId);
+                credits = await TmdbWrapper.TheMovieDb.GetMovieCreditsAsync(m.DmdbId);
                 foreach (TmdbWrapper.Movies.CastPerson item in credits.Cast)
                 {
                     lbCharacters.Items.Add(item.Character);

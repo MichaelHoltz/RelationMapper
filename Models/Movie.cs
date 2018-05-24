@@ -72,7 +72,7 @@ namespace RelationMap.Models
             Characters = new HashSet<Character>(); // Characters in this Movie
             People = new HashSet<int>();
         }
-        public Character AddCharacter(String characterName, int actorId, int order)
+        public Character AddCharacter(String characterName, int actorId, int order, int castId, string creditId)
         {
             //Try to add the actor if the character Already exists.
             Character c = null;
@@ -84,7 +84,7 @@ namespace RelationMap.Models
             }
             else
             {
-                c = new Character(characterName, actorId, order);
+                c = new Character(characterName, actorId, order, castId, creditId);
                 Characters.Add(c);
             }
             return c;

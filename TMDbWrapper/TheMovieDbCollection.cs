@@ -16,7 +16,7 @@ namespace TmdbWrapper
         public static async Task<Collection> GetCollectionAsync(int collectionId)
         {
             var collection = DatabaseCache.GetObject<Collection>(collectionId);
-            if (collection != null)
+            if (collection == null) //Bug Fix
             {
                 var request = new Request<Collection>("collection/" + collectionId);
                 collection = await request.ProcesRequestAsync();

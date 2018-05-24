@@ -112,11 +112,11 @@ namespace RelationMap
         }
         private void refreshLists()
         {
-            //Clear Studio List 
+            //Clear StudioGroup List 
             cbStudios.Items.Clear();
             cbStudios.Items.Add("All");
-            //Load All Studios
-            cbStudios.Items.AddRange(u.Studios.Select(o => o.Name).ToArray());
+            //Load All StudioGroups
+            cbStudios.Items.AddRange(u.StudioGroups.Select(o => o.Name).ToArray());
             cbStudios.SelectedIndex = 0;
         }
         private Graph getNewGraph(string name)
@@ -135,6 +135,7 @@ namespace RelationMap
         private String getTip(object userData)
         {
             String tip = "";
+            //Old Code from original use - Saved for example.
             //if (userData is Server)
             //{
 
@@ -149,38 +150,7 @@ namespace RelationMap
             //              "Template:               " + o.vm_template + "\r\n" +
             //              "State:                       " + o.state;
             //}
-            //if (userData is Gateway)
-            //{
-            //    Gateway o = (userData as Gateway);
-            //    toolTip1.ToolTipTitle = "FWDM Gateway";
-            //    tip = "Computer Name:   " + o.computer_name + "\r\n" +
-            //          "Ip Address:              " + o.ip_address + "\r\n" +
-            //          "Description:            " + o.description + "\r\n" +
-            //          "OS:                           " + o.os + "\r\n" +
-            //          "Template:               " + o.vm_template + "\r\n" +
-            //          "State:                       " + o.state;
-            //}
-            //if (userData is Loader)
-            //{
-            //    Loader o = (userData as Loader);
-            //    toolTip1.ToolTipTitle = "FWDM " + o.type + " Loader";
-            //    tip = "Computer Name:   " + o.computer_name + "\r\n" +
-            //          "Ip Address:              " + o.ip_address + "\r\n" +
-            //          "Description:            " + o.description + "\r\n" +
-            //          "OS:                           " + o.os + "\r\n" +
-            //          "Type:                       " + o.type + "\r\n" +
-            //          "Template:               " + o.vm_template + "\r\n" +
-            //          "State:                       " + o.state;
-            //}
-            //if (userData is Template)
-            //{
-            //    Template o = (userData as Template);
-            //    toolTip1.ToolTipTitle = "FWDM Template";
-            //    tip = "Template:         " + o.vm_template + "\r\n" +
-            //          "Description:      " + o.description + "\r\n" +
-            //          "Source:              " + o.source + "\r\n" +
-            //          "Path:                  " + o.path;
-            //}
+
             return tip;
         }
         /// <summary>
@@ -305,12 +275,12 @@ namespace RelationMap
             {
                 if (node.OutEdges.Count() == 0)
                 {
-                    HighlightFullPath(node, true, false); // Att the end and want to work back.
+                    HighlightFullPath(node, true, false); // At the end and want to work back.
                 }
                 foreach (DrawingEdge item in node.OutEdges)
                 {
                     try { 
-                    highlightedEdges.Add(item, item.Attr.Clone()); // Save origional State.
+                    highlightedEdges.Add(item, item.Attr.Clone()); // Save original State.
                     item.Attr.LineWidth = 3;
                     item.Attr.Color = DrawingColor.Red;
                     HighlightFullPath(item.TargetNode, false, true); // Get next nodes
@@ -328,7 +298,7 @@ namespace RelationMap
                 {
                     try
                     {
-                        highlightedEdges.Add(item, item.Attr.Clone()); // Save origional State.
+                        highlightedEdges.Add(item, item.Attr.Clone()); // Save original State.
                         item.Attr.LineWidth = 3;
                         item.Attr.Color = DrawingColor.Red;
                         //Rectangle r = new Rectangle((int)item.BoundingBox.Left, (int)item.BoundingBox.Top, (int)item.BoundingBox.Width, (int)item.BoundingBox.Height);
@@ -371,7 +341,7 @@ namespace RelationMap
         }
         private void ToggleCharactersForMovie(DrawingNode n)
         {
-            // Already have Characters showing // remove all Out Edges and decendents that only come from here.
+            // Already have Characters showing // remove all Out Edges and descendants that only come from here.
             if (n.OutEdges.Count() > 0) 
             {
                 RemoveAllOutItems(n);
@@ -397,7 +367,7 @@ namespace RelationMap
         }
         private void ToggleActorsForCharacter(DrawingNode n)
         {
-            // Already have Characters showing // remove all Out Edges and decendents that only come from here.
+            // Already have Characters showing // remove all Out Edges and descendants that only come from here.
             if (n.OutEdges.Count() > 0)
             {
                 RemoveAllOutItems(n);
@@ -564,27 +534,27 @@ namespace RelationMap
 
         private void cbStudios_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (cbStudios.SelectedIndex >= 0)
-            {
-                //lbMovies.Items.Clear();
-                //lbTvShows.Items.Clear();
+            //if (cbStudios.SelectedIndex >= 0)
+            //{
+            //    //lbMovies.Items.Clear();
+            //    //lbTvShows.Items.Clear();
 
-                cbFranchises.Items.Clear();
-                cbFranchises.Items.Add("All");
-                cbFranchises.Items.Add("None");
-                String studioStr = cbStudios.SelectedItem.ToString();
-                if (studioStr == "All")
-                {
-                    cbFranchises.Items.AddRange(u.GetAllFranchises().Select(o => o.Name).ToArray());
-                }
-                else {
-                    Studio s = u.GetStudio(studioStr);
-                    cbFranchises.Items.AddRange(u.GetAllFranchises(s).Select(o => o.Name).ToArray());
-                }
+            //    cbFranchises.Items.Clear();
+            //    cbFranchises.Items.Add("All");
+            //    cbFranchises.Items.Add("None");
+            //    String studioStr = cbStudios.SelectedItem.ToString();
+            //    if (studioStr == "All")
+            //    {
+            //        cbFranchises.Items.AddRange(u.GetAllFranchises().Select(o => o.Name).ToArray());
+            //    }
+            //    else {
+            //        StudioGroup s = u.GetStudio(studioStr);
+            //        cbFranchises.Items.AddRange(u.GetAllFranchises(s).Select(o => o.Name).ToArray());
+            //    }
 
-                cbFranchises.SelectedIndex = 0;
-                //HandleAddingButtons();
-            }
+            //    cbFranchises.SelectedIndex = 0;
+            //    //HandleAddingButtons();
+            //}
         }
 
         private void cbFranchises_SelectedValueChanged(object sender, EventArgs e)
@@ -596,7 +566,7 @@ namespace RelationMap
 
                 //if (studioStr == "All") // All franchises
                 //{
-                //    foreach (Studio s in u.Studios)
+                //    foreach (StudioGroup s in u.StudioGroups)
                 //    {
                 //    }
                 //}
@@ -637,57 +607,58 @@ namespace RelationMap
             //List<DrawingNode> nodeListLoaders = new List<DrawingNode>(); // List for Constraint
             master.LayerConstraints.RemoveAllConstraints();
 
-            HashSet<Studio> studios = u.Studios;
-            HashSet<Franchise> franchises = u.GetAllFranchises();
+            HashSet<StudioGroup> StudioGroups = u.StudioGroups;
+            //HashSet<Franchise> franchises = u.GetAllFranchises();
+            HashSet<Franchise> franchises = null;
             HashSet<Movie> movies = u.GetAllMovies();
 
             String studioStr = cbStudios.SelectedItem.ToString();
             String franchiseStr = cbFranchises.SelectedItem.ToString();
             if (studioStr != "All")
             {
-                studios = new HashSet<Studio>();
-                studios.Add(u.GetStudio(studioStr));
+                StudioGroups = new HashSet<StudioGroup>();
+                StudioGroups.Add(u.GetStudio(studioStr));
             }
-            if (franchiseStr != "All" && franchiseStr != "None")
-            {
-                franchises = new HashSet<Franchise>();
-                franchises.Add(studios.First().GetFranchise(franchiseStr));
-            }
-            //Studios
-            foreach (Studio s in studios)
+            //if (franchiseStr != "All" && franchiseStr != "None")
+            //{
+            //    franchises = new HashSet<Franchise>();
+            //    franchises.Add(StudioGroups.First().GetFranchise(franchiseStr));
+            //}
+            //StudioGroups
+            foreach (StudioGroup s in StudioGroups)
             {
                 //AE(master, aeMaster, "WEB Servers", item.Name, WebColor, item);
                 master.AddNode(s.Name).Attr.FillColor = StudioColor;
                 FN(master, s.Name).UserData = s;
                 nodeListStudios.Add(FN(master, s.Name));
                 SetNodeDelegate(FN(master, s.Name)); // Allows this node to be custom drawn
-                //Franchises
-                foreach (Franchise f in s.Franchises)
-                {
-                    AE(master, aeMaster, s.Name, f.Name, FranchiseColor, f);
-                    SetNodeDelegate(FN(master, f.Name)); // Allows this node to be custom draw
+                ////Franchises
+                //foreach (Franchise f in s.Franchises)
+                //{
+                //    AE(master, aeMaster, s.Name, f.Name, FranchiseColor, f);
+                //    SetNodeDelegate(FN(master, f.Name)); // Allows this node to be custom draw
 
-                    foreach (Movie m in u.GetAllMovies(f))
-                    {
-                        String movieID = m.Title + " (" + m.ReleaseYear + ")";
-                        AE(master, aeMaster, f.Name, movieID, MovieColor, m);
-                        SetNodeDelegate(FN(master, movieID)); // Allows this node to be custom draw
-                        //foreach (Character c in m.Characters)
-                        //{
-                        //    AE(master, aeMaster, movieID, c.Name, CharacterColor, c);
-                        //    SetNodeDelegate(FN(master, c.Name)); // Allows this node to be custom draw
+                //    foreach (Movie m in u.GetAllMovies(f))
+                //    {
+                //        String movieID = m.Title + " (" + m.ReleaseYear + ")";
+                //        AE(master, aeMaster, f.Name, movieID, MovieColor, m);
+                //        SetNodeDelegate(FN(master, movieID)); // Allows this node to be custom draw
+                //        //foreach (Character c in m.Characters)
+                //        //{
+                //        //    AE(master, aeMaster, movieID, c.Name, CharacterColor, c);
+                //        //    SetNodeDelegate(FN(master, c.Name)); // Allows this node to be custom draw
 
-                        //    foreach (Actor a in m.GetActorsWhoPlayedCharacter(c.Name))
-                        //    {
-                        //        AE(master, aeMaster, c.Name, a.Name, ActorColor, a);
-                        //        SetNodeDelegate(FN(master, a.Name)); // Allows this node to be custom draw
+                //        //    foreach (Actor a in m.GetActorsWhoPlayedCharacter(c.Name))
+                //        //    {
+                //        //        AE(master, aeMaster, c.Name, a.Name, ActorColor, a);
+                //        //        SetNodeDelegate(FN(master, a.Name)); // Allows this node to be custom draw
 
-                        //    }
+                //        //    }
 
-                        //}
+                //        //}
 
-                    }
-                }
+                //    }
+                //}
                 //Movies Not in a Franchise
                 foreach (Movie m in u.GetAllMoviesNotInAnyFranchise(s))
                 {
@@ -852,9 +823,9 @@ namespace RelationMap
             string groupId = "Default";
             if (userData != null)
             {
-                if (userData is Studio)
+                if (userData is StudioGroup)
                 {
-                    groupId = (userData as Studio).Name.ToString();
+                    groupId = (userData as StudioGroup).Name.ToString();
                     Image j = imageList.Find(o => o.Tag.ToString() == groupId);
                     if (j == null)
                     {

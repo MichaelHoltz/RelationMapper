@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using TmdbWrapper.Companies;
 using TmdbWrapper.Utilities;
 
@@ -18,8 +19,28 @@ namespace TmdbWrapper.Movies
         /// Id of the production company
         /// </summary>
         public int Id { get; private set; }
+        /// <summary>
+        /// Logo Path of the production company
+        /// </summary>
+        public string LogoPath { get; private set; }
+        /// <summary>
+        /// Origin Country of the production company
+        /// </summary>
+        public string OriginCountry { get; set; }
+
         #endregion
 
+        #region image uri's
+        /// <summary>
+        /// Uri to the logo image.
+        /// </summary>
+        /// <param name="size">The size for the image as required</param>
+        /// <returns>The uri to the sized image</returns>
+        public Uri Uri(LogoSize size)
+        {
+            return Extensions.MakeImageUri(size.ToString(), LogoPath);
+        }
+        #endregion
         #region overrides
         /// <summary>
         /// Returns this instance ToString 
@@ -35,6 +56,8 @@ namespace TmdbWrapper.Movies
         {
             Id = (int)jsonObject.GetSafeNumber("id");
             Name = jsonObject.GetSafeString("name");
+            LogoPath = jsonObject.GetSafeString("logo_path");
+            OriginCountry = jsonObject.GetSafeString("origin_country");
         }
         #endregion
 

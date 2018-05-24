@@ -34,7 +34,7 @@ namespace RelationMap.Controls
             lblTitle.Text = movie.Title;
             lblReleaseDate.Text = movie.ReleaseDate.Value.ToShortDateString();
             lblRunTime.Text = movie.Runtime.ToString() + " minutes";
-            lblRevenue.Text = movie.Revenue.ToString("C0"); // Currancy no cents.
+            lblRevenue.Text = movie.Revenue.ToString("C0"); // Currency no cents.
             if (movie.HomePage != null)
             {
                 pbPoster.Tag = movie.HomePage.AbsoluteUri;
@@ -46,10 +46,61 @@ namespace RelationMap.Controls
             GetMoviePoster();
             GetProductionCompanyLogos();
         }
+        /// <summary>
+        /// Load using Preview information..
+        /// </summary>
+        /// <param name="selectedMovieInfo"></param>
+        public void LoadMovieInfo(ref TmdbWrapper.Movies.Movie selectedMovieInfo)
+        {
+            lblTitle.Text = selectedMovieInfo.Title;
+            if (selectedMovieInfo.ReleaseDate.HasValue)
+            {
+                lblReleaseDate.Text = selectedMovieInfo.ReleaseDate.Value.ToShortDateString();
+            }
+            else
+            {
+                lblReleaseDate.Text = "TBD";
+            }
+            lblRunTime.Text = selectedMovieInfo.Runtime.ToString() + " minutes";
+            lblRevenue.Text = selectedMovieInfo.Revenue.ToString("C0"); // Currency no cents.
+            if (selectedMovieInfo.Homepage != null)
+            {
+                pbPoster.Tag = selectedMovieInfo.Homepage.AbsoluteUri;
+            }
+            else
+            {
+                pbPoster.Tag = null;
+            }
+            GetMoviePoster(ref selectedMovieInfo);
+            //TmdbWrapper.Movies.ProductionCompany 
+            IReadOnlyList<TmdbWrapper.Movies.ProductionCompany> prodCos = selectedMovieInfo.ProductionCompanies;
+            GetProductionCompanyLogos(prodCos);
+        }
+        public void Clear()
+        {
+            pbPoster.BackgroundImage = null;
+            lblTitle.Text = null;
+            lblReleaseDate.Text = null;
+            lblRevenue.Text = null;
+            lblRunTime.Text = null;
+        }
+        /// <summary>
+        /// Function for use with Cached Data
+        /// </summary>
         private void GetMoviePoster()
         {
-           
             pbPoster.BackgroundImage = selectedMovie.GetMoviePoster(TmdbWrapper.Utilities.PosterSize.w185);
+        }
+        /// <summary>
+        /// Function for use with Preview Data
+        /// </summary>
+        /// <param name="selectedMovieInfo"></param>
+        private void GetMoviePoster(ref TmdbWrapper.Movies.Movie selectedMovieInfo)
+        {
+            Uri posterUri = selectedMovieInfo.Uri(TmdbWrapper.Utilities.PosterSize.w185);
+            var wc = new WebClient();
+            pbPoster.BackgroundImage = Image.FromStream(wc.OpenRead(posterUri)); //Read from the Internet
+
         }
         public async void GetProductionCompanyLogos()
         {
@@ -62,7 +113,10 @@ namespace RelationMap.Controls
                 if (c != null)
                     x = await c.GetLogo(TmdbWrapper.Utilities.LogoSize.w45);
                 else
-                    x = await ProductionCompany.GetLogo(pcId, TmdbWrapper.Utilities.LogoSize.w45);
+                {
+                    ProductionCompany pc = new ProductionCompany("dummy", pcId, null, null); // Hack
+                    x = await pc.GetLogo(pcId, TmdbWrapper.Utilities.LogoSize.w45);
+                }
                 if (x != null)
                 {
                     PictureBox pb = new PictureBox();
@@ -83,7 +137,32 @@ namespace RelationMap.Controls
             }
             
         }
-
+        public void GetProductionCompanyLogos(IReadOnlyList<TmdbWrapper.Movies.ProductionCompany> prodCos)
+        {
+            flpProductionCompanies.Controls.Clear(); // Remove any Images from previous load
+            //Loop through each production Company IDs
+            foreach (TmdbWrapper.Movies.ProductionCompany pc in prodCos)
+            {
+                if (pc.LogoPath != null)
+                {
+                    PictureBox pb = new PictureBox();
+                    pb.BackgroundImageLayout = ImageLayout.Zoom;
+                    pb.Width = 45;
+                    pb.Height = 45;
+                    //Preview Production Companies don't have Homepage from Movie Info at this time.
+                    //if (c.Homepage != null)
+                    //{
+                    //    pb.Cursor = Cursors.Hand;
+                    //    pb.Click += Pb_Click;
+                    //    pb.Tag = c.Homepage;
+                    //}
+                    Uri logoUri = pc.Uri(TmdbWrapper.Utilities.LogoSize.w45);
+                    var wc = new WebClient();
+                    pb.BackgroundImage = Image.FromStream(wc.OpenRead(logoUri)); //Read from the Internet
+                    flpProductionCompanies.Controls.Add(pb);
+                }
+            }
+        }
         private void Pb_Click(object sender, EventArgs e)
         {
             if ((sender as PictureBox).Tag != null)

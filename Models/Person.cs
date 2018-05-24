@@ -46,9 +46,9 @@ namespace RelationMap.Models
         public DateTime? Birthday { get; set; }
         public DateTime? Deathday { get; set; }
         public String PlaceOfBirth { get; set; }
-
+        public Boolean Updated { get; set; }
         /// <summary>
-        /// Default constructor required for Persistance restore if "bad data"
+        /// Default constructor required for Persistence restore if "bad data"
         /// </summary>
         public Person()
         {

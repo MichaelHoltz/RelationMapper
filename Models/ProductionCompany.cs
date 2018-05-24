@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using TmdbWrapper;
 using System.IO;
 using System.Net;
-
+using TmdbWrapper.Utilities;
 
 namespace RelationMap.Models
 {
@@ -18,12 +18,13 @@ namespace RelationMap.Models
     /// This class should represent Company Details
     /// 
     /// Relationships:
-    /// Production company is in a studio collection
+    /// Production company is in a StudioGroup collection
     /// Movies and TvShows have production companies
-    /// Movies and TvShows MAY have a Studio..
+    /// Movies and TvShows MAY have a StudioGroup..
     /// </summary>
     public class ProductionCompany
     {
+        #region Basic information contained in movie info
         /// <summary>
         /// TMDB Name of the Production COmpany
         /// </summary>
@@ -33,47 +34,61 @@ namespace RelationMap.Models
         /// TMDB Id of the production company
         /// </summary>
         public int Id { get; set; }
+        /// <summary>
+        /// Property to avoid looking up a logo that doesn't exist.
+        /// </summary>
+        public Boolean HasLogo { get; set; }
+        public String LogoPath { get; set; }
+        public String OriginCountry { get; set; }
+        #endregion
 
-
+        #region Extended information contained in the Company Query
         public String Description { get; set; }
         public String Headquarters { get; set; }
         public Uri Homepage { get; set; }
-        public String LogoPath { get; set; }
-        public String OriginCountry { get; set; }
+
         /// <summary>
         /// TMDB returns the entire object as part of the Details, but for normalization only the ID should be stored here..
         /// This gets in to Caching and lookup linking 
         /// </summary>
         public int ParentCompanyId { get; set; }
+        /// <summary>
+        /// Crude way to prevent many redundant updates. (Also prevents any updates)
+        /// </summary>
+        public Boolean Updated { get; set; } 
+        #endregion
 
         public ProductionCompany()
         {
         }
-
-        public ProductionCompany(String pcName)
-        {
-            Name = pcName;
-        }
-        public ProductionCompany(String pcName, int id)
+        public ProductionCompany(String pcName, int id, String logoPath, String originCountry)
         {
             Name = pcName;
             Id = id;
+            LogoPath = logoPath;
+            HasLogo = LogoPath != null;
+            OriginCountry = originCountry;
         }
 
         public async Task<Image> GetLogo(TmdbWrapper.Utilities.LogoSize logoSize)
         {
             return await GetLogo(Id, logoSize, this.LogoPath);
         }
-        public static async Task<Image> GetLogo(int companyID, TmdbWrapper.Utilities.LogoSize logoSize, String logoPath = null)
+        public async Task<Image> GetLogo(int companyID, TmdbWrapper.Utilities.LogoSize logoSize, String logoPath = null)
         {
             Image x = null;
-            //TODO - need to do something about the time it takes to get Company info over and over..
-            TmdbWrapper.Companies.Company c = await TheMovieDb.GetCompanyAsync(companyID); // TMDB Company ID
+            if (logoPath == null && HasLogo == true)
+            {
+                //LogoPath can be null and going out and trying to get it doesn't do anything but add useless time!
+                //TODO - need to do something about the time it takes to get Company info over and over..
+                TmdbWrapper.Companies.Company c = await TheMovieDb.GetCompanyAsync(companyID); // TMDB Company ID
+                logoPath = c.LogoPath;
+            }
             
-            if (c.LogoPath != null)
+            if (logoPath != null)
             {
 
-                String cachePath = PrivateData.GetAppPath() + @"\Cache\Images\production\" + c.LogoPath.Replace("/", "");
+                String cachePath = PrivateData.GetAppPath() + @"\Cache\Images\production\" + logoPath.Replace("/", "");
 
                 if (File.Exists(cachePath))
                 {
@@ -82,16 +97,33 @@ namespace RelationMap.Models
                 else
                 {
                     Directory.CreateDirectory(Path.GetDirectoryName(cachePath));  // Insure Directory Exists
-                    Uri uri = c.Uri(logoSize);
+                    Uri uri = Uri(logoSize);
                     var wc = new WebClient();
                     x = Image.FromStream(wc.OpenRead(uri));
-                    x.Save(cachePath); // This should be a seperate non-blocking Task
+                    x.Save(cachePath); // This should be a separate non-blocking Task
                 }
             }
             return x;
 
         }
-
+        private Uri Uri(LogoSize size)
+        {
+            return MakeImageUri(size.ToString(), LogoPath);
+        }
+        private static Uri MakeImageUri(string size, string path)
+        {
+            //Hack for now and assuming that using SecureBaseUrl.. 
+            return new Uri(string.Format("{0}{1}{2}", TheMovieDb.GetConfigurationSecureBaseUrl(), size, path));
+        }
+        #region Overrides
+        /// <summary>
+        /// Returns this instance ToString
+        /// </summary>
+        public override string ToString()
+        {
+            return Name;
+        }
+        #endregion
         #region HashCodes / Object Identification
         //TODO - use / include the "correct" id..
         private int _hashCode = 0;
@@ -101,7 +133,7 @@ namespace RelationMap.Models
             {
                 return _hashCode == 0 ? generateHashCode() : _hashCode;
             }
-            //Need set for persistance to restore 
+            //Need set for persistence to restore 
             set
             {
                 _hashCode = value;
@@ -125,8 +157,16 @@ namespace RelationMap.Models
         }
         public override bool Equals(object obj)
         {
-            return obj.GetHashCode().Equals(HashCode); // == this.GetHashCode();
+            if (obj is int)
+            {
+               return Id.Equals((int)obj);
+            }
+            else
+            {
+                return obj.GetHashCode().Equals(HashCode); // == this.GetHashCode();
+            }
         }
+
         #endregion
     }
 }

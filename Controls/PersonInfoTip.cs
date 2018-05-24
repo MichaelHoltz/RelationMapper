@@ -31,15 +31,28 @@ namespace RelationMap.Controls
         {
             InitializeComponent();
         }
+
         public void LoadPersonInfo(ref Person person, ref Movie movie, ref Universe univ)
         {
             p = person;
             selectedMovie = movie;
             u = univ;
+            doWork();
+
+
             
+        }
+        private async void doWork()
+        {
+            //Check to see if the person has all available information
+            if (!p.Updated)
+            {
+                p = await asyncUpdatePerson(p);
+            }
+
             pbProfile.BackgroundImage = p.GetProfileImage(TmdbWrapper.Utilities.ProfileSize.w185);
             //Find Character(s !!!) this person played
-            HashSet<Character> cpba = movie.GetCharactersPlayedByActor(p.Id);
+            HashSet<Character> cpba = selectedMovie.GetCharactersPlayedByActor(p.Id);
             Character c = cpba.First();
 
             lblRole.Text = c.Name;
@@ -65,9 +78,37 @@ namespace RelationMap.Controls
             }
             lblPlaceOfBirth.Text = p.PlaceOfBirth;
             lblBiography.Text = p.Biography;
-
-
-            
         }
+        public void Clear()
+        {
+            pbProfile.BackgroundImage = null;
+            lblBiography.Text = null;
+            lblBirthday.Text = null;
+            lblName.Text = null;
+            lblPlaceOfBirth.Text = null;
+            lblRole.Text = null;
+        }
+        private void lblPlaceOfBirth_Click(object sender, EventArgs e)
+        {
+            //Bring Up Google Maps to see place.
+            if (lblPlaceOfBirth.Text.Length > 0)
+            {
+                String url = "https://www.google.com/maps/place/" + lblPlaceOfBirth.Text.Replace(" ", "+").Trim();
+                System.Diagnostics.Process.Start(url);
+            }
+
+        }
+        private async Task<Person> asyncUpdatePerson(Person p)
+        {
+            TmdbWrapper.Persons.Person fullPerson = await TheMovieDb.GetPersonAsync(p.Id);
+            p.HomePage = fullPerson.Homepage;
+            p.Biography = fullPerson.Biography;
+            p.Birthday = fullPerson.Birthday;
+            p.Deathday = fullPerson.Deathday;
+            p.PlaceOfBirth = fullPerson.PlaceOfBirth;
+            p.Updated = true;
+            return p;
+        }
+
     }
 }

@@ -23,7 +23,7 @@ namespace RelationMap.Models
         /// </summary>
         public int Id { get; set; } //Can't find character ID only Actor so far
         /// <summary>
-        /// Order of Apperence in Movie
+        /// Order of Appearance in Movie
         /// </summary>
         public int Order { get; set; }
         /// <summary>
@@ -31,6 +31,12 @@ namespace RelationMap.Models
         /// </summary>
         public String ProfilePath { get; set; } 
        
+        /// <summary>
+        /// Still not sure what this is.
+        /// </summary>
+        public int CastId { get; set; }
+
+        public String CreditId { get; set; }
         /// <summary>
         /// Character Aliases
         /// </summary>
@@ -46,11 +52,13 @@ namespace RelationMap.Models
             Aliases = new HashSet<string>();
             Actors = new HashSet<int>();
         }
-        public Character(String characterName, int actorId, int order)
+        public Character(String characterName, int actorId, int order, int castId, String creditId)
         {
             Actors = new HashSet<int>();
             Aliases = new HashSet<string>();
             Order = order;
+            CastId = castId;
+            CreditId = creditId;
             assignCharacter(characterName);
             Actors.Add(actorId);
         }

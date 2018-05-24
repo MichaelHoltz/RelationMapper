@@ -79,7 +79,7 @@ namespace TmdbWrapper
         /// </summary>
         /// <param name="movieId">The id of the movie.</param>
         /// <returns>The credits of the movie.</returns>
-        public static async Task<Credits> GetMovieCastAsync(int movieId)
+        public static async Task<Credits> GetMovieCreditsAsync(int movieId)
         {
             var credits = DatabaseCache.GetObject<Credits>(movieId);
             if (credits == null)

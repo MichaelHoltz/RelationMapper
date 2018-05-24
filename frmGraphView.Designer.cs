@@ -33,7 +33,7 @@
             this.pTopBar = new System.Windows.Forms.Panel();
             this.lblFranchises = new System.Windows.Forms.Label();
             this.cbFranchises = new System.Windows.Forms.ComboBox();
-            this.lblStudios = new System.Windows.Forms.Label();
+            this.lblStudioGroups = new System.Windows.Forms.Label();
             this.cbStudios = new System.Windows.Forms.ComboBox();
             this.infoTip1 = new RelationMap.InfoTip();
             this.cbGateways = new System.Windows.Forms.CheckBox();
@@ -68,7 +68,7 @@
             this.pTopBar.Controls.Add(this.tbSearch);
             this.pTopBar.Controls.Add(this.lblFranchises);
             this.pTopBar.Controls.Add(this.cbFranchises);
-            this.pTopBar.Controls.Add(this.lblStudios);
+            this.pTopBar.Controls.Add(this.lblStudioGroups);
             this.pTopBar.Controls.Add(this.cbStudios);
             this.pTopBar.Controls.Add(this.infoTip1);
             this.pTopBar.Controls.Add(this.cbGateways);
@@ -103,14 +103,14 @@
             this.cbFranchises.TabIndex = 25;
             this.cbFranchises.SelectedValueChanged += new System.EventHandler(this.cbFranchises_SelectedValueChanged);
             // 
-            // lblStudios
+            // lblStudioGroups
             // 
-            this.lblStudios.AutoSize = true;
-            this.lblStudios.Location = new System.Drawing.Point(713, 74);
-            this.lblStudios.Name = "lblStudios";
-            this.lblStudios.Size = new System.Drawing.Size(42, 13);
-            this.lblStudios.TabIndex = 26;
-            this.lblStudios.Text = "Studios";
+            this.lblStudioGroups.AutoSize = true;
+            this.lblStudioGroups.Location = new System.Drawing.Point(713, 74);
+            this.lblStudioGroups.Name = "lblStudioGroups";
+            this.lblStudioGroups.Size = new System.Drawing.Size(42, 13);
+            this.lblStudioGroups.TabIndex = 26;
+            this.lblStudioGroups.Text = "StudioGroups";
             // 
             // cbStudios
             // 
@@ -304,7 +304,7 @@
         private InfoTip infoTip1;
         private System.Windows.Forms.Label lblFranchises;
         private System.Windows.Forms.ComboBox cbFranchises;
-        private System.Windows.Forms.Label lblStudios;
+        private System.Windows.Forms.Label lblStudioGroups;
         private System.Windows.Forms.ComboBox cbStudios;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.TextBox tbSearch;

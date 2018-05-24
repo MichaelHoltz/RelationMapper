@@ -10,13 +10,14 @@ using System.Windows.Forms;
 using RelationMap.Models;
 using Newtonsoft.Json;
 using TmdbWrapper;
+using RelationMap.HelperForms;
 namespace RelationMap
 {
     public partial class frmMain : Form
     {
         Universe u;
-        Studio marvel; 
-        Studio dc;
+        StudioGroup marvel; 
+        StudioGroup dc;
         //Franchise mcu;
         //Franchise dcBatman;
         public frmMain()
@@ -25,25 +26,13 @@ namespace RelationMap
         }
         /// <summary>
         /// Seed and Testing of Universe
+        /// Mostly for Graph Relationship
         /// </summary>
         private void InitializeUniverse()
         {
-            u = new Universe(); // Contains all Studios
-            
-            marvel = u.AddStudio("Marvel"); // Add Studio to Universe
-            //mcu = marvel.AddFranchise("Marvel Cinematic Universe"); //Add Franchise to Studio
-            
-            dc = u.AddStudio("DC"); //Add Studio to universe
-            //dcBatman = dc.AddFranchise("DC Batman"); //Add Franchise to Studio
-
-            InitializeStudio();
-        }
-        /// <summary>
-        /// Seed and Testing of Studio
-        /// </summary>
-        private void InitializeStudio()
-        {
-            ////Studio testStudio = u.AddStudio("TestStudio"); // Add Studio to Universe
+            //////All out of date now so commented out until things settle.
+            ////u = new Universe(); // Contains all StudioGroups
+            ////StudioGroup testStudio = u.AddStudio("TestStudio"); // Add StudioGroup to Universe
             //////Movies in MCU
             ////Movie TestMovie1 = testStudio.AddMovie("TestMovie1", 2018);
             ////TestMovie1.AddCharacter("Character1", "Actor1");
@@ -62,25 +51,28 @@ namespace RelationMap
         private void btnLoadFranchise_Click(object sender, EventArgs e)
         {
             u = PersistanceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\uinverse2.json"));
-
-            //PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\universeBackup.json"), u); // Save a backup
             lbActors.Items.Clear();
             lbCharacters.Items.Clear();
             tbActor.Clear();
             tbCharacter.Clear();
-            tbMovieTitle.Clear();
-            tbReleaseYear.Clear();
             lbMovies.Items.Clear();
             refreshLists();
         }
         private void refreshLists()
         {
-            //Clear Studio List 
+            ////Clear StudioGroup List 
             cbStudios.Items.Clear();
-            cbStudios.Items.Add("All");
-            //Load All Studios
-            cbStudios.Items.AddRange(u.Studios.Select(o => o.Name).ToArray());
-            cbStudios.SelectedIndex = 0;
+            //Load All StudioGroups
+            cbStudios.Items.Add("All"); //Add All to the list for selection
+            cbStudios.Items.AddRange(u.StudioGroups.ToArray()); //Should add u.GetAllStudioGroups
+            //cbStudios.SelectedIndex = 0;
+
+            lbMovies.Items.Clear();
+            lbMovies.Items.AddRange(u.GetAllMovies().ToArray());
+
+            lbProductionCompanies.Items.Clear();
+            lbProductionCompanies.Items.AddRange(u.ProductionCompanies.ToArray()); // Should add u.GetAllProductionCompanies
+
         }
         private void lbMovies_SelectedValueChanged(object sender, EventArgs e)
         {
@@ -103,15 +95,10 @@ namespace RelationMap
                 {
                     lbActors.Items.Add(item);
                 }
-                HandleAddingButtons();
             }
 
         }
-        private void HandleAddingButtons()
-        {
-            btnAddToMovie.Enabled = lbMovies.SelectedIndex >= 0 && tbCharacter.TextLength > 0 && tbActor.TextLength > 0;
-            btnAddMovie.Enabled = cbStudios.SelectedItem.ToString() != "All" && tbMovieTitle.TextLength > 0 && tbReleaseYear.TextLength > 0; ; // Handle Toggle on Button
-        }
+
         private void btnSaveUniverse_Click(object sender, EventArgs e)
         {
 
@@ -120,13 +107,7 @@ namespace RelationMap
 
 
 
-        private void btnAddToMovie_Click(object sender, EventArgs e)
-        {
-            Movie m = u.GetMovie(lbMovies.SelectedItem.ToString());
-            //////m.AddCharacter(tbCharacter.Text, tbActor.Text);
-            lbCharacters.Items.Add(tbCharacter.Text);
-            lbActors.Items.Add(tbActor.Text);
-        }
+
 
 
         /// <summary>
@@ -198,133 +179,121 @@ namespace RelationMap
                 cbFranchises.Items.Add("All");
                 cbFranchises.Items.Add("None");
                 String studioStr = cbStudios.SelectedItem.ToString();
-                if ( studioStr == "All")
-                {
-                    cbFranchises.Items.AddRange(u.GetAllFranchises().Select(o=>o.Name).ToArray());
-                }
-                else {
-                    Studio s = u.GetStudio(studioStr);
-                    cbFranchises.Items.AddRange(u.GetAllFranchises(s).Select(o => o.Name).ToArray());
-                }
+                //if ( studioStr == "All")
+                //{
+                //    cbFranchises.Items.AddRange(u.GetAllFranchises().Select(o=>o.Name).ToArray());
+                //}
+                //else {
+                //    StudioGroup s = u.GetStudio(studioStr);
+                //    cbFranchises.Items.AddRange(u.GetAllFranchises(s).Select(o => o.Name).ToArray());
+                //}
 
                 cbFranchises.SelectedIndex = 0;
-                HandleAddingButtons();
             }
 
         }
 
         private void cbFranchises_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (cbFranchises.SelectedIndex >= 0)
-            {
-                lbMovies.Items.Clear();
-
-                String studioStr = cbStudios.SelectedItem.ToString();
-                String franchiseStr = cbFranchises.SelectedItem.ToString();
-
-                if (studioStr == "All") // All franchises
-                {
-                    foreach (Studio s in u.Studios)
-                    {
-                        if (franchiseStr == "All")
-                        {
-                            addFranchiseItems(s, null);
-                        }
-                        else if(franchiseStr == "None")
-                        {
-                            addNoFranchiseItems(s);
-                        }
-                        else
-                        {
-                            Franchise f = s.GetFranchise(franchiseStr);
-                            if(f!=null)
-                                addFranchiseItems(s, f);
-                        }
-
-                    }
-                }
-                else // Specific Franchise Chosen.
-                {
-                    Studio s = u.GetStudio(studioStr);
-                    if (franchiseStr == "All")
-                    {
-                        addFranchiseItems(s, null);
-                    }
-                    else if (franchiseStr == "None")
-                    {
-                        addNoFranchiseItems(s);
-                    }
-                    else
-                    {
-                        Franchise f = s.GetFranchise(franchiseStr);
-                        addFranchiseItems(s, f);
-                    }
-                }
-
-            }
-        }
-        private void addFranchiseItems(Studio s, Franchise f)
-        {
-            foreach (Movie item in s.Movies)
-            {
-                if (f == null  || f.IsMovieInFranchise(item))
-                {
-                    lbMovies.Items.Add(item.Title);
-                }
-                
-            }
-            //foreach (TvShow item in s.TvShows)
+            //if (cbFranchises.SelectedIndex >= 0)
             //{
-            //    if (f == null || f.IsTvShowInFranchise(item))
-            //    {
+            //    //lbMovies.Items.Clear();
 
-            //        lbTvShows.Items.Add(item.Name);
+            //    //String studioStr = cbStudios.SelectedItem.ToString();
+            //    //String franchiseStr = cbFranchises.SelectedItem.ToString();
+
+            //    //if (studioStr == "All") // All franchises
+            //    //{
+            //    //    foreach (StudioGroup s in u.StudioGroups)
+            //    //    {
+            //    //        if (franchiseStr == "All")
+            //    //        {
+            //    //            addFranchiseItems(s, null);
+            //    //        }
+            //    //        else if(franchiseStr == "None")
+            //    //        {
+            //    //            addNoFranchiseItems(s);
+            //    //        }
+            //    //        else
+            //    //        {
+            //    //            Franchise f = s.GetFranchise(franchiseStr);
+            //    //            if(f!=null)
+            //    //                addFranchiseItems(s, f);
+            //    //        }
+
+            //    //    }
             //    }
+            //    else // Specific Franchise Chosen.
+            //    {
+            //        //StudioGroup s = u.GetStudio(studioStr);
+            //        //if (franchiseStr == "All")
+            //        //{
+            //        //    addFranchiseItems(s, null);
+            //        //}
+            //        //else if (franchiseStr == "None")
+            //        //{
+            //        //    addNoFranchiseItems(s);
+            //        //}
+            //        //else
+            //        //{
+            //        //    Franchise f = s.GetFranchise(franchiseStr);
+            //        //    addFranchiseItems(s, f);
+            //        //}
+            //    }
+
             //}
         }
-        private void addNoFranchiseItems(Studio s)
-        {
-            foreach (Franchise f in s.Franchises)
-            {
+        //private void addFranchiseItems(StudioGroup s, Franchise f)
+        //{
+        //    foreach (Movie item in s.Movies)
+        //    {
+        //        if (f == null  || f.IsMovieInFranchise(item))
+        //        {
+        //            lbMovies.Items.Add(item.Title);
+        //        }
+                
+        //    }
+        //    //foreach (TvShow item in s.TvShows)
+        //    //{
+        //    //    if (f == null || f.IsTvShowInFranchise(item))
+        //    //    {
 
-                foreach (Movie item in s.Movies)
-                {
-                    if (!f.IsMovieInFranchise(item))
-                    {
-                        lbMovies.Items.Add(item.Title);
-                    }
+        //    //        lbTvShows.Items.Add(item.Name);
+        //    //    }
+        //    //}
+        //}
+        //private void addNoFranchiseItems(StudioGroup s)
+        //{
+        //    foreach (Franchise f in s.Franchises)
+        //    {
 
-                }
-                //foreach (TvShow item in s.TvShows)
-                //{
-                //    if (!f.IsTvShowInFranchise(item))
-                //    {
+        //        foreach (Movie item in s.Movies)
+        //        {
+        //            if (!f.IsMovieInFranchise(item))
+        //            {
+        //                lbMovies.Items.Add(item.Title);
+        //            }
 
-                //        lbTvShows.Items.Add(item.Name);
-                //    }
-                //}
-            }
+        //        }
+        //        //foreach (TvShow item in s.TvShows)
+        //        //{
+        //        //    if (!f.IsTvShowInFranchise(item))
+        //        //    {
 
-        }
+        //        //        lbTvShows.Items.Add(item.Name);
+        //        //    }
+        //        //}
+        //    }
 
-        private void tbMovieTitle_TextChanged(object sender, EventArgs e)
-        {
-            HandleAddingButtons();
-        }
-
-        private void tbReleaseYear_TextChanged(object sender, EventArgs e)
-        {
-            HandleAddingButtons();
-        }
+        //}
 
         private void tbCharacter_TextChanged(object sender, EventArgs e)
         {
-            HandleAddingButtons();
         }
 
         private void tbActor_TextChanged(object sender, EventArgs e)
         {
-            HandleAddingButtons();
+
         }
 
         private void btnShowGraph_Click(object sender, EventArgs e)
@@ -335,8 +304,6 @@ namespace RelationMap
 
 
 
-
-
         private void btnCharacterEditor_Click(object sender, EventArgs e)
         {
             Movie m = u.GetMovie(lbMovies.SelectedItem.ToString());
@@ -344,35 +311,11 @@ namespace RelationMap
             cf.ShowDialog();
 
         }
-        private void btnAddMovie_Click(object sender, EventArgs e)
+
+        private void btnStudioGroupMaker_Click(object sender, EventArgs e)
         {
-            //Must have a selected Studio for relationships to work
-            Studio s = u.GetStudio(cbStudios.SelectedItem.ToString());
-
-            Movie m = s.AddMovie(tbMovieTitle.Text, Convert.ToInt32(tbReleaseYear.Text));
-
-            String fr = cbFranchises.SelectedItem.ToString();
-
-            if (fr != "All" && fr != "None")
-            {
-                s.AddMovieToFranchise(m, fr);
-            }
+            frmStudioGroupMaker fsgm = new frmStudioGroupMaker(u);
+            fsgm.ShowDialog();
         }
-        private void btnFindMovie_Click(object sender, EventArgs e)
-        {
-            if (lbMovies.SelectedIndex >= 0)
-            {
-                MovieFinder mf = new MovieFinder(lbMovies.SelectedItem.ToString());
-                mf.ShowDialog();
-            }
-            else
-            {
-                MovieFinder mf = new MovieFinder();
-                mf.ShowDialog();
-            }
-
-        }
-
-
     }
 }
