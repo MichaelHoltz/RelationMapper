@@ -7,6 +7,7 @@ using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
+using System.Windows.Forms;
 
 namespace RelationMap.Utility
 {
@@ -85,74 +86,187 @@ namespace RelationMap.Utility
             //    Math.Abs(p1.X - p2.X), Math.Abs(p1.Y - p2.Y));
             //return r;
         }
-        public static void DrawConstrainedRectangle(Graphics g, Pen penToUse, Point start, Point end, float ratio = 0.33f)
+
+        public static Point GetTopLeft(Point p1, Point p2)
         {
+            if (p1.X < p2.X || p1.Y > p2.Y) // Drawing Right to left or //Drawing Top to bottom
+            {
+                Point t = p1;
+                p1 = p2;
+                p2 = t;
+            }
+            return p1;
+        }
+        public static Rectangle DrawConstrainedRectangle(Graphics g, Pen penToUse, Point start, Point end, float ratio = 0.33f)
+        {
+
 
             Rectangle rect = GetConstrainedRectangle(start, end, ratio);
             Region r = new Region(rect);
             r.Xor(g.ClipBounds);
             g.DrawRectangle(penToUse, rect);
+            return rect;
         }
-        public static Bitmap CropToRectangle(Image srcImage, PointF start, PointF end, int newWidth, int newHeight, int sw, int sh)
+
+
+        public static Rectangle ScaleToImage(PictureBox srcPictureBox, Point start, Point end, PictureBox destPictureBox)
         {
-            //Scale of the Points are to the Control the image is in, not to the image - unless the scale is identical
-            //gs.VisibleClipBounds vs srcImage.Width and SrcImage.Height.
-            //float 
+            //Multiple Scale Factors come in to play here.
+            //Source image can be bigger or smaller than the picture box.
+            //The aspect ratio can be Wide or Tall
 
-            float imageRatio = srcImage.Width / (float)srcImage.Height;
-            float containerRatio = sw / (float)sh;
+            //Destination Width and Height 
+            int destWidth = destPictureBox.Width;
+            int destHeight = destPictureBox.Height;
 
-            double scaleX = (double)srcImage.Width / (double)sw;
-            double scaleY = (double)srcImage.Height / (double)sh;
+            Image srcImage = srcPictureBox.BackgroundImage;
+            int srcImgWidth = srcImage.Width;
+            int srcImgHeight = srcImage.Height;
+            int srcPbWidth = srcPictureBox.Width;
+            int srcPbHeight = srcPictureBox.Height;
 
-            if (imageRatio >= containerRatio)
+            ////Assume image is bigger than picture box
+            //float scaleX1 = (float)srcImgWidth / (float)srcPbWidth;
+            //float scaleY1 = (float)srcImgHeight / (float)srcPbHeight;
+            ////Assume image is smaller than picture box
+            float scaleX = (float)srcPbWidth / (float)srcImgWidth;
+            float scaleY = (float)srcPbHeight / (float)srcImgHeight;
+            //float scaleX = scaleX2;
+            //float scaleY = scaleY2;
+
+
+            float filler = 0;
+            if (scaleX <= scaleY)
             {
-                //horizontal image
-                float scaleFactor = sw / (float)srcImage.Width;
-                float scaledHeight = srcImage.Height * scaleFactor;
+                //horizontal image - Means there will be a gap on top and bottom of the image in the container
                 // calculate gap between top of container and top of image
-                float filler = Math.Abs(sh - scaledHeight) / 2;
-                start.X = (int)(start.X / scaleFactor);
-                start.Y = (int)((start.Y - filler) / scaleFactor);
-                end.X = (int)(end.X / scaleFactor);
-                end.Y = (int)((end.Y - filler) / scaleFactor);
+                // horizontal image
+                float scaleFactor = srcPbWidth / (float)srcImgWidth;
+                float scaledHeight = srcImgHeight * scaleFactor;
+
+                filler = Math.Abs(srcPbHeight - srcImgHeight * scaleX) / 2; //filler is wrong if aspect ratio is 1:1
+                //filler = Math.Abs(srcPbHeight * scaleFactor) / 2; 
+                start.X = (int)(start.X / scaleX);
+                start.Y = (int)((start.Y - filler) / scaleX);
+
+                end.X = (int)(end.X / scaleX);
+                end.Y = (int)((end.Y - filler) / scaleX);
 
             }
-            else
+            else //if (scaleX < scaleY)
             {
                 //vertical image
-                float scaleFactor = sh / (float)srcImage.Height;
-                float scaledWidth = srcImage.Width * scaleFactor;
-                float filler = Math.Abs(sw - scaledWidth) / 2;
+                float scaleFactor = srcPbHeight / (float)srcImgHeight;
+                float scaledWidth = srcImgWidth * scaleFactor;
+
+                // calculate gap between sides of container and sides of image
+                filler = Math.Abs(srcPbWidth - scaledWidth) / 2;
                 start.X = (int)((start.X - filler) / scaleFactor);
                 start.Y = (int)(start.Y / scaleFactor);
                 end.X = (int)((end.X - filler) / scaleFactor);
                 end.Y = (int)(end.Y / scaleFactor);
             }
 
+            ////Need to bounding Rectangle/Square of the Circle produced
+            int left = start.X;
+            int top = start.Y;
+            int ssWidth = end.X - start.X;
+            int ssHight = end.Y - start.Y;
+            Rectangle result = new Rectangle(left, top, ssWidth, ssHight);
+            return result;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="srcPictureBox">Background image must be set and BackgroundImage Layout set to zoom</param>
+        /// <param name="start">Starting Point (top left) or (not 100% working, bottom right)</param>
+        /// <param name="end">Ending Point - opposite of start</param>
+        /// <param name="destPictureBox">Destination passed for Height and Width (could be changed to pass other sizes.)</param>
+        /// <returns></returns>
+        public static Bitmap CropToRectangle(PictureBox srcPictureBox, Point start, Point end, PictureBox destPictureBox )
+        {
+            //Scale of the Points are to the Control the image is in, not to the image - unless the scale is identical
+            //gs.VisibleClipBounds vs srcImage.Width and SrcImage.Height.
+            //float 
+            Rectangle scaledBounds = ScaleToImage(srcPictureBox, start, end, destPictureBox);
+            ////Multiple Scale Factors come in to play here.
+            ////Source image can be bigger or smaller than the picture box.
+            ////The aspect ratio can be Wide or Tall
+
+            ////Destination Width and Height 
+            int destWidth = destPictureBox.Width; 
+            int destHeight = destPictureBox.Height;
+
+            Image srcImage = srcPictureBox.BackgroundImage;
+            //int srcImgWidth = srcImage.Width;
+            //int srcImgHeight = srcImage.Height;
+            //int srcPbWidth = srcPictureBox.Width;
+            //int srcPbHeight = srcPictureBox.Height;
+
+            //////Assume image is bigger than picture box
+            ////float scaleX1 = (float)srcImgWidth / (float)srcPbWidth;
+            ////float scaleY1 = (float)srcImgHeight / (float)srcPbHeight;
+            //////Assume image is smaller than picture box
+            //float scaleX = (float)srcPbWidth / (float)srcImgWidth;
+            //float scaleY = (float)srcPbHeight / (float)srcImgHeight;
+            ////float scaleX = scaleX2;
+            ////float scaleY = scaleY2;
+
+
+            //float filler = 0;
+            //if (scaleX <= scaleY)
+            //{
+            //    //horizontal image - Means there will be a gap on top and bottom of the image in the container
+            //    // calculate gap between top of container and top of image
+            //    // horizontal image
+            //    float scaleFactor = srcPbWidth / (float)srcImgWidth;
+            //    float scaledHeight = srcImgHeight * scaleFactor;
+
+            //    filler = Math.Abs(srcPbHeight - srcImgHeight * scaleX) / 2; //filler is wrong if aspect ratio is 1:1
+            //    //filler = Math.Abs(srcPbHeight * scaleFactor) / 2; 
+            //    start.X = (int)(start.X / scaleX);
+            //    start.Y = (int)((start.Y - filler) / scaleX);
+
+            //    end.X = (int)(end.X / scaleX);
+            //    end.Y = (int)((end.Y - filler) / scaleX);
+
+            //}
+            //else //if (scaleX < scaleY)
+            //{
+            //    //vertical image
+            //    float scaleFactor = srcPbHeight / (float)srcImgHeight;
+            //    float scaledWidth = srcImgWidth * scaleFactor;
+
+            //    // calculate gap between sides of container and sides of image
+            //    filler = Math.Abs(srcPbWidth - scaledWidth) / 2;
+            //    start.X = (int)((start.X - filler) / scaleFactor);
+            //    start.Y = (int)(start.Y / scaleFactor);
+            //    end.X = (int)((end.X - filler) / scaleFactor);
+            //    end.Y = (int)(end.Y / scaleFactor);
+            //}
 
             ////Need to bounding Rectangle/Square of the Circle produced
-            float left = start.X;
-            float top = start.Y;
-            float ssWidth = end.X - start.X;
-            float ssHight = end.Y - start.Y;
+           // scaledBounds
+            int left = scaledBounds.Left; // .X;
+            int top = scaledBounds.Top; // start.Y;
+            int ssWidth = scaledBounds.Width; // end.X - start.X;
+            int ssHight = scaledBounds.Height; // end.Y - start.Y;
 
 
 
-            Bitmap dstImage = new Bitmap(newWidth, newHeight, srcImage.PixelFormat);
+            Bitmap dstImage = new Bitmap(destWidth, destHeight, PixelFormat.Format32bppArgb);
 
-            Graphics g = Graphics.FromImage(dstImage);
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.CompositingQuality = CompositingQuality.HighQuality;
-            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            using (Graphics g = Graphics.FromImage(dstImage))
+            {
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+                g.CompositingQuality = CompositingQuality.HighQuality;
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-            //GraphicsPath path = new GraphicsPath();
-            Rectangle destRect = new Rectangle(0, 0, newWidth, newHeight);
-            RectangleF sourceRect = new RectangleF(left, top, ssWidth, ssHight);
+                Rectangle destRect = new Rectangle(0, 0, destWidth, destHeight);
+                Rectangle sourceRect = new Rectangle(left, top, ssWidth, ssHight);
 
-            g.DrawImage(srcImage, destRect, sourceRect, GraphicsUnit.Pixel);
-            
-
+                g.DrawImage(srcImage, destRect, sourceRect, GraphicsUnit.Pixel);
+            }
             return dstImage;
         }
         public static void DrawCircle(Graphics g, Pen penToUse, Point center, int radius)
@@ -168,8 +282,67 @@ namespace RelationMap.Utility
             double radius = Math.Sqrt(dx * dx + dy * dy);
             DrawCircle(g, penToUse, center, (int)radius);
         }
+        public static Image CropToCircle(PictureBox srcPictureBox, Point center, Point endPoint, PictureBox destPictureBox)
+        {
+            //PictureBox srcPictureBox, Point start, Point end, PictureBox destPictureBox
+            ////TODO -implement similar to Crop to rectangle to account for stretched images.
+            ////Scale of the Points are to the Control the image is in, not to the image - unless the scale is identical
+            ////gs.VisibleClipBounds vs srcImage.Width and SrcImage.Height.
+            //double scaleX = srcImage.Width / gs.VisibleClipBounds.Width;
+            //double scaleY = srcImage.Height / gs.VisibleClipBounds.Height;
+            //center.X = (int)(center.X * scaleX);
+            //center.Y = (int)(center.Y * scaleY);
+            //endPoint.X = (int)(endPoint.X * scaleX);
+            //endPoint.Y = (int)(endPoint.Y * scaleY);
 
-        public static Image CropToCircle(Graphics gs, Image srcImage, Point center, Point endPoint)
+            ////Destination Width and Height 
+            int destWidth = destPictureBox.Width;
+            int destHeight = destPictureBox.Height;
+
+            Image srcImage = srcPictureBox.BackgroundImage;
+            Rectangle scaledR = ScaleToImage(srcPictureBox, center, endPoint, destPictureBox);
+
+            double dx = Math.Abs(scaledR.Width); // endPoint.X - center.X;
+            double dy = Math.Abs(scaledR.Height); // endPoint.Y - center.Y;
+            double radius = Math.Sqrt(dx * dx + dy * dy);
+
+            int centerX = scaledR.Left;
+            int centerY = scaledR.Top; // Grr.. not true if inverted.. Grr Grr
+
+
+            var diameter = (int)(radius * 2); //Diameter
+            //Need to bounding Rectangle/Square of the Circle produced
+            int left = (centerX - (int)radius);
+            int top = (centerY - (int)radius);
+
+            //Image dstImage = new Bitmap(srcImage.Width, srcImage.Height, PixelFormat.Format32bppArgb); //For same size as original
+            Image dstImage = new Bitmap(diameter + 2, diameter + 2, PixelFormat.Format32bppArgb);
+            Graphics g = Graphics.FromImage(dstImage);
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.CompositingQuality = CompositingQuality.HighQuality;
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+
+            using (Brush br = new SolidBrush(Color.Transparent))
+            {
+                g.FillRectangle(br, 0, 0, dstImage.Width, dstImage.Height);
+            }
+            GraphicsPath path = new GraphicsPath();
+
+            //path.AddEllipse(left, top, diameter, diameter); // for Original Placement
+            path.AddEllipse(0, 0, diameter, diameter); //Top Left
+
+            //g.DrawEllipse(Pens.Red, left, top, diameter, diameter); // for Original Placement
+
+            //g.DrawEllipse(Pens.Red, 0, 0, diameter, diameter);
+            g.SetClip(path);
+            //g.DrawImage(srcImage, 0,0); 
+            Rectangle destRect = new Rectangle(0, 0, diameter, diameter);
+            Rectangle sourceRect = new Rectangle(left, top, diameter, diameter);
+            g.DrawImage(srcImage, destRect, sourceRect, GraphicsUnit.Pixel);
+
+            return dstImage;
+        }
+        public static Image CropToCircle111(Graphics gs, Image srcImage, Point center, Point endPoint)
         {
             //TODO -implement similar to Crop to rectangle to account for stretched images.
             //Scale of the Points are to the Control the image is in, not to the image - unless the scale is identical
@@ -185,6 +358,10 @@ namespace RelationMap.Utility
             double dx = endPoint.X - center.X;
             double dy = endPoint.Y - center.Y;
             double radius = Math.Sqrt(dx * dx + dy * dy);
+
+
+
+
             var diameter = (int)(radius * 2) ; //Diameter
             //Need to bounding Rectangle/Square of the Circle produced
             int left =  (center.X - (int)radius);
