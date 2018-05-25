@@ -94,12 +94,18 @@ namespace RelationMap.Models
             return Characters.First(o => o.Name == characterName);
         }
         //public HashSet<Character> GetCharacters(String )
-        public HashSet<Person> GetActorsWhoPlayedCharacter(String characterName)
+        public HashSet<int> GetActorsWhoPlayedCharacter(String characterName)
         {
+            HashSet<int> results = new HashSet<int>();
+            if (Characters.Select(o => o.Name == characterName).Contains(true))
+            {
+                Character c = Characters.First(o => o.Name == characterName);
+                results = c.Actors;
+            }
             //////Character c = Characters.First(o => o.Name == characterName);
             //////Person a = c.Actors.First(); //First Actor need to fix this
             //////return c.Actors;
-            return null;
+            return results;
         }
         public HashSet<Person> GetAllActors()
         {
@@ -184,7 +190,7 @@ namespace RelationMap.Models
             {
                 return _hashCode == 0 ? generateHashCode() : _hashCode;
             }
-            //Need set for persistance to restore 
+            //Need set for persistence to restore 
             set
             {
                 _hashCode = value;
