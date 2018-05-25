@@ -152,7 +152,7 @@ namespace RelationMap
                 if (lbMovies.SelectedItems.Count > 0)
                 {
                     Movie m = u.GetMovie(lbMovies.SelectedItem.ToString());
-                    a = m.GetActorsWhoPlayedCharacter(tbCharacter.Text);
+                    //a = m.GetActorsWhoPlayedCharacter(tbCharacter.Text);
                 }
 
                 if (a != null)
