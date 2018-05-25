@@ -20,8 +20,8 @@ namespace RelationMap
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             initTMDB();
-            Application.Run(new CharacterFinder());
-            //Application.Run(new WelcomeForm());
+            //Application.Run(new CharacterFinder());
+            Application.Run(new WelcomeForm());
             //Application.Run(new frmMain());
         }
         /// <summary>
