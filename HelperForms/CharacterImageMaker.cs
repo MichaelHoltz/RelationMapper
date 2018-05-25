@@ -17,8 +17,8 @@ namespace RelationMap.HelperForms
     {
         String CharacterName;
         String SourcePath;
-        private Point mdown;
-        private Point mup;
+        private Point pStart;
+        private Point pEnd;
 
         public CharacterImageMaker()
         {
@@ -32,58 +32,108 @@ namespace RelationMap.HelperForms
         }
         private void CharacterImageMaker_Load(object sender, EventArgs e)
         {
-            if (SourcePath != null)
-            {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+            //Needed to avoid issues with some SSL image links.
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                                                         | SecurityProtocolType.Tls11
                                                         | SecurityProtocolType.Tls12
                                                         | SecurityProtocolType.Ssl3;
+            if (SourcePath != null)
+            {
                 var wc = new WebClient();
-                Image tnImage = Image.FromStream(wc.OpenRead(SourcePath)); //Read from the Internet
-                pbProfile.BackgroundImage = tnImage;
-                tnImage.Save(PrivateData.GetAppPath() + @"\Cache\Images\Characters\source_" + CharacterName + ".png");
+                try
+                {
+                    Image tnImage = Image.FromStream(wc.OpenRead(SourcePath)); //Read from the Internet
+                    pbSourceProfile.BackgroundImage = tnImage;
+                    tnImage.Save(PrivateData.GetAppPath() + @"\Cache\Images\Characters\source_" + CharacterName + ".png");
+                }
+                catch (Exception err)
+                {
+                    MessageBox.Show(err.Message + "\r\n" + SourcePath);
+                }
+            }
+        }
+        private void cbTestImages_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbTestImages.SelectedIndex >= 0)
+            {
+                String testImage = cbTestImages.SelectedItem.ToString();
+                CharacterName = testImage;
+                String testImagePath = PrivateData.GetAppPath() + @"\Cache\Images\Characters\" + testImage + ".png";
+                pbSourceProfile.BackgroundImage = Image.FromFile(testImagePath);
             }
         }
         private void pbProfile_MouseMove(object sender, MouseEventArgs e)
         {
+            //Still Dragging
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
             {
-                mup = e.Location;
-                updateSelection();
-                //pbProfile.Refresh();
-                //using (Graphics g = pbProfile.CreateGraphics())
+                
+                //Swap points if needed
+                //if (ImageHelper.GetTopLeft(pStart, e.Location) == e.Location)
                 //{
-                //    g.SmoothingMode = SmoothingMode.AntiAlias;
-                //    Utility.ImageHelper.DrawCircle(g, Pens.Red, mdown, e.Location);
+                //    pEnd = pStart;
+                //    pStart = e.Location;
                 //}
+                //else
+                //{
+                    pEnd = e.Location;
+                //}
+                updateSelection();
             }
+
+            lblMouseNormal.Text = "Mouse X, Y " + e.X + ", " + e.Y;
         }
         private void updateSelection()
         {
-            pbProfile.Refresh();
-            using (Graphics g = pbProfile.CreateGraphics())
+            pbSourceProfile.Refresh();
+            using (Graphics g = pbSourceProfile.CreateGraphics())
             {
+
+
                 if (rbCircle.Checked)
                 {
-                    ImageHelper.DrawCircle(g, Pens.Red, mdown, mup);
+                                        double dx = pEnd.X - pStart.X;
+                    double dy = pEnd.Y - pStart.Y;
+                    double radius = Math.Sqrt(dx * dx + dy * dy);
+                    lblRadius.Text = "Radius: " +radius.ToString();
+                    ImageHelper.DrawCircle(g, Pens.Red, pStart, pEnd);
+
                 }
                 else
                 {
-                    ImageHelper.DrawConstrainedRectangle(g, Pens.Red, mdown, mup, ((float)pbOfficialProfile.Width / (float)pbOfficialProfile.Height));
+
+                    Rectangle selection = ImageHelper.DrawConstrainedRectangle(g, Pens.Red, pStart, pEnd, ((float)pbOfficialProfile.Width / (float)pbOfficialProfile.Height));
+                    //Could invert if needed if drawing from bottom right.
+                    pEnd.X = selection.Right;
+                    pEnd.Y = selection.Bottom;
+                    lbWidth.Text = "Width: " +(pEnd.X - pStart.X).ToString();
+                    lbHeight.Text = "Height: " +(pEnd.Y - pStart.Y).ToString();
+
                 }
+                lblStart.Text = "Start X,Y " + pStart.X.ToString() + ", " + pStart.Y.ToString();
+                lblEnd.Text = "End X,Y " + pEnd.X.ToString() + ", " + pEnd.Y.ToString();
             }
         }
         private void pbProfile_MouseDown(object sender, MouseEventArgs e)
         {
-            mdown = e.Location;
+            //Assumes top left to bottom right drawing
+            pStart = e.Location;
+            lblStart.Text = "Start X,Y " + e.X.ToString() + ", " + e.Y.ToString();
+        }
+        private void pbProfile_MouseUp(object sender, MouseEventArgs e)
+        {
+            pEnd = e.Location;
+            lblEnd.Text = "End X, Y" + e.X.ToString() + ", " + e.Y.ToString();
+            updateSelection();
         }
 
         private void btnMakeThumbNail_Click(object sender, EventArgs e)
         {
-            using (Graphics g = pbProfile.CreateGraphics())
+            using (Graphics g = pbSourceProfile.CreateGraphics())
             {
                 g.SmoothingMode = SmoothingMode.AntiAlias;
-                pbDest.BackgroundImage = ImageHelper.CropToCircle(g, pbProfile.BackgroundImage, mdown, mup);
+                //pbDest.BackgroundImage = ImageHelper.CropToCircle111(g, pbSourceProfile.BackgroundImage, pStart, pEnd);
+                pbDest.BackgroundImage = ImageHelper.CropToCircle(pbSourceProfile, pStart, pEnd, pbDest);
                 pbDest.BackgroundImage.Save(PrivateData.GetAppPath() + @"\Cache\Images\Characters\tn_" + CharacterName +".png");
             }
         }
@@ -92,39 +142,34 @@ namespace RelationMap.HelperForms
             //using (Graphics g = pbProfile.CreateGraphics())
             //{
             //g.SmoothingMode = SmoothingMode.AntiAlias;
-            int pw = pbProfile.Width;
-            int ph = pbProfile.Height;
 
             int opw = pbOfficialProfile.Width;
             int oph = pbOfficialProfile.Height;
             
-            Bitmap newImage = ImageHelper.CropToRectangle(pbProfile.BackgroundImage, mdown, mup, opw, oph, pw, ph);
+            Bitmap newImage = ImageHelper.CropToRectangle(pbSourceProfile, pStart, pEnd, pbOfficialProfile);
             pbOfficialProfile.BackgroundImage = newImage;
-            newImage.Save(PrivateData.GetAppPath() + @"\Cache\Images\Characters\pi_" + CharacterName + ".png"); //dpi doesn't matter so what is going on!!
+            newImage.Save(PrivateData.GetAppPath() + @"\Cache\Images\Characters\pi_" + CharacterName + ".png"); 
                 //pbOfficialProfile.BackgroundImage.Save(PrivateData.GetAppPath() + @"\Cache\Images\Characters\profile.png");
             //}
         }
-        private void pbProfile_MouseUp(object sender, MouseEventArgs e)
-        {
-            mup = e.Location;
-        }
+
 
         private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
-            if (!mdown.IsEmpty && !mup.IsEmpty)
+            if (!pStart.IsEmpty && !pEnd.IsEmpty)
             {
-                mdown.X -= (e.OldValue - e.NewValue);
-                mup.X -= (e.OldValue - e.NewValue);
+                pStart.X -= (e.OldValue - e.NewValue);
+                pEnd.X -= (e.OldValue - e.NewValue);
                 updateSelection();
             }
         }
 
         private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
-            if (!mdown.IsEmpty && !mup.IsEmpty)
+            if (!pStart.IsEmpty && !pEnd.IsEmpty)
             {
-                mdown.Y -= (e.OldValue - e.NewValue);
-                mup.Y -= (e.OldValue - e.NewValue);
+                pStart.Y -= (e.OldValue - e.NewValue);
+                pEnd.Y -= (e.OldValue - e.NewValue);
                 updateSelection();
             }
         }
