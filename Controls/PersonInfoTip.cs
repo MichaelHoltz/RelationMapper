@@ -51,9 +51,19 @@ namespace RelationMap.Controls
             }
 
             pbProfile.BackgroundImage = p.GetProfileImage(TmdbWrapper.Utilities.ProfileSize.w185);
+
             //Find Character(s !!!) this person played
             HashSet<Character> cpba = selectedMovie.GetCharactersPlayedByActor(p.Id);
             Character c = cpba.First();
+            String tnPath = PrivateData.GetAppPath() + @"\Cache\Images\Characters\tn_" + c.Name.Replace("/","") + ".png";
+            if (File.Exists(tnPath))
+            {
+                pbRole.BackgroundImage = Image.FromFile(tnPath);
+            }
+            else
+            {
+                pbRole.BackgroundImage = null;
+            }
 
             lblRole.Text = c.Name;
             lblName.Text = p.Name;

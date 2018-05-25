@@ -34,7 +34,9 @@
             this.lblBirthday = new System.Windows.Forms.Label();
             this.lblPlaceOfBirth = new System.Windows.Forms.Label();
             this.lblBiography = new System.Windows.Forms.Label();
+            this.pbRole = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbProfile)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbRole)).BeginInit();
             this.SuspendLayout();
             // 
             // pbProfile
@@ -99,10 +101,20 @@
             this.lblBiography.TabIndex = 7;
             this.lblBiography.Text = "Bio";
             // 
+            // pbRole
+            // 
+            this.pbRole.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pbRole.Location = new System.Drawing.Point(537, 3);
+            this.pbRole.Name = "pbRole";
+            this.pbRole.Size = new System.Drawing.Size(60, 60);
+            this.pbRole.TabIndex = 8;
+            this.pbRole.TabStop = false;
+            // 
             // PersonInfoTip
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.pbRole);
             this.Controls.Add(this.lblBiography);
             this.Controls.Add(this.lblPlaceOfBirth);
             this.Controls.Add(this.lblBirthday);
@@ -112,6 +124,7 @@
             this.Name = "PersonInfoTip";
             this.Size = new System.Drawing.Size(600, 150);
             ((System.ComponentModel.ISupportInitialize)(this.pbProfile)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbRole)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -125,5 +138,6 @@
         private System.Windows.Forms.Label lblBirthday;
         private System.Windows.Forms.Label lblPlaceOfBirth;
         private System.Windows.Forms.Label lblBiography;
+        private System.Windows.Forms.PictureBox pbRole;
     }
 }
