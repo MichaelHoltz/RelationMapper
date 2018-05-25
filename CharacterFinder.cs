@@ -123,7 +123,24 @@ namespace RelationMap
             //Image Search engine.. Can change to other search engines
             string searchEngineId = PrivateData.GetGoogleSearchId();
             //Base Query
-            string query = lbCharacters.SelectedItem.ToString();
+            Movie m = u.GetMovie(cbMovie.SelectedItem.ToString());
+            int movieReleaseYear = m.ReleaseYear;
+            String movieTitle = m.Title;
+            String characterName = lbCharacters.SelectedItem.ToString().Replace("/", ""); // Remove slash if it exists.
+            String actor = "";
+            HashSet<int> peopleIDs =  m.GetActorsWhoPlayedCharacter(characterName);
+
+            if (peopleIDs.Count() > 0)
+            {
+                int person1 = peopleIDs.First();
+                actor = u.People.First(o => o.Id == person1).Name;
+            }
+            else
+            {
+                //Problem with lookup
+            }
+
+            string query = actor + " as " + characterName + " in " + movieTitle; // Need Movie and Actor example: Jared Leto as The Joker in Suicide Squad // 2016
             CharacterImageSearchResults cisr = new CharacterImageSearchResults();
             var customSearchService = new CustomsearchService(new BaseClientService.Initializer { ApiKey = apiKey });
             var features = customSearchService.Features;
@@ -197,6 +214,8 @@ namespace RelationMap
         {
             if (lbCharacters.SelectedIndex >= 0)
             {
+                //todo - prefer Jared Leto as The Joker in Suicide Squad.json to just character name as they could be duplicates
+                //Need same lookup as CharacterImageMaker to do that..
                 string query = lbCharacters.SelectedItem.ToString(); 
                 string filePath = PrivateData.GetAppPath() + @"\Private\" + query.Replace("/", "_") + ".json";
                 if (File.Exists(filePath))
