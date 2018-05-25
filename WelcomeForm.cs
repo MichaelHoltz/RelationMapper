@@ -13,6 +13,9 @@ using System.Windows.Forms;
 using TmdbWrapper;
 using TheMovieDb = TmdbWrapper.TheMovieDb;
 using TmdbSearch = TmdbWrapper.Search;
+using Google.Apis.Customsearch.v1;
+using Google.Apis.Services;
+using Google.Apis.Customsearch.v1.Data;
 
 namespace RelationMap
 {
@@ -246,7 +249,12 @@ namespace RelationMap
             //}
 
             TmdbWrapper.Movies.Trailers t = await selectedMovieInfo.TrailersAsync(); // Want to have.. does nothing now..
-
+            if (t != null && t.Youtube.Count > 0)
+            {
+                String firstSource = t.Youtube[0].Source;
+                //https://www.youtube.com/watch?v=CmRih_VtVAs // Example of how to use the source.
+            }
+            
 
             u.AddMovie(selectedMovie);
             //Verify This is OK...
@@ -290,6 +298,61 @@ namespace RelationMap
         {
             frmMain fm = new frmMain();
             fm.ShowDialog();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //Example Image Search using Google API
+            string apiKey = PrivateData.GetGoogleApiKey();
+            string searchEngineId = PrivateData.GetGoogleSearchId();
+            const string query = "Gamora Avengers";
+            var customSearchService = new CustomsearchService(new BaseClientService.Initializer { ApiKey = apiKey });
+            var features = customSearchService.Features;
+            var listRequest = customSearchService.Cse.List(query);
+            listRequest.Cx = searchEngineId;
+            listRequest.SearchType = CseResource.ListRequest.SearchTypeEnum.Image;
+            listRequest.ImgType = CseResource.ListRequest.ImgTypeEnum.Face;
+            Console.WriteLine("Start...");
+            IList<Result> paging = new List<Result>();
+            var count = 0;
+            while (paging != null)
+            {
+                Console.WriteLine($"Page {count}");
+                listRequest.Start = count * 10 + 1;
+                if (listRequest.Start >= 30)
+                {
+                    break; // DOn't want all results..  just first 3 pages (30 or so.
+                }
+                paging = listRequest.Execute().Items;
+                if (paging != null)
+                    foreach (var item in paging)
+                    {
+                        //+ "Image :" + item.Image.ContextLink+
+                        Console.WriteLine("Title : " + item.Title + Environment.NewLine 
+                                        + "Image Link: " + item.Link + Environment.NewLine
+                                        + "Thumbnail Link: " +item.Image.ThumbnailLink 
+                                        + Environment.NewLine + Environment.NewLine);
+
+                        //item.Image.ContextLink; // Page From
+                        //item.Title; Context Link Title
+
+                        //item.Link; //Link to full size image
+                        //item.Image.ByteSize;
+                        //item.Image.Height; // Height of item.Link
+                        //item.Image.Width; //Width of item.Link
+                        //item.Mime = (Type of Image)
+
+                        //item.Image.ThumbnailLink; // Link to Thumbnail Image
+                        //item.Image.ThumbnailHeight; // Height of Thumbnail
+                        //item.Image.ThumbnailWidth; //Width of Thumbnail
+                        
+
+
+                    }
+                count++;
+            }
+            Console.WriteLine("Done.");
+            Console.ReadLine();
         }
 
         //public async Task<TmdbWrapper.Movies.Movie> FindFullMovieInfo(int movieId)

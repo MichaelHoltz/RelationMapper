@@ -31,11 +31,12 @@
             this.cbMovie = new System.Windows.Forms.ComboBox();
             this.lblMovie = new System.Windows.Forms.Label();
             this.lbCharacters = new System.Windows.Forms.ListBox();
-            this.lbActors = new System.Windows.Forms.ListBox();
             this.lblCharacters = new System.Windows.Forms.Label();
-            this.lblActors = new System.Windows.Forms.Label();
-            this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.button1 = new System.Windows.Forms.Button();
+            this.flpThumbNails = new System.Windows.Forms.FlowLayoutPanel();
+            this.lblPossibleImages = new System.Windows.Forms.Label();
+            this.btnLoadFromFile = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // cbMovie
@@ -65,15 +66,6 @@
             this.lbCharacters.TabIndex = 2;
             this.lbCharacters.SelectedIndexChanged += new System.EventHandler(this.lbCharacter_SelectedIndexChanged);
             // 
-            // lbActors
-            // 
-            this.lbActors.FormattingEnabled = true;
-            this.lbActors.Location = new System.Drawing.Point(362, 90);
-            this.lbActors.Name = "lbActors";
-            this.lbActors.Size = new System.Drawing.Size(332, 433);
-            this.lbActors.TabIndex = 3;
-            this.lbActors.SelectedIndexChanged += new System.EventHandler(this.lbActor_SelectedIndexChanged);
-            // 
             // lblCharacters
             // 
             this.lblCharacters.AutoSize = true;
@@ -83,46 +75,73 @@
             this.lblCharacters.TabIndex = 4;
             this.lblCharacters.Text = "Characters";
             // 
-            // lblActors
-            // 
-            this.lblActors.AutoSize = true;
-            this.lblActors.Location = new System.Drawing.Point(359, 74);
-            this.lblActors.Name = "lblActors";
-            this.lblActors.Size = new System.Drawing.Size(37, 13);
-            this.lblActors.TabIndex = 5;
-            this.lblActors.Text = "Actors";
-            // 
-            // propertyGrid1
-            // 
-            this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.propertyGrid1.Location = new System.Drawing.Point(734, 0);
-            this.propertyGrid1.Name = "propertyGrid1";
-            this.propertyGrid1.Size = new System.Drawing.Size(383, 541);
-            this.propertyGrid1.TabIndex = 6;
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(523, 42);
+            this.button1.Location = new System.Drawing.Point(409, 25);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 7;
-            this.button1.Text = "button1";
+            this.button1.Text = "Search Google";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // flpThumbNails
+            // 
+            this.flpThumbNails.AutoScroll = true;
+            this.flpThumbNails.AutoScrollMargin = new System.Drawing.Size(5, 5);
+            this.flpThumbNails.AutoScrollMinSize = new System.Drawing.Size(650, 450);
+            this.flpThumbNails.AutoSize = true;
+            this.flpThumbNails.Location = new System.Drawing.Point(391, 90);
+            this.flpThumbNails.MaximumSize = new System.Drawing.Size(700, 450);
+            this.flpThumbNails.MinimumSize = new System.Drawing.Size(700, 450);
+            this.flpThumbNails.Name = "flpThumbNails";
+            this.flpThumbNails.Size = new System.Drawing.Size(700, 450);
+            this.flpThumbNails.TabIndex = 8;
+            // 
+            // lblPossibleImages
+            // 
+            this.lblPossibleImages.AutoSize = true;
+            this.lblPossibleImages.Location = new System.Drawing.Point(388, 74);
+            this.lblPossibleImages.Name = "lblPossibleImages";
+            this.lblPossibleImages.Size = new System.Drawing.Size(73, 13);
+            this.lblPossibleImages.TabIndex = 9;
+            this.lblPossibleImages.Text = "Image Search";
+            // 
+            // btnLoadFromFile
+            // 
+            this.btnLoadFromFile.Location = new System.Drawing.Point(544, 25);
+            this.btnLoadFromFile.Name = "btnLoadFromFile";
+            this.btnLoadFromFile.Size = new System.Drawing.Size(149, 23);
+            this.btnLoadFromFile.TabIndex = 10;
+            this.btnLoadFromFile.Text = "LoadImagesfrom file";
+            this.btnLoadFromFile.UseVisualStyleBackColor = true;
+            this.btnLoadFromFile.Click += new System.EventHandler(this.btnLoadFromFile_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(1121, 97);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 11;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // CharacterFinder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1117, 541);
+            this.ClientSize = new System.Drawing.Size(1383, 636);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btnLoadFromFile);
+            this.Controls.Add(this.lblPossibleImages);
+            this.Controls.Add(this.flpThumbNails);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.propertyGrid1);
-            this.Controls.Add(this.lblActors);
             this.Controls.Add(this.lblCharacters);
-            this.Controls.Add(this.lbActors);
             this.Controls.Add(this.lbCharacters);
             this.Controls.Add(this.lblMovie);
             this.Controls.Add(this.cbMovie);
+            this.DoubleBuffered = true;
             this.Name = "CharacterFinder";
             this.Text = "CharacterFinder";
             this.Load += new System.EventHandler(this.CharacterFinder_Load);
@@ -136,10 +155,11 @@
         private System.Windows.Forms.ComboBox cbMovie;
         private System.Windows.Forms.Label lblMovie;
         private System.Windows.Forms.ListBox lbCharacters;
-        private System.Windows.Forms.ListBox lbActors;
         private System.Windows.Forms.Label lblCharacters;
-        private System.Windows.Forms.Label lblActors;
-        private System.Windows.Forms.PropertyGrid propertyGrid1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.FlowLayoutPanel flpThumbNails;
+        private System.Windows.Forms.Label lblPossibleImages;
+        private System.Windows.Forms.Button btnLoadFromFile;
+        private System.Windows.Forms.Button button2;
     }
 }

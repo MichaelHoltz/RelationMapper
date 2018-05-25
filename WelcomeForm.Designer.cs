@@ -36,6 +36,7 @@
             this.lbActors = new System.Windows.Forms.ListBox();
             this.personInfoTip1 = new RelationMap.Controls.PersonInfoTip();
             this.btnFrmMain = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnTempGetStarted
@@ -109,12 +110,23 @@
             this.btnFrmMain.UseVisualStyleBackColor = true;
             this.btnFrmMain.Click += new System.EventHandler(this.btnFrmMain_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(854, 464);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // WelcomeForm
             // 
             this.AcceptButton = this.btnTempGetStarted;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1263, 652);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnFrmMain);
             this.Controls.Add(this.personInfoTip1);
             this.Controls.Add(this.lbActors);
@@ -141,5 +153,6 @@
         private System.Windows.Forms.ListBox lbActors;
         private Controls.PersonInfoTip personInfoTip1;
         private System.Windows.Forms.Button btnFrmMain;
+        private System.Windows.Forms.Button button1;
     }
 }

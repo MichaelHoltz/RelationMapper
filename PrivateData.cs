@@ -13,23 +13,48 @@ namespace RelationMap
     public static class PrivateData
     {
         /// <summary>
-        /// Get the key from area not controlled by GIT
+        /// Get the TMDB API key from area not controlled by GIT
         /// </summary>
         /// <returns></returns>
         public static string GetTMDBApiKey()
         {
             String filePath = GetAppPath() + @"\Private\tmdbAPIKey.txt";
+            return readKeyFile(filePath);
+        }
+        /// <summary>
+        /// Get the Google API key from area not controlled by GIT
+        /// </summary>
+        /// <returns></returns>
+        public static string GetGoogleApiKey()
+        {
+            String filePath = GetAppPath() + @"\Private\googleAPIKey.txt";
+            return readKeyFile(filePath);
+        }
+        /// <summary>
+        /// Get the Google CSE Id from area not controlled by GIT
+        /// </summary>
+        /// <returns></returns>
+        public static string GetGoogleSearchId()
+        {
+            String filePath = GetAppPath() + @"\Private\googleSearchEngineID.txt";
+            return readKeyFile(filePath);
+        }
+
+        private static string readKeyFile(string fullFileName)
+        {
             //File Path 
             try
             {
-                return File.ReadAllText(filePath);
+                return File.ReadAllText(fullFileName);
             }
             catch
             {
-                MessageBox.Show(filePath + " Not Found. You need to provide your own API Key for TMDB");
+                MessageBox.Show(fullFileName + " Not Found. You need to provide your own API Key / ID.");
                 return "NoAPIKey";
             }
+
         }
+
         public static string GetAppPath()
         {
             string[] s = { "\\bin" };
