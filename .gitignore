@@ -223,25 +223,25 @@ FakesAssemblies/
 .ntvs_analysis.dat
 
 # Visual Studio 6 build log
-*.plg
+#*.plg
 
 # Visual Studio 6 workspace options file
-*.opt
+#*.opt
 
 # Visual Studio LightSwitch build output
-**/*.HTMLClient/GeneratedArtifacts
-**/*.DesktopClient/GeneratedArtifacts
-**/*.DesktopClient/ModelManifest.xml
-**/*.Server/GeneratedArtifacts
-**/*.Server/ModelManifest.xml
-_Pvt_Extensions
+#**/*.HTMLClient/GeneratedArtifacts
+#**/*.DesktopClient/GeneratedArtifacts
+#**/*.DesktopClient/ModelManifest.xml
+#**/*.Server/GeneratedArtifacts
+#**/*.Server/ModelManifest.xml
+#_Pvt_Extensions
 
 # LightSwitch generated files
-GeneratedArtifacts/
-ModelManifest.xml
+#GeneratedArtifacts/
+#ModelManifest.xml
 
 # Paket dependency manager
-.paket/paket.exe
+#.paket/paket.exe
 
 # FAKE - F# Make
-.fake/
+#.fake/
