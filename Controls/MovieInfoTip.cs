@@ -32,12 +32,33 @@ namespace RelationMap.Controls
             selectedMovie = movie;
             u = univ;
             lblTitle.Text = movie.Title;
-            lblReleaseDate.Text = movie.ReleaseDate.Value.ToShortDateString();
+            if (movie.ReleaseDate.HasValue)
+            {
+                lblReleaseDate.Text = movie.ReleaseDate.Value.ToShortDateString();
+                lblReleaseDate.Text += " (" + CalculateAge(movie.ReleaseDate.Value) + " Years ago)";
+
+                //TimeSpan timeago = new TimeSpan();
+                //timeago = DateTime.Now - movie.ReleaseDate.Value;
+                //lblReleaseDate.Text += " (" + timeago.TotalDays + " days ago)";
+            }
+            else
+            {
+                lblReleaseDate.Text = "TBD";
+            }
+
             lblRunTime.Text = movie.Runtime.ToString() + " minutes";
             lblRevenue.Text = movie.Revenue.ToString("C0"); // Currency no cents.
-            if (movie.HomePage != null)
+            //if (movie.HomePage != null)
+            //{
+            //    pbPoster.Tag = movie.HomePage.AbsoluteUri;
+            //}
+            //else
+            //{
+            //    pbPoster.Tag = null;
+            //}
+            if (movie.TrailerLink != null)
             {
-                pbPoster.Tag = movie.HomePage.AbsoluteUri;
+                pbPoster.Tag = movie.TrailerLink;
             }
             else
             {
@@ -45,6 +66,16 @@ namespace RelationMap.Controls
             }
             GetMoviePoster();
             GetProductionCompanyLogos();
+        }
+        public static int CalculateAge(DateTime BirthDate)
+        {
+            int YearsPassed = DateTime.Now.Year - BirthDate.Year;
+            // Are we before the birth date this year? If so subtract one year from the mix
+            if (DateTime.Now.Month < BirthDate.Month || (DateTime.Now.Month == BirthDate.Month && DateTime.Now.Day < BirthDate.Day))
+            {
+                YearsPassed--;
+            }
+            return YearsPassed;
         }
         /// <summary>
         /// Load using Preview information..
@@ -56,6 +87,7 @@ namespace RelationMap.Controls
             if (selectedMovieInfo.ReleaseDate.HasValue)
             {
                 lblReleaseDate.Text = selectedMovieInfo.ReleaseDate.Value.ToShortDateString();
+                lblReleaseDate.Text += " (" + CalculateAge(selectedMovieInfo.ReleaseDate.Value) + " Years ago)";
             }
             else
             {

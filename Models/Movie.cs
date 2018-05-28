@@ -49,6 +49,7 @@ namespace RelationMap.Models
         /// Revenue that this movie gathered.
         /// </summary>
         public Int64 Revenue { get; set; }
+        public String TrailerLink { get; set; }
         /// <summary>
         /// Characters in the movie
         /// </summary>

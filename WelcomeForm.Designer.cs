@@ -30,13 +30,14 @@
         {
             this.btnTempGetStarted = new System.Windows.Forms.Button();
             this.lbMovies = new System.Windows.Forms.ListBox();
-            this.movieInfoTip1 = new RelationMap.Controls.MovieInfoTip();
             this.tbTitleSearch = new System.Windows.Forms.TextBox();
             this.btnSaveToMyMovies = new System.Windows.Forms.Button();
             this.lbActors = new System.Windows.Forms.ListBox();
-            this.personInfoTip1 = new RelationMap.Controls.PersonInfoTip();
             this.btnFrmMain = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnCharacterFinder = new System.Windows.Forms.Button();
+            this.personInfoTip1 = new RelationMap.Controls.PersonInfoTip();
+            this.movieInfoTip1 = new RelationMap.Controls.MovieInfoTip();
+            this.btnTransfer = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnTempGetStarted
@@ -57,13 +58,6 @@
             this.lbMovies.Size = new System.Drawing.Size(391, 277);
             this.lbMovies.TabIndex = 1;
             this.lbMovies.SelectedIndexChanged += new System.EventHandler(this.lbMovies_SelectedIndexChanged);
-            // 
-            // movieInfoTip1
-            // 
-            this.movieInfoTip1.Location = new System.Drawing.Point(441, 65);
-            this.movieInfoTip1.Name = "movieInfoTip1";
-            this.movieInfoTip1.Size = new System.Drawing.Size(600, 150);
-            this.movieInfoTip1.TabIndex = 2;
             // 
             // tbTitleSearch
             // 
@@ -87,18 +81,11 @@
             // lbActors
             // 
             this.lbActors.FormattingEnabled = true;
-            this.lbActors.Location = new System.Drawing.Point(419, 386);
+            this.lbActors.Location = new System.Drawing.Point(200, 405);
             this.lbActors.Name = "lbActors";
             this.lbActors.Size = new System.Drawing.Size(212, 225);
             this.lbActors.TabIndex = 5;
             this.lbActors.SelectedIndexChanged += new System.EventHandler(this.lbActors_SelectedIndexChanged);
-            // 
-            // personInfoTip1
-            // 
-            this.personInfoTip1.Location = new System.Drawing.Point(441, 231);
-            this.personInfoTip1.Name = "personInfoTip1";
-            this.personInfoTip1.Size = new System.Drawing.Size(600, 150);
-            this.personInfoTip1.TabIndex = 8;
             // 
             // btnFrmMain
             // 
@@ -110,15 +97,40 @@
             this.btnFrmMain.UseVisualStyleBackColor = true;
             this.btnFrmMain.Click += new System.EventHandler(this.btnFrmMain_Click);
             // 
-            // button1
+            // btnCharacterFinder
             // 
-            this.button1.Location = new System.Drawing.Point(854, 464);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnCharacterFinder.Location = new System.Drawing.Point(247, 376);
+            this.btnCharacterFinder.Name = "btnCharacterFinder";
+            this.btnCharacterFinder.Size = new System.Drawing.Size(121, 23);
+            this.btnCharacterFinder.TabIndex = 10;
+            this.btnCharacterFinder.Text = "Character Finder";
+            this.btnCharacterFinder.UseVisualStyleBackColor = true;
+            this.btnCharacterFinder.Click += new System.EventHandler(this.btnCharacterFinder_Click);
+            // 
+            // personInfoTip1
+            // 
+            this.personInfoTip1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.personInfoTip1.Location = new System.Drawing.Point(441, 349);
+            this.personInfoTip1.Name = "personInfoTip1";
+            this.personInfoTip1.Size = new System.Drawing.Size(785, 278);
+            this.personInfoTip1.TabIndex = 8;
+            // 
+            // movieInfoTip1
+            // 
+            this.movieInfoTip1.Location = new System.Drawing.Point(441, 65);
+            this.movieInfoTip1.Name = "movieInfoTip1";
+            this.movieInfoTip1.Size = new System.Drawing.Size(600, 278);
+            this.movieInfoTip1.TabIndex = 2;
+            // 
+            // btnTransfer
+            // 
+            this.btnTransfer.Location = new System.Drawing.Point(53, 427);
+            this.btnTransfer.Name = "btnTransfer";
+            this.btnTransfer.Size = new System.Drawing.Size(75, 23);
+            this.btnTransfer.TabIndex = 11;
+            this.btnTransfer.Text = "Transfer";
+            this.btnTransfer.UseVisualStyleBackColor = true;
+            this.btnTransfer.Click += new System.EventHandler(this.btnTransfer_Click);
             // 
             // WelcomeForm
             // 
@@ -126,7 +138,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1263, 652);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnTransfer);
+            this.Controls.Add(this.btnCharacterFinder);
             this.Controls.Add(this.btnFrmMain);
             this.Controls.Add(this.personInfoTip1);
             this.Controls.Add(this.lbActors);
@@ -153,6 +166,7 @@
         private System.Windows.Forms.ListBox lbActors;
         private Controls.PersonInfoTip personInfoTip1;
         private System.Windows.Forms.Button btnFrmMain;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnCharacterFinder;
+        private System.Windows.Forms.Button btnTransfer;
     }
 }

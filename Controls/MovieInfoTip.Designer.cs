@@ -44,7 +44,7 @@
             this.pbPoster.Dock = System.Windows.Forms.DockStyle.Left;
             this.pbPoster.Location = new System.Drawing.Point(0, 0);
             this.pbPoster.Name = "pbPoster";
-            this.pbPoster.Size = new System.Drawing.Size(119, 150);
+            this.pbPoster.Size = new System.Drawing.Size(185, 278);
             this.pbPoster.TabIndex = 0;
             this.pbPoster.TabStop = false;
             this.pbPoster.Click += new System.EventHandler(this.pbPoster_Click);
@@ -53,7 +53,7 @@
             // 
             this.lblTitle.AutoSize = true;
             this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.Location = new System.Drawing.Point(120, 3);
+            this.lblTitle.Location = new System.Drawing.Point(186, 3);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(39, 16);
             this.lblTitle.TabIndex = 1;
@@ -62,7 +62,7 @@
             // lblRunTime
             // 
             this.lblRunTime.AutoSize = true;
-            this.lblRunTime.Location = new System.Drawing.Point(120, 35);
+            this.lblRunTime.Location = new System.Drawing.Point(186, 35);
             this.lblRunTime.Name = "lblRunTime";
             this.lblRunTime.Size = new System.Drawing.Size(50, 13);
             this.lblRunTime.TabIndex = 2;
@@ -71,7 +71,7 @@
             // lblRevenue
             // 
             this.lblRevenue.AutoSize = true;
-            this.lblRevenue.Location = new System.Drawing.Point(120, 51);
+            this.lblRevenue.Location = new System.Drawing.Point(186, 51);
             this.lblRevenue.Name = "lblRevenue";
             this.lblRevenue.Size = new System.Drawing.Size(51, 13);
             this.lblRevenue.TabIndex = 3;
@@ -80,15 +80,15 @@
             // flpProductionCompanies
             // 
             this.flpProductionCompanies.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.flpProductionCompanies.Location = new System.Drawing.Point(119, 100);
+            this.flpProductionCompanies.Location = new System.Drawing.Point(185, 228);
             this.flpProductionCompanies.Name = "flpProductionCompanies";
-            this.flpProductionCompanies.Size = new System.Drawing.Size(481, 50);
+            this.flpProductionCompanies.Size = new System.Drawing.Size(415, 50);
             this.flpProductionCompanies.TabIndex = 4;
             // 
             // lblReleaseDate
             // 
             this.lblReleaseDate.AutoSize = true;
-            this.lblReleaseDate.Location = new System.Drawing.Point(120, 19);
+            this.lblReleaseDate.Location = new System.Drawing.Point(186, 19);
             this.lblReleaseDate.Name = "lblReleaseDate";
             this.lblReleaseDate.Size = new System.Drawing.Size(69, 13);
             this.lblReleaseDate.TabIndex = 5;
@@ -106,7 +106,7 @@
             this.Controls.Add(this.pbPoster);
             this.DoubleBuffered = true;
             this.Name = "MovieInfoTip";
-            this.Size = new System.Drawing.Size(600, 150);
+            this.Size = new System.Drawing.Size(600, 278);
             ((System.ComponentModel.ISupportInitialize)(this.pbPoster)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -42,6 +42,22 @@ namespace RelationMap.Controls
 
             
         }
+        private void pbRole_Click(object sender, EventArgs e)
+        {
+            String CharacterName = lblRole.Text;
+            String tnPath = PrivateData.GetAppPath() + @"\Cache\Images\Characters\pi_" + CharacterName.Replace("/", "") + ".png";
+            if (File.Exists(tnPath))
+            {
+                pbRoleProfile.BackgroundImage = Image.FromFile(tnPath);
+            }
+            else
+            {
+                String piPath = PrivateData.GetAppPath() + @"\Cache\Images\Characters\tn_" + lblName.Text.Replace("/", "") + ".png";
+                pbRoleProfile.BackgroundImage = Image.FromFile(piPath);
+            }
+
+
+        }
         private async void doWork()
         {
             //Check to see if the person has all available information
@@ -56,6 +72,7 @@ namespace RelationMap.Controls
             HashSet<Character> cpba = selectedMovie.GetCharactersPlayedByActor(p.Id);
             Character c = cpba.First();
             String tnPath = PrivateData.GetAppPath() + @"\Cache\Images\Characters\tn_" + c.Name.Replace("/","") + ".png";
+            String piath = PrivateData.GetAppPath() + @"\Cache\Images\Characters\pi_" + c.Name.Replace("/", "") + ".png";
             if (File.Exists(tnPath))
             {
                 pbRole.BackgroundImage = Image.FromFile(tnPath);
@@ -64,7 +81,14 @@ namespace RelationMap.Controls
             {
                 pbRole.BackgroundImage = null;
             }
-
+            if (File.Exists(piath))
+            {
+                pbRoleProfile.BackgroundImage = Image.FromFile(piath);
+            }
+            else
+            {
+                pbRoleProfile.BackgroundImage = null;
+            }
             lblRole.Text = c.Name;
             lblName.Text = p.Name;
             if (p.Deathday != null)
@@ -119,6 +143,7 @@ namespace RelationMap.Controls
             p.Updated = true;
             return p;
         }
+
 
     }
 }

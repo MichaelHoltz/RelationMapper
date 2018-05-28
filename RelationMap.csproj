@@ -114,8 +114,11 @@
     <Compile Include="HelperForms\frmStudioGroupMaker.Designer.cs">
       <DependentUpon>frmStudioGroupMaker.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Hashable.cs" />
+    <Compile Include="Models\MovieRole.cs" />
     <Compile Include="Models\CharacterImageSearchResult.cs" />
     <Compile Include="Models\CharacterImageSearchResults.cs" />
+    <Compile Include="Models\CharacterMovieMap.cs" />
     <Compile Include="Models\MovieCollection.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\Character.cs" />

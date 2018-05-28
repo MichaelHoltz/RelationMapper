@@ -23,7 +23,7 @@ using DrawingNode = Microsoft.Msagl.Drawing.Node;
 using DrawingColor = Microsoft.Msagl.Drawing.Color;
 using Color = System.Drawing.Color;
 using Microsoft.Msagl.Routing;
-
+using System.Net;
 
 namespace RelationMap
 {
@@ -349,7 +349,8 @@ namespace RelationMap
             else
             {
                 Movie m = n.UserData as Movie;
-                String movieID = m.Title + " (" + m.ReleaseYear + ")";
+                //String movieID = m.Title + " (" + m.ReleaseYear + ")";
+                String movieID = m.Title + " (" + m.ReleaseDate.Value.ToShortDateString() + ")";
                 foreach (Character c in m.Characters)
                 {
                     AE(master, aeMaster, movieID, c.Name, CharacterColor, c);
@@ -534,14 +535,14 @@ namespace RelationMap
 
         private void cbStudios_SelectedValueChanged(object sender, EventArgs e)
         {
-            //if (cbStudios.SelectedIndex >= 0)
-            //{
+            if (cbStudios.SelectedIndex >= 0)
+            {
             //    //lbMovies.Items.Clear();
             //    //lbTvShows.Items.Clear();
 
-            //    cbFranchises.Items.Clear();
-            //    cbFranchises.Items.Add("All");
-            //    cbFranchises.Items.Add("None");
+                cbFranchises.Items.Clear();
+                cbFranchises.Items.Add("All");
+                cbFranchises.Items.Add("None");
             //    String studioStr = cbStudios.SelectedItem.ToString();
             //    if (studioStr == "All")
             //    {
@@ -554,7 +555,7 @@ namespace RelationMap
 
             //    cbFranchises.SelectedIndex = 0;
             //    //HandleAddingButtons();
-            //}
+            }
         }
 
         private void cbFranchises_SelectedValueChanged(object sender, EventArgs e)
@@ -607,6 +608,7 @@ namespace RelationMap
             //List<DrawingNode> nodeListLoaders = new List<DrawingNode>(); // List for Constraint
             master.LayerConstraints.RemoveAllConstraints();
 
+            HashSet<ProductionCompany> Studios = u.ProductionCompanies;
             HashSet<StudioGroup> StudioGroups = u.StudioGroups;
             //HashSet<Franchise> franchises = u.GetAllFranchises();
             HashSet<Franchise> franchises = null;
@@ -625,6 +627,24 @@ namespace RelationMap
             //    franchises.Add(StudioGroups.First().GetFranchise(franchiseStr));
             //}
             //StudioGroups
+
+            foreach (ProductionCompany s in Studios)
+            {
+                master.AddNode(s.Name).Attr.FillColor = StudioColor;
+                FN(master, s.Name).UserData = s;
+                nodeListStudios.Add(FN(master, s.Name));
+                SetNodeDelegate(FN(master, s.Name)); // Allows this node to be custom drawn
+                foreach (Movie m in u.Movies)
+                {
+                    if (m.ProductionCompanies.Contains(s.Id))
+                    {
+                        // String movieID = m.Title + " (" + m.ReleaseYear + ")";
+                        String movieID = m.Title + " (" + m.ReleaseDate.Value.ToShortDateString() + ")";
+                        AE(master, aeMaster, s.Name, movieID, MovieColor, m);
+                        SetNodeDelegate(FN(master, movieID)); // Allows this node to be custom draw
+                    }
+                }
+            }
             foreach (StudioGroup s in StudioGroups)
             {
                 //AE(master, aeMaster, "WEB Servers", item.Name, WebColor, item);
@@ -662,7 +682,8 @@ namespace RelationMap
                 //Movies Not in a Franchise
                 foreach (Movie m in u.GetAllMoviesNotInAnyFranchise(s))
                 {
-                    String movieID = m.Title + " (" + m.ReleaseYear + ")";
+                    //String movieID = m.Title + " (" + m.ReleaseYear + ")";
+                    String movieID = m.Title + " (" + m.ReleaseDate.Value.ToShortDateString() + ")";
                     AE(master, aeMaster, s.Name, movieID, MovieColor, m);
                     SetNodeDelegate(FN(master, movieID)); // Allows this node to be custom draw
                 }
@@ -831,11 +852,22 @@ namespace RelationMap
                     {
                         j = imageList.Find(o => o.Tag.ToString() == "Default");
                     }
-                    return ScaleImage(j, 160, 60);
+                    return Utility.ImageHelper.ScaleImage(j, 160, 60);
                 }
                 if (userData is Character)
                 {
                     groupId = "Character"; //(userData as Character).group.ToString();
+                }
+                if (userData is ProductionCompany)
+                {
+                    Image j = (userData as ProductionCompany).GetLogo(TmdbWrapper.Utilities.LogoSize.w45).Result;
+                    if (j == null)
+                    {
+                        j = imageList.Find(o => o.Tag.ToString() == "Default");
+                        
+                    }
+                    return Utility.ImageHelper.ScaleImage(j, 160, 60);
+
                 }
                 //if (userData is Gateway)
                 //{
@@ -852,37 +884,12 @@ namespace RelationMap
             {
                 i = imageList.Find(o => o.Tag.ToString() == "Default");
             }
-            return ScaleImage(i, 80, 30);
+            return Utility.ImageHelper.ScaleImage(i, 80, 30);
 
         }
 
         #region Universal Code to handle nodes in non-default ways.
-        /// <summary>
-        /// Generic Function to Scale an image
-        /// 
-        /// TODO - Not sure it does what I'm looking for as I don't want to loose quality by down scaling and it seems to do that.
-        /// Just looking for dimensions to reduce while maintaining aspect ratio.
-        /// </summary>
-        /// <param name="image"></param>
-        /// <param name="maxWidth"></param>
-        /// <param name="maxHeight"></param>
-        /// <returns></returns>
-        public static Image ScaleImage(Image image, int maxWidth, int maxHeight)
-        {
-            var ratioX = (double)maxWidth / image.Width;
-            var ratioY = (double)maxHeight / image.Height;
-            var ratio = Math.Min(ratioX, ratioY);
 
-            var newWidth = (int)(image.Width * ratio);
-            var newHeight = (int)(image.Height * ratio);
-
-            var newImage = new Bitmap(newWidth, newHeight);
-
-            using (var graphics = Graphics.FromImage(newImage))
-                graphics.DrawImage(image, 0, 0, newWidth, newHeight);
-
-            return newImage;
-        }
         public void SetNodeDelegate(DrawingNode dn)
         {
             if (dn != null)

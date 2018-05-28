@@ -41,7 +41,11 @@ namespace RelationMap.Models
         /// All Actual People related to movies, TV Shows, and the production of them.
         /// </summary>
         public HashSet<Person> People { get; set; }
-
+        public int NextCharacterIndex { get; set; }
+        /// <summary>
+        /// All characters in all movies - (Seems could be role like Character or Crew - Producer etc.)
+        /// </summary>
+        public HashSet<Character> Characters { get; set; }
         public Universe()
         {
             StudioGroups = new HashSet<StudioGroup>();
@@ -49,6 +53,7 @@ namespace RelationMap.Models
             ProductionCompanies = new HashSet<ProductionCompany>();
             Movies = new HashSet<Movie>();
             People = new HashSet<Person>();
+            Characters = new HashSet<Character>();
         }
         #region People
         public Boolean AddPerson(Person person)
@@ -77,7 +82,7 @@ namespace RelationMap.Models
             Boolean result = Movies.Add(movie);
             if (!result) // Movie already there, but need to update
             {
-                Movies.Remove(movie); // Hack at update by just replacing.
+                Movies.Remove(movie); // Hack at update by just replacing. (This would mess up any character settings if they were implemented)
                 result = Movies.Add(movie);
             }
             return result;

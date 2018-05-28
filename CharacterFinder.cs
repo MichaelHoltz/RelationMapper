@@ -201,7 +201,10 @@ namespace RelationMap
             }
             //Console.WriteLine("Done.");
             //Console.ReadLine();
-            PersistanceBase.Save(PrivateData.GetAppPath() + @"\Private\" + query.Replace("/", "_") + ".json", cisr);
+            //No Slashes
+            //No Colon
+            //Can't have quotes (Escaped or otherwise)
+            PersistanceBase.Save(PrivateData.GetAppPath() + @"\Private\" + query.Replace("/", "_").Replace(":", "") + ".json", cisr);
         }
         /// <summary>
         /// This function was created to avoid multiple google searches since it is limited to 100 a day.

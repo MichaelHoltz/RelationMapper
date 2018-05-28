@@ -48,6 +48,7 @@ namespace RelationMap
 
         private async void btnTempGetStarted_Click(object sender, EventArgs e)
         {
+            btnTempGetStarted.Focus();
             lbMovies.Items.Clear();
             String movieName = tbTitleSearch.Text;
             int searchYear = 0;
@@ -96,6 +97,8 @@ namespace RelationMap
                 }
                 else
                 {
+                    selectedMovieSummary = lbMovies.SelectedItem as TmdbSearch.MovieSummary;
+                    selectedMovieInfo = await selectedMovieSummary.MovieAsync();
                     selectedMovie = m; //Need for Person Info 
                     movieInfoTip1.LoadMovieInfo(ref selectedMovie, ref u);
                     
@@ -172,7 +175,7 @@ namespace RelationMap
                 {
                     ProductionCompany testPC = u.ProductionCompanies.First(o => o.Id == item.Id);
                     if (testPC != null && testPC.Updated)
-                        break; // Skip this Production Company
+                        continue; // Skip this Production Company
                 }
                 //id, logo_path, name, origin_country  probably already have the full info so don't want to get this over and over
                 TmdbWrapper.Companies.Company c = await item.CompanyAsync(); // await FindProductionCompany(item.Id);
@@ -253,6 +256,7 @@ namespace RelationMap
             {
                 String firstSource = t.Youtube[0].Source;
                 //https://www.youtube.com/watch?v=CmRih_VtVAs // Example of how to use the source.
+                selectedMovie.TrailerLink = "https://www.youtube.com/watch?v=" + firstSource;
             }
             
 
@@ -264,6 +268,7 @@ namespace RelationMap
 
         private async void btnSaveToMyMovies_Click(object sender, EventArgs e)
         {
+            lbActors.Items.Clear();
             bool done = await SaveFullInfo(selectedMovieInfo);
             if (done)
             {
@@ -300,70 +305,53 @@ namespace RelationMap
             fm.ShowDialog();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnCharacterFinder_Click(object sender, EventArgs e)
         {
-            //Example Image Search using Google API
-            string apiKey = PrivateData.GetGoogleApiKey();
-            string searchEngineId = PrivateData.GetGoogleSearchId();
-            const string query = "Gamora Avengers";
-            var customSearchService = new CustomsearchService(new BaseClientService.Initializer { ApiKey = apiKey });
-            var features = customSearchService.Features;
-            var listRequest = customSearchService.Cse.List(query);
-            listRequest.Cx = searchEngineId;
-            listRequest.SearchType = CseResource.ListRequest.SearchTypeEnum.Image;
-            listRequest.ImgType = CseResource.ListRequest.ImgTypeEnum.Face;
-            Console.WriteLine("Start...");
-            IList<Result> paging = new List<Result>();
-            var count = 0;
-            while (paging != null)
+            if (lbMovies.SelectedIndex >= 0)
             {
-                Console.WriteLine($"Page {count}");
-                listRequest.Start = count * 10 + 1;
-                if (listRequest.Start >= 30)
+                Movie m = u.GetMovie(lbMovies.SelectedItem.ToString()); // Need the Year or movies with same title will not show.
+                
+                if (m != null)
                 {
-                    break; // DOn't want all results..  just first 3 pages (30 or so.
+                    CharacterFinder cf = new CharacterFinder(m, u);
+                    cf.ShowDialog();
                 }
-                paging = listRequest.Execute().Items;
-                if (paging != null)
-                    foreach (var item in paging)
+            }
+            
+        }
+        /// <summary>
+        /// Migration code helper to work on normalizing Character Data
+        /// 
+        /// Step1 - Figure out how to identify the same character in different movies by similar but not
+        /// identical aliases. (Ex. The Hulk vs Hulk and Doctor Steven Strange vs Steven Strange vs Dr Strange.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnTransfer_Click(object sender, EventArgs e)
+        {
+            HashSet<MovieRole> mrs = new HashSet<MovieRole>();
+            foreach (Movie m in u.Movies)
+            {
+                int movieID = m.DmdbId; // Hmm when did i name this wrong?
+                foreach (Character c in m.Characters)
+                {
+                    MovieRole mr = new MovieRole();
+                    
+                    //c is a unique character in a given movie, but other movies have the same character.
+                    foreach (String alias in c.Aliases)
                     {
-                        //+ "Image :" + item.Image.ContextLink+
-                        Console.WriteLine("Title : " + item.Title + Environment.NewLine 
-                                        + "Image Link: " + item.Link + Environment.NewLine
-                                        + "Thumbnail Link: " +item.Image.ThumbnailLink 
-                                        + Environment.NewLine + Environment.NewLine);
-
-                        //item.Image.ContextLink; // Page From
-                        //item.Title; Context Link Title
-
-                        //item.Link; //Link to full size image
-                        //item.Image.ByteSize;
-                        //item.Image.Height; // Height of item.Link
-                        //item.Image.Width; //Width of item.Link
-                        //item.Mime = (Type of Image)
-
-                        //item.Image.ThumbnailLink; // Link to Thumbnail Image
-                        //item.Image.ThumbnailHeight; // Height of Thumbnail
-                        //item.Image.ThumbnailWidth; //Width of Thumbnail
-                        
-
+                        mr.Aliases.Add(alias);
+                        //Need to decide on primary Alias to use or standardize on Full name?
 
                     }
-                count++;
+                    foreach (int i in c.Actors)
+                    {
+
+                    }
+                    mrs.Add(mr);
+                }
+
             }
-            Console.WriteLine("Done.");
-            Console.ReadLine();
         }
-
-        //public async Task<TmdbWrapper.Movies.Movie> FindFullMovieInfo(int movieId)
-        //{
-        //    //Use ID
-        //    return await TheMovieDb.GetMovieAsync(movieId);
-        //}
-
-        //public async Task<TmdbWrapper.Companies.Company> FindProductionCompany(int pcId)
-        //{
-        //    return await TheMovieDb.GetCompanyAsync(pcId);
-        //}
     }
 }

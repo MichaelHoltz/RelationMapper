@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace RelationMap.Models
 {
+    /// <summary>
+    /// Class for Holding Google Image Search Result
+    /// </summary>
     public class CharacterImageSearchResult
     {
         public String Title { get; set; }

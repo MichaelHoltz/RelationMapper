@@ -24,8 +24,13 @@ namespace RelationMap.Utility
 
             var newImage = new Bitmap(newWidth, newHeight);
 
-            using (var graphics = Graphics.FromImage(newImage))
-                graphics.DrawImage(image, 0, 0, newWidth, newHeight);
+            using (var g = Graphics.FromImage(newImage))
+            {
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+                g.CompositingQuality = CompositingQuality.HighQuality;
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.DrawImage(image, 0, 0, newWidth, newHeight);
+            }
 
             return newImage;
         }

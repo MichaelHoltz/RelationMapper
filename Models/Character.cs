@@ -11,17 +11,19 @@ namespace RelationMap.Models
     /// Characters are played by Actors
     /// 
     /// Characters are people and people play roles so this should be role
+    /// Characters have the most complicated relationship as they come from movies.
     /// </summary>
     public class Character
     {
         /// <summary>
+        /// Character ID must be generated Manually as TMDB doesn't have a character ID
+        /// </summary>
+        public int Id { get; set; } //Can't find character ID only Actor so far
+        /// <summary>
         /// Name of Character (Varies from movie to movie so see Aliases
         /// </summary>
         public String Name { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int Id { get; set; } //Can't find character ID only Actor so far
+
         /// <summary>
         /// Order of Appearance in Movie
         /// </summary>
