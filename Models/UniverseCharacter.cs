@@ -9,7 +9,7 @@ namespace RelationMap.Models
     /// <summary>
     /// UniverseCharacter - Code dealing with Character Relationships
     /// </summary>
-    public partial class Universe3
+    public partial class Universe
     {
         public int NextCharacterIndex { get; set; }
         

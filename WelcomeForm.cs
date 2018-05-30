@@ -21,7 +21,7 @@ namespace RelationMap
 {
     public partial class WelcomeForm : Form
     {
-        Universe3 u;
+        Universe u;
         TmdbSearch.MovieSummary selectedMovieSummary = null;
         TmdbWrapper.Movies.Movie selectedMovieInfo = null;
         Movie selectedMovie = null;
@@ -29,7 +29,7 @@ namespace RelationMap
         {
             InitializeComponent();
             //Since this is a demo This is loaded for the full data universe
-            u = PersistenceBase.Load<Universe3>(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"));
+            u = PersistenceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"));
             
             
         }

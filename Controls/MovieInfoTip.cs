@@ -17,7 +17,7 @@ namespace RelationMap.Controls
     public partial class MovieInfoTip : UserControl
     {
         private Movie selectedMovie;
-        private Universe3 u;
+        private Universe u;
         public MovieInfoTip()
         {
             InitializeComponent();
@@ -27,7 +27,7 @@ namespace RelationMap.Controls
         /// </summary>
         /// <param name="movie"></param>
         /// <param name="univ"></param>
-        public void LoadMovieInfo(ref Movie movie, ref Universe3 univ)
+        public void LoadMovieInfo(ref Movie movie, ref Universe univ)
         {
             selectedMovie = movie;
             u = univ;

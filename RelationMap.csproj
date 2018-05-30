@@ -131,7 +131,7 @@
     <Compile Include="Models\ProductionCompany.cs" />
     <Compile Include="Models\StudioGroup.cs" />
     <Compile Include="Models\TvShow.cs" />
-    <Compile Include="Models\Universe3.cs" />
+    <Compile Include="Models\Universe.cs" />
     <Compile Include="Models\UniverseCharacter.cs" />
     <Compile Include="Models\UniverseCrew.cs" />
     <Compile Include="Models\UniverseMovieCollections.cs" />

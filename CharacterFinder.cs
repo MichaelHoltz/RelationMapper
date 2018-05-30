@@ -23,16 +23,16 @@ namespace RelationMap
 {
     public partial class CharacterFinder : Form
     {
-        Universe3 u = new Universe3();
+        Universe u = new Universe();
         Movie m = new Movie();
         TmdbWrapper.Movies.Credits credits = new TmdbWrapper.Movies.Credits();
         public CharacterFinder()
         {
             InitializeComponent();
-            u = PersistenceBase.Load<Universe3>(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"));
+            u = PersistenceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"));
             //InitTheMovieDb();        
         }
-        public CharacterFinder(Movie m1, Universe3 u1)
+        public CharacterFinder(Movie m1, Universe u1)
         {
             InitializeComponent();
             u = u1;

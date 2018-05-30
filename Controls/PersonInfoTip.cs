@@ -25,14 +25,14 @@ namespace RelationMap.Controls
     public partial class PersonInfoTip : UserControl
     {
         private Movie selectedMovie;
-        private Universe3 u;
+        private Universe u;
         private Person p;
         public PersonInfoTip()
         {
             InitializeComponent();
         }
 
-        public void LoadPersonInfo(ref Person person, ref Movie movie, ref Universe3 univ)
+        public void LoadPersonInfo(ref Person person, ref Movie movie, ref Universe univ)
         {
             p = person;
             selectedMovie = movie;

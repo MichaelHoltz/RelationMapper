@@ -9,7 +9,7 @@ namespace RelationMap.Models
     /// <summary>
     /// UniverseCrew
     /// </summary>
-    public partial class Universe3
+    public partial class Universe
     {
         /// <summary>
         /// Application Generated ID for a Crew Role

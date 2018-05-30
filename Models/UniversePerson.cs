@@ -9,7 +9,7 @@ namespace RelationMap.Models
     /// <summary>
     /// UniversePerson
     /// </summary>
-    public partial class Universe3
+    public partial class Universe
     {
         /// <summary>
         /// All Actual People related to movies, TV Shows, and the production of them.

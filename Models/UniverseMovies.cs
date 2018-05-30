@@ -9,7 +9,7 @@ namespace RelationMap.Models
     /// <summary>
     /// UniverseMovies
     /// </summary>
-    public partial class Universe3
+    public partial class Universe
     {
         public HashSet<Movie> Movies { get; set; }
         #region Movie

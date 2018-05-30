@@ -13,12 +13,12 @@ namespace RelationMap.HelperForms
 {
     public partial class frmStudioGroupMaker : Form
     {
-        Universe3 u = null;
+        Universe u = null;
         //public frmStudioCollectionMaker()
         //{
         //    InitializeComponent();
         //}
-        public frmStudioGroupMaker(Universe3 univ)
+        public frmStudioGroupMaker(Universe univ)
         {
             InitializeComponent();
             u = univ; // Initialize Universe

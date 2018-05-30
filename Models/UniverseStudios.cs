@@ -9,7 +9,7 @@ namespace RelationMap.Models
     /// <summary>
     /// UniverseStudios
     /// </summary>
-    public partial class Universe3
+    public partial class Universe
     {
         /// <summary>
         /// A StudioGroup is a collection of Production Companies 

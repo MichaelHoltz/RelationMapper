@@ -11,10 +11,10 @@ namespace RelationMap.Models
     /// <summary>
     /// Normalized version of the Universe
     /// </summary>
-    public partial class Universe3
+    public partial class Universe
     {
 
-        public Universe3()
+        public Universe()
         {
             StudioGroups = new HashSet<StudioGroup>();
             ProductionCompanies = new HashSet<ProductionCompany>();

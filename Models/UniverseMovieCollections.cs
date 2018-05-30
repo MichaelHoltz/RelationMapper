@@ -9,7 +9,7 @@ namespace RelationMap.Models
     /// <summary>
     /// Partial Class to Handle all Movie Collection actions
     /// </summary>
-    public partial class Universe3
+    public partial class Universe
     {
         /// <summary>
         /// Movie Collections found by Movie Lookup
