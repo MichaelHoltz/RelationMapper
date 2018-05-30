@@ -105,7 +105,7 @@ namespace RelationMap
         private void frmGraphView_Load(object sender, EventArgs e)
         {
             LoadImages(PrivateData.GetRelativePath(@"\Cache\Images\")); // Load all known images for use in the Graph
-            u = PersistanceBase.Load<Universe3>(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"));
+            u = PersistenceBase.Load<Universe3>(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"));
             refreshLists();
             //viewer.Graph = SetViewAll();
             lblSelectedNode.Text = "Selected Node: " + selectedNode;

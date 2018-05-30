@@ -27,7 +27,7 @@ namespace RelationMap.Models
         /// <param name="department"></param>
         /// <param name="job"></param>
         /// <returns></returns>
-        public Crew GetCrew(string department, string job)
+        public Crew AddGetCrewRole(string department, string job)
         {
             Crew c = new Models.Crew(department, job);
             Crew tc = Crew.Where(o => o.Department == department && o.Job == job).FirstOrDefault();
@@ -42,9 +42,43 @@ namespace RelationMap.Models
             }
             return c;
         }
+        /// <summary>
+        /// Add A crew member to the movie 
+        /// credits.Crew - Adds significant numbers of People and data Entry
+        /// </summary>
+        public void AddCrewMember(TmdbWrapper.Movies.CrewPerson crewPerson, Movie selectedMovie)
+        {
+            Person p = new Person(crewPerson.Name);
+            p.Id = crewPerson.Id;
+            p.ProfilePath = crewPerson.ProfilePath;
+            Crew c = AddGetCrewRole(crewPerson.Department, crewPerson.Job);
+            AddPerson(p); // Will ONly add new people based on Name and id.
+            AddMovieCrewMapping(selectedMovie.TmdbId, crewPerson.Id, c.CrewID, crewPerson.CreditId);
+        }
+
+        /// <summary>
+        /// Add the mapping of a movie to crew / person / credit 
+        /// </summary>
+        /// <param name="movieId"></param>
+        /// <param name="personId"></param>
+        /// <param name="crewId"></param>
+        /// <param name="creditId"></param>
+        /// <returns></returns>
+        public Boolean AddMovieCrewMapping(int movieId, int personId, int crewId, string creditId)
+        {
+            MovieCrewMap mcm = new MovieCrewMap(movieId, personId, crewId, creditId);
+            return MovieCrewMap.Add(mcm); // Adding Directly to HashSet false if failed to add
+        }
+
+        /// <summary>
+        /// Not implemented - Want Person who produced movie as example.
+        /// </summary>
+        /// <param name="roleName"></param>
+        /// <param name="movie"></param>
         public void GetRoleInMovie(string roleName, int movie)
         {
 
         }
+
     }
 }

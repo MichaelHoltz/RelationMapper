@@ -14,10 +14,6 @@ namespace RelationMap.Models
     public partial class Universe3
     {
 
-
-
-
-
         public Universe3()
         {
             StudioGroups = new HashSet<StudioGroup>();
@@ -37,26 +33,6 @@ namespace RelationMap.Models
             Crew = new HashSet<Models.Crew>();
             MovieCrewMap = new HashSet<Models.MovieCrewMap>();
         }
-        #region People
-        public Boolean AddPerson(Person person)
-        {
-            Boolean result = People.Add(person);
-            if (!result) // Movie already there, but need to update (If they aren't already) //But I could be passing in a person with basic info and t
-            {
-                Person existingPerson = People.First(o => o.Id == person.Id);
-                if (existingPerson.Updated)
-                {
-                    result = true;
-                }
-                else
-                {
-                    People.Remove(person); // Hack at update by just replacing. 
-                    result = People.Add(person);
-                }
-            }
-            return result;
-        }
 
-        #endregion
     }
 }

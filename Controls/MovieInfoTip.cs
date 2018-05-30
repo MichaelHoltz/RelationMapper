@@ -35,11 +35,7 @@ namespace RelationMap.Controls
             if (movie.ReleaseDate.HasValue)
             {
                 lblReleaseDate.Text = movie.ReleaseDate.Value.ToShortDateString();
-                lblReleaseDate.Text += " (" + CalculateAge(movie.ReleaseDate.Value) + " Years ago)";
-
-                //TimeSpan timeago = new TimeSpan();
-                //timeago = DateTime.Now - movie.ReleaseDate.Value;
-                //lblReleaseDate.Text += " (" + timeago.TotalDays + " days ago)";
+                lblReleaseDate.Text += GetAgeString(movie.ReleaseDate.Value);
             }
             else
             {
@@ -67,6 +63,32 @@ namespace RelationMap.Controls
             GetMoviePoster();
             GetProductionCompanyLogos();
         }
+        public static String GetAgeString(DateTime releaseDate)
+        {
+            String retVal = String.Empty;
+            int age = CalculateAge(releaseDate);
+            if (age == 1)
+            {
+                retVal = " (" + age + " Year ago)";
+            }
+            else if (age < 0)
+            {
+                age = Math.Abs(age);  // remove negative sign
+                if (age == 1)
+                {
+                    retVal = " (coming in " + age + " Year)";
+                }
+                else
+                {
+                    retVal = " (coming in " + age + " Years)";
+                }
+            }
+            else
+            {
+                retVal = " (" + age + " Years ago)";
+            }
+            return retVal;
+        }
         public static int CalculateAge(DateTime BirthDate)
         {
             int YearsPassed = DateTime.Now.Year - BirthDate.Year;
@@ -87,7 +109,7 @@ namespace RelationMap.Controls
             if (selectedMovieInfo.ReleaseDate.HasValue)
             {
                 lblReleaseDate.Text = selectedMovieInfo.ReleaseDate.Value.ToShortDateString();
-                lblReleaseDate.Text += " (" + CalculateAge(selectedMovieInfo.ReleaseDate.Value) + " Years ago)";
+                lblReleaseDate.Text += GetAgeString(selectedMovieInfo.ReleaseDate.Value);
             }
             else
             {
@@ -129,46 +151,50 @@ namespace RelationMap.Controls
         /// <param name="selectedMovieInfo"></param>
         private void GetMoviePoster(ref TmdbWrapper.Movies.Movie selectedMovieInfo)
         {
-            Uri posterUri = selectedMovieInfo.Uri(TmdbWrapper.Utilities.PosterSize.w185);
-            var wc = new WebClient();
-            pbPoster.BackgroundImage = Image.FromStream(wc.OpenRead(posterUri)); //Read from the Internet
+            if (selectedMovieInfo.PosterPath != null)
+            {
+                Uri posterUri = selectedMovieInfo.Uri(TmdbWrapper.Utilities.PosterSize.w185);
+                var wc = new WebClient();
+                pbPoster.BackgroundImage = Image.FromStream(wc.OpenRead(posterUri)); //Read from the Internet
+            }
+            else
+            {
+                pbPoster.BackgroundImage = null; // would like broken camera image.
+            }
 
         }
+        /// <summary>
+        /// Get Production Company Logos for movies in my universe
+        /// </summary>
         public async void GetProductionCompanyLogos()
         {
             flpProductionCompanies.Controls.Clear(); // Remove any Images from previous load
-            //Loop through each production Company IDs
-            //foreach (int pcId in selectedMovie.ProductionCompanies)
-            //{
-            //    Image x;
-            //    ProductionCompany c = u.GetProductionCompany(pcId); //Cached Version
-            //    if (c != null)
-            //        x = await c.GetLogo(TmdbWrapper.Utilities.LogoSize.w45);
-            //    else
-            //    {
-            //        ProductionCompany pc = new ProductionCompany("dummy", pcId, null, null); // Hack
-            //        x = await pc.GetLogo(pcId, TmdbWrapper.Utilities.LogoSize.w45);
-            //    }
-            //    if (x != null)
-            //    {
-            //        PictureBox pb = new PictureBox();
-            //        pb.BackgroundImageLayout = ImageLayout.Zoom;
-            //        pb.Width = 45;
-            //        pb.Height = 45;
-            //        if (c.Homepage != null)
-            //        {
-            //            pb.Cursor = Cursors.Hand;
-            //            pb.Click += Pb_Click;
-            //            pb.Tag = c.Homepage;
-            //        }
-            //        pb.BackgroundImage = x;
+            foreach (ProductionCompany pc in u.GetProductionCompanies(selectedMovie.TmdbId))
+            {
+                Image x = await pc.GetLogo(TmdbWrapper.Utilities.LogoSize.w45);
+                if (x != null)
+                {
+                    PictureBox pb = new PictureBox();
+                    pb.BackgroundImageLayout = ImageLayout.Zoom;
+                    pb.Width = 45;
+                    pb.Height = 45;
+                    if (pc.Homepage != null)
+                    {
+                        pb.Cursor = Cursors.Hand;
+                        pb.Click += Pb_Click;
+                        pb.Tag = pc.Homepage;
+                    }
+                    pb.BackgroundImage = x;
 
-            //        flpProductionCompanies.Controls.Add(pb);
+                    flpProductionCompanies.Controls.Add(pb);
 
-            //    }
-            //}
-            
+                }
+            }
+
         }
+        /// <summary>
+        /// Get Production Company Logos for movie that has not been added to my universe.
+        /// </summary>
         public void GetProductionCompanyLogos(IReadOnlyList<TmdbWrapper.Movies.ProductionCompany> prodCos)
         {
             flpProductionCompanies.Controls.Clear(); // Remove any Images from previous load
@@ -181,6 +207,7 @@ namespace RelationMap.Controls
                     pb.BackgroundImageLayout = ImageLayout.Zoom;
                     pb.Width = 45;
                     pb.Height = 45;
+                    
                     //Preview Production Companies don't have Homepage from Movie Info at this time.
                     //if (c.Homepage != null)
                     //{

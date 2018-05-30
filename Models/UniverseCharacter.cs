@@ -7,23 +7,23 @@ using System.Threading.Tasks;
 namespace RelationMap.Models
 {
     /// <summary>
-    /// UniverseCharacter
+    /// UniverseCharacter - Code dealing with Character Relationships
     /// </summary>
     public partial class Universe3
     {
         public int NextCharacterIndex { get; set; }
-        public int NextAliasIndex { get; set; }
+        
         /// <summary>
         /// All characters in all movies - (Seems could be role like Character or Crew - Producer etc.)
         /// </summary>
         public HashSet<Character> Characters { get; set; }
         public HashSet<MovieCharacterMap> MovieCharacterMap { get; set; }
+
+        public int NextAliasIndex { get; set; }
         public HashSet<CharacterAlias> CharacterAliases { get; set; }
         public HashSet<CharacterAliasMap> CharacterAliasMap { get; set; }
         public Character AddCharacter(String characterName, int movieID, int personID, string creditID, int castID, int creditOrder)
         {
-
-
             //Try to add the actor if the character Already exists.
             Character c = Characters.FirstOrDefault(o => o.Name == characterName);
             //if (Characters.Select(o => o.Name).Contains(characterName))
@@ -47,7 +47,7 @@ namespace RelationMap.Models
                     foreach (CharacterAlias ca in cas)
                     {
                         CharacterAliasMap cam = new Models.CharacterAliasMap();
-                        cam.AliasID = ca.AliasID;
+                        cam.AliasID = ca.AliasId;
                         cam.CharacterID = c.Id;
                         CharacterAliasMap.Add(cam);
                     } 
@@ -62,13 +62,7 @@ namespace RelationMap.Models
             }
 
             //Add Mapping of Character / Actor / Role
-            MovieCharacterMap mcm = new MovieCharacterMap();
-            mcm.MovieID = movieID;
-            mcm.PersonID = personID;
-            mcm.CharacterId = c.Id;
-            mcm.CreditID = creditID;
-            mcm.CastID = castID;
-            mcm.CreditOrder = creditOrder;
+            MovieCharacterMap mcm = new MovieCharacterMap(c.Id, c.Name, movieID, creditOrder, castID, creditID, personID);
             MovieCharacterMap.Add(mcm); // Add to Universe Map.
 
             return c;
@@ -92,7 +86,7 @@ namespace RelationMap.Models
                     {
                         ca = new CharacterAlias();
                         ca.Name = item.Trim();
-                        ca.AliasID = NextAliasIndex++;
+                        ca.AliasId = NextAliasIndex++;
                         //Don't have the extended properties available from TMDB
                     }
                     CharacterAliases.Add(ca);
@@ -100,6 +94,21 @@ namespace RelationMap.Models
                 }
             }
             return retVal;
+        }
+        public String IdentifyCharacterFromTMDBAliasList(String aliasList)
+        {
+            //aliasList is Slash separated list
+            HashSet<String> Aliases = new HashSet<string>();
+            if (aliasList != null)
+            {
+                Char delimiter = '/'; // Alias Splitter
+                String[] substrings = aliasList.Split(delimiter);
+                foreach (String item in substrings)
+                {
+                    Aliases.Add(item.Trim());
+                }
+            }
+            return aliasList;
         }
         private void AddAlias(String characterAliasName, int CharacterID)
         {
@@ -162,7 +171,7 @@ namespace RelationMap.Models
             foreach (MovieCharacterMap c in MovieCharacterMap)
             {
                 
-                if (c.PersonID == actorId)
+                if (c.PersonId == actorId)
                 {
                     Character mc = Characters.FirstOrDefault(o => o.Id == c.CharacterId);
                     if(mc != null)

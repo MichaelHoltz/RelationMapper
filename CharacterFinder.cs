@@ -29,7 +29,7 @@ namespace RelationMap
         public CharacterFinder()
         {
             InitializeComponent();
-            u = PersistanceBase.Load<Universe3>(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"));
+            u = PersistenceBase.Load<Universe3>(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"));
             //InitTheMovieDb();        
         }
         public CharacterFinder(Movie m1, Universe3 u1)
@@ -204,7 +204,7 @@ namespace RelationMap
             //No Slashes
             //No Colon
             //Can't have quotes (Escaped or otherwise)
-            PersistanceBase.Save(PrivateData.GetAppPath() + @"\Private\" + query.Replace("/", "_").Replace(":", "") + ".json", cisr);
+            PersistenceBase.Save(PrivateData.GetAppPath() + @"\Private\" + query.Replace("/", "_").Replace(":", "") + ".json", cisr);
         }
         /// <summary>
         /// This function was created to avoid multiple google searches since it is limited to 100 a day.
@@ -223,7 +223,7 @@ namespace RelationMap
                 string filePath = PrivateData.GetAppPath() + @"\Private\" + query.Replace("/", "_") + ".json";
                 if (File.Exists(filePath))
                 {
-                    CharacterImageSearchResults cisr =  PersistanceBase.Load<CharacterImageSearchResults>(filePath);
+                    CharacterImageSearchResults cisr =  PersistenceBase.Load<CharacterImageSearchResults>(filePath);
                     foreach (CharacterImageSearchResult r in cisr.CharacterImageSearchResultsList)
                     {
                         string tFilter = r.Title.ToLower();

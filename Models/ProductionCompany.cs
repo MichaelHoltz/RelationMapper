@@ -9,6 +9,7 @@ using TmdbWrapper;
 using System.IO;
 using System.Net;
 using TmdbWrapper.Utilities;
+using Newtonsoft.Json;
 
 namespace RelationMap.Models
 {
@@ -28,33 +29,43 @@ namespace RelationMap.Models
         /// <summary>
         /// TMDB Name of the Production COmpany
         /// </summary>
+        [JsonProperty("A")]
         public String Name { get; set; }
-        
+
         /// <summary>
         /// TMDB Id of the production company
         /// </summary>
+        [JsonProperty("B")]
         public int Id { get; set; }
         /// <summary>
         /// Property to avoid looking up a logo that doesn't exist.
         /// </summary>
+        [JsonProperty("C")]
         public Boolean HasLogo { get; set; }
+        [JsonProperty("D")]
         public String LogoPath { get; set; }
+        [JsonProperty("E")]
         public String OriginCountry { get; set; }
         #endregion
 
         #region Extended information contained in the Company Query
+        [JsonProperty("F")]
         public String Description { get; set; }
+        [JsonProperty("G")]
         public String Headquarters { get; set; }
+        [JsonProperty("I")]
         public Uri Homepage { get; set; }
 
         /// <summary>
         /// TMDB returns the entire object as part of the Details, but for normalization only the ID should be stored here..
         /// This gets in to Caching and lookup linking 
         /// </summary>
+        [JsonProperty("J")]
         public int ParentCompanyId { get; set; }
         /// <summary>
         /// Crude way to prevent many redundant updates. (Also prevents any updates)
         /// </summary>
+        [JsonProperty("K")]
         public Boolean Updated { get; set; } 
         #endregion
 
@@ -127,6 +138,8 @@ namespace RelationMap.Models
         #region HashCodes / Object Identification
         //TODO - use / include the "correct" id..
         private int _hashCode = 0;
+        [JsonIgnore]
+        [JsonProperty("H")]
         public int HashCode
         {
             get
@@ -143,7 +156,7 @@ namespace RelationMap.Models
         {
             //THis is expensive and should be done only once since it will not be changing
             //TODO - use / include the "correct" id..
-            String key = this.GetType().Name + Name;
+            String key = this.GetType().Name + Name + Id;
             //Google: "disable fips mode" if the line below fails
             System.Security.Cryptography.MD5 md5Hasher = System.Security.Cryptography.MD5.Create();
             var hashed = md5Hasher.ComputeHash(Encoding.UTF8.GetBytes(key));

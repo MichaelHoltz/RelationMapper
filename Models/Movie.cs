@@ -8,41 +8,52 @@ using System.Net;
 using System.Threading.Tasks;
 using TmdbWrapper.Utilities;
 using TheMovieDb = TmdbWrapper.TheMovieDb;
-
+using Newtonsoft.Json;
 namespace RelationMap.Models
 {
     public class Movie
     {
-
+        [JsonProperty("A")]
         public String Title { get; set; }
+        [JsonProperty("B")]
         public String OriginalTitle { get; set; }
-
+        [JsonProperty("C")]
         //public DateTime ReleaseDate {get; set; }
         public int ReleaseYear { get; set; }
+        [JsonProperty("D")]
         public DateTime? ReleaseDate { get; set; }
+        [JsonProperty("E")]
         public String BackdropPath { get; set; }
+        [JsonProperty("F")]
         public String PosterPath { get; set; }
+        [JsonProperty("G")]
         public int TmdbId { get; set; }
         /// <summary>
         /// Id of this movie in the IMDB.
         /// </summary>
+        [JsonProperty("I")]
         public string ImdbId { get; set; }
         /// <summary>
         /// Home page of this movie
         /// </summary>
+        [JsonProperty("J")]
         public Uri HomePage { get; set; }
         /// <summary>
         /// Overview of this movie.
         /// </summary>
+        [JsonProperty("K")]
         public string Overview { get; set; }
         /// <summary>
         /// Original runtime in minutes.
         /// </summary>
+        [JsonProperty("L")]
         public int Runtime { get; set; }
         /// <summary>
         /// Revenue that this movie gathered.
         /// </summary>
+        [JsonProperty("M")]
         public Int64 Revenue { get; set; }
+        [JsonProperty("N")]
         public String TrailerLink { get; set; }
         
         public Movie()
@@ -108,6 +119,8 @@ namespace RelationMap.Models
         #region HashCodes / Object Identification
         //TODO - use / include the "correct" id..
         private int _hashCode = 0;
+        [JsonIgnore]
+        [JsonProperty("H")]
         public int HashCode
         {
             get

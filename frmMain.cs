@@ -50,7 +50,7 @@ namespace RelationMap
 
         private void btnLoadFranchise_Click(object sender, EventArgs e)
         {
-            u = PersistanceBase.Load<Universe3>(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"));
+            u = PersistenceBase.Load<Universe3>(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"));
             lbActors.Items.Clear();
             lbCharacters.Items.Clear();
             tbActor.Clear();
@@ -102,7 +102,7 @@ namespace RelationMap
         private void btnSaveUniverse_Click(object sender, EventArgs e)
         {
 
-            PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"), u);
+            PersistenceBase.Save(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"), u);
         }
 
 

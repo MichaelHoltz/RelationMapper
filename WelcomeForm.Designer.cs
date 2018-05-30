@@ -35,18 +35,18 @@
             this.lbActors = new System.Windows.Forms.ListBox();
             this.btnFrmMain = new System.Windows.Forms.Button();
             this.btnCharacterFinder = new System.Windows.Forms.Button();
+            this.btnTransfer = new System.Windows.Forms.Button();
             this.personInfoTip1 = new RelationMap.Controls.PersonInfoTip();
             this.movieInfoTip1 = new RelationMap.Controls.MovieInfoTip();
-            this.btnTransfer = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnTempGetStarted
             // 
-            this.btnTempGetStarted.Location = new System.Drawing.Point(272, 12);
+            this.btnTempGetStarted.Location = new System.Drawing.Point(346, 12);
             this.btnTempGetStarted.Name = "btnTempGetStarted";
-            this.btnTempGetStarted.Size = new System.Drawing.Size(161, 23);
+            this.btnTempGetStarted.Size = new System.Drawing.Size(66, 23);
             this.btnTempGetStarted.TabIndex = 0;
-            this.btnTempGetStarted.Text = "Temp Get Started";
+            this.btnTempGetStarted.Text = "Search";
             this.btnTempGetStarted.UseVisualStyleBackColor = true;
             this.btnTempGetStarted.Click += new System.EventHandler(this.btnTempGetStarted_Click);
             // 
@@ -65,7 +65,7 @@
             this.tbTitleSearch.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.tbTitleSearch.Location = new System.Drawing.Point(21, 12);
             this.tbTitleSearch.Name = "tbTitleSearch";
-            this.tbTitleSearch.Size = new System.Drawing.Size(245, 20);
+            this.tbTitleSearch.Size = new System.Drawing.Size(319, 20);
             this.tbTitleSearch.TabIndex = 3;
             // 
             // btnSaveToMyMovies
@@ -107,6 +107,16 @@
             this.btnCharacterFinder.UseVisualStyleBackColor = true;
             this.btnCharacterFinder.Click += new System.EventHandler(this.btnCharacterFinder_Click);
             // 
+            // btnTransfer
+            // 
+            this.btnTransfer.Location = new System.Drawing.Point(53, 427);
+            this.btnTransfer.Name = "btnTransfer";
+            this.btnTransfer.Size = new System.Drawing.Size(75, 23);
+            this.btnTransfer.TabIndex = 11;
+            this.btnTransfer.Text = "Transfer";
+            this.btnTransfer.UseVisualStyleBackColor = true;
+            this.btnTransfer.Click += new System.EventHandler(this.btnTransfer_Click);
+            // 
             // personInfoTip1
             // 
             this.personInfoTip1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -121,16 +131,6 @@
             this.movieInfoTip1.Name = "movieInfoTip1";
             this.movieInfoTip1.Size = new System.Drawing.Size(600, 278);
             this.movieInfoTip1.TabIndex = 2;
-            // 
-            // btnTransfer
-            // 
-            this.btnTransfer.Location = new System.Drawing.Point(53, 427);
-            this.btnTransfer.Name = "btnTransfer";
-            this.btnTransfer.Size = new System.Drawing.Size(75, 23);
-            this.btnTransfer.TabIndex = 11;
-            this.btnTransfer.Text = "Transfer";
-            this.btnTransfer.UseVisualStyleBackColor = true;
-            this.btnTransfer.Click += new System.EventHandler(this.btnTransfer_Click);
             // 
             // WelcomeForm
             // 
@@ -148,7 +148,9 @@
             this.Controls.Add(this.movieInfoTip1);
             this.Controls.Add(this.lbMovies);
             this.Controls.Add(this.btnTempGetStarted);
+            this.DoubleBuffered = true;
             this.Name = "WelcomeForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Welcome Form";
             this.Load += new System.EventHandler(this.WelcomeForm_Load);
             this.ResumeLayout(false);

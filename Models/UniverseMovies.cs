@@ -24,30 +24,16 @@ namespace RelationMap.Models
             return result;
         }
 
-        ////Function for Universe which will find a movie and return a Search Result list.
-        //public async Task<TmdbSearch.SearchResult<TmdbSearch.MovieSummary>> FindMovie(String movieName)
-        //{
-        //    TmdbSearch.SearchResult<TmdbSearch.MovieSummary> movieSummaryList = await TheMovieDb.SearchMovieAsync(movieName);
-        //    return movieSummaryList;
-        //}
         /// <summary>
         /// Get all Movies in the "known Universe"
         /// </summary>
         /// <returns></returns>
         public HashSet<Movie> GetAllMovies()
         {
-            //HashSet<Movie> m = new HashSet<Movie>();
-            //foreach (StudioGroup s in StudioGroups)
-            //{
-            //    foreach (Movie item in s.Movies)
-            //    {
-            //        m.Add(item);
-            //    }
-            //}
             return Movies;
         }
         /// <summary>
-        /// Get all Movies in a given StudioGroup
+        /// Get all Movies in a given StudioGroup (Studio Groups not fully implemented)
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
@@ -60,25 +46,33 @@ namespace RelationMap.Models
             //}
             return m;
         }
+        /// <summary>
+        /// Get Movie By Name and Year
+        /// </summary>
+        /// <param name="movieName"></param>
+        /// <returns></returns>
+        public Movie GetMovie(String movieName, int releaseYear)
+        {
+            return Movies.FirstOrDefault(o=>o.Title == movieName && o.ReleaseYear == releaseYear);
+        }
+        /// <summary>
+        /// Get Movie By Name
+        /// </summary>
+        /// <param name="movieName"></param>
+        /// <returns></returns>
         public Movie GetMovie(String movieName)
         {
-            Movie m = null;
-            HashSet<Movie> allMovies = GetAllMovies();
-            if (allMovies.Select(o => o.Title).Contains(movieName))
-            {
-                m = allMovies.First(o => o.Title == movieName);
-            }
-            return m;
+            return Movies.FirstOrDefault(o => o.Title == movieName);
         }
+
+        /// <summary>
+        /// Get Movie by ID
+        /// </summary>
+        /// <param name="movieId"></param>
+        /// <returns></returns>
         public Movie GetMovie(int movieId)
         {
-
-            Movie m = null;
-            if (Movies.Select(o => o.TmdbId).Contains(movieId))
-            {
-                m = Movies.First(o => o.TmdbId == movieId);
-            }
-            return m;
+            return Movies.FirstOrDefault(o => o.TmdbId == movieId);
         }
         #endregion Movie
     }

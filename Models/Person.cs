@@ -8,6 +8,7 @@ using System.Net;
 using System.Threading.Tasks;
 using TmdbWrapper.Utilities;
 using TheMovieDb = TmdbWrapper.TheMovieDb;
+using Newtonsoft.Json;
 namespace RelationMap.Models
 {
     /// <summary>
@@ -33,19 +34,33 @@ namespace RelationMap.Models
         // Having the thumbnail 
         //
         //-------------------------------------------
+        [JsonProperty("A")]
         public int Id { get; set; }
+        [JsonProperty("B")]
         public String Name { get; set; }
+        [JsonProperty("C")]
         public String Prefix { get; set; }
+        [JsonProperty("D")]
         public String FirstName { get; set; }
+        [JsonProperty("E")]
         public String MiddleName { get; set; } // Samuel L. Jackson
+        [JsonProperty("F")]
         public String LastName { get; set; }
+        [JsonProperty("G")]
         public String Suffix { get; set; } //Robert Downey Jr.
+        [JsonProperty("I")]
         public String ProfilePath { get; set; }
+        [JsonProperty("J")]
         public Uri HomePage { get; set; }
+        [JsonProperty("K")]
         public String Biography { get; set; }
+        [JsonProperty("L")]
         public DateTime? Birthday { get; set; }
+        [JsonProperty("M")]
         public DateTime? Deathday { get; set; }
+        [JsonProperty("N")]
         public String PlaceOfBirth { get; set; }
+        [JsonProperty("O")]
         public Boolean Updated { get; set; }
         /// <summary>
         /// Default constructor required for Persistence restore if "bad data"
@@ -189,6 +204,8 @@ namespace RelationMap.Models
         #region HashCodes / Object Identification
         //TODO - use / include the "correct" id..
         private int _hashCode = 0;
+        [JsonIgnore]
+        [JsonProperty("H")]
         public int HashCode
         {
             get

@@ -59,6 +59,25 @@ namespace RelationMap.Models
             
             return ProductionCompanies.Where(o => o.Id == pcId).FirstOrDefault();
         }
+        /// <summary>
+        /// Get all Production Companies for a given MovieID
+        /// </summary>
+        /// <param name="movieId"></param>
+        /// <returns></returns>
+        public HashSet<ProductionCompany> GetProductionCompanies(int movieId)
+        {
+            HashSet<ProductionCompany> retVal = new HashSet<ProductionCompany>();
+            var map = MovieProductionCompanyMap.Where(o => o.MovieId == movieId);
+            foreach (var item in map)
+            {
+                ProductionCompany pc = ProductionCompanies.FirstOrDefault(o=>o.Id == item.ProductionCompanyId);
+                if (pc != null)
+                {
+                    retVal.Add(pc);
+                }
+            }
+            return retVal;
+        }
         #endregion Production Company
 
         #region StudioGroup (One or more Production Company grouped into one)

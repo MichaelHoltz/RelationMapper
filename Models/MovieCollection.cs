@@ -5,17 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using TmdbWrapper.Utilities;
 using TheMovieDb = TmdbWrapper.TheMovieDb;
+using Newtonsoft.Json;
 namespace RelationMap.Models
 {
     public class MovieCollection
     {
         #region basic properties from  movie info
+        [JsonProperty("A")]
         public String Name { get; set; }
+        [JsonProperty("B")]
         public int Id { get; set; }
+        [JsonProperty("C")]
         public String PosterPath { get; set; }
+        [JsonProperty("D")]
         public String BackdropPath { get; set; }
         #endregion
         #region extended properties from Collections info
+        [JsonProperty("E")]
         public String Overview { get; set; }
         /// <summary>
         /// Parts are the ids of the other movies
@@ -64,6 +70,8 @@ namespace RelationMap.Models
         #region HashCodes / Object Identification
         //TODO - use / include the "correct" id..
         private int _hashCode = 0;
+        [JsonIgnore]
+        [JsonProperty("H")]
         public int HashCode
         {
             get

@@ -4,13 +4,14 @@ using Newtonsoft.Json;
 
 namespace RelationMap.Models
 {
-    public class PersistanceBase
+    public class PersistenceBase
     {
         public static T Load<T>(string CurrentFile, String DefaultFile = null) where T : new()
         {
             JsonSerializerSettings jss = new JsonSerializerSettings();
             jss.CheckAdditionalContent = true;
             jss.TypeNameHandling = TypeNameHandling.Auto;
+            jss.NullValueHandling = NullValueHandling.Ignore;
             T retval;
             //Load Settings from Specified File if it exists.
             if (File.Exists(CurrentFile))
@@ -34,12 +35,22 @@ namespace RelationMap.Models
             return retval;
         }
 
-        public static void Save(String CurrentFile, object obj)
+        public static void Save(String CurrentFile, object obj, bool compact = false)
         {
             JsonSerializerSettings jss = new JsonSerializerSettings();
             jss.CheckAdditionalContent = true;
             jss.TypeNameHandling = TypeNameHandling.Auto;
-            String json = JsonConvert.SerializeObject(obj, obj.GetType(), Formatting.Indented, jss);
+            jss.NullValueHandling = NullValueHandling.Ignore;
+
+            String json = null;
+            if (compact)
+            {
+                json = JsonConvert.SerializeObject(obj, obj.GetType(), Formatting.None, jss); // Save Space
+            }
+            else
+            {
+                json = JsonConvert.SerializeObject(obj, obj.GetType(), Formatting.Indented, jss); // Readable
+            }
 
             if (Directory.Exists(Path.GetDirectoryName(CurrentFile)))
             {
@@ -54,7 +65,7 @@ namespace RelationMap.Models
         }
         public static Type GetMyObjectClassType()
         {
-            return typeof(PersistanceBase);
+            return typeof(PersistenceBase);
         }
     }
 }

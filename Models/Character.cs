@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Newtonsoft.Json;
 namespace RelationMap.Models
 {
     /// <summary>
@@ -18,19 +18,23 @@ namespace RelationMap.Models
         /// <summary>
         /// Character ID must be generated Manually as TMDB doesn't have a character ID
         /// </summary>
+        [JsonProperty("A")]
         public int Id { get; set; } //Can't find character ID only Actor so far
         /// <summary>
         /// Name of Character (Varies from movie to movie so see Aliases
         /// </summary>
+        [JsonProperty("B")]
         public String Name { get; set; }
 
         /// <summary>
         /// Path to Profile Image (TBD web or local Cache)
         /// </summary>
+        [JsonProperty("C")]
         public String ProfilePath { get; set; }
         /// <summary>
         /// Path to ThumbNail Image (TBD web or local Cache)
         /// </summary>
+        [JsonProperty("D")]
         public String ThumbNailPath { get; set; }
 
         public Boolean IsMatch(String name)
@@ -87,13 +91,15 @@ namespace RelationMap.Models
         #region HashCodes / Object Identification
         //TODO - use / include the "correct" id..
         private int _hashCode = 0;
+        [JsonIgnore]
+        [JsonProperty("H")]
         public int HashCode
         {
             get
             {
                 return _hashCode == 0 ? generateHashCode() : _hashCode;
             }
-            //Need set for persistance to restore 
+            //Need set for persistence to restore 
             set
             {
                 _hashCode = value;

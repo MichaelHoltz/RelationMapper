@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel;
+using System.Text;
+using System.Drawing;
+using System.Net;
 using System.Data;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using RelationMap.Models;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Net;
 using System.Windows.Forms;
 using TmdbWrapper;
 using TheMovieDb = TmdbWrapper.TheMovieDb;
@@ -29,26 +29,23 @@ namespace RelationMap
         {
             InitializeComponent();
             //Since this is a demo This is loaded for the full data universe
-            u = PersistanceBase.Load<Universe3>(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"));
+            u = PersistenceBase.Load<Universe3>(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"));
             
             
         }
         private void WelcomeForm_Load(object sender, EventArgs e)
         {
-            ////   System.Threading.Thread.Sleep(2000);
-            //await TheMovieDb.Initialise(PrivateData.GetTMDBApiKey(), "en-US", true);
-            //Uri burl = TheMovieDb.GetConfigurationSecureBaseUrl();
-           // tbTitleSearch.Text = "Iron Man";
-
+            //Allow Auto Complete of movies in known universe
             AutoCompleteStringCollection acsc = new AutoCompleteStringCollection();
-            acsc.AddRange(u.Movies.Select(o => o.Title).ToArray());
-            
+            //acsc.AddRange(u.Movies.Select(o => o.Title + " (" + o.ReleaseYear + ")").ToArray()); // Add Year - but it doesn't work for searching
+            acsc.AddRange(u.Movies.Select(o => o.Title ).ToArray());
+
             tbTitleSearch.AutoCompleteCustomSource = acsc;
         }
 
         private async void btnTempGetStarted_Click(object sender, EventArgs e)
         {
-            btnTempGetStarted.Focus();
+            
             lbMovies.Items.Clear();
             String movieName = tbTitleSearch.Text;
             int searchYear = 0;
@@ -57,18 +54,24 @@ namespace RelationMap
             TmdbSearch.SearchResult<TmdbSearch.MovieSummary> movieSummaryList = await TheMovieDb.SearchMovieAsync(movieName, 1, false, searchYear);
             
             loadList(movieSummaryList); // Just for visual.. (and selection since not a single item typically)
+            
 
         }
         private void loadList(TmdbSearch.SearchResult<TmdbSearch.MovieSummary> movieSummaryList)
         {
             foreach (TmdbSearch.MovieSummary item in movieSummaryList.Results)
             {
-                lbMovies.Items.Add(item);
+                lbMovies.Items.Add(item); //Whole Movie Summary is added to list 
             }
             //Select the first movie if there are movies
             if (lbMovies.Items.Count > 0)
             {
                 lbMovies.SelectedIndex = 0;
+                lbMovies.Focus(); // Set focus to Movie List
+            }
+            else
+            {
+                btnTempGetStarted.Focus(); // Set focus to Search Button
             }
 
         }
@@ -84,7 +87,18 @@ namespace RelationMap
                 lbActors.Items.Clear();
                 movieInfoTip1.Clear();
                 personInfoTip1.Clear();
-                Movie m = u.GetMovie(lbMovies.SelectedItem.ToString()); // Need the Year or movies with same title will not show.
+                TmdbSearch.MovieSummary ms = lbMovies.SelectedItem as TmdbSearch.MovieSummary;
+                Movie m = null;
+                // Need the Year or movies with same title will not show.
+                if (ms.ReleaseDate.HasValue)
+                {
+                    m = u.GetMovie(ms.Title, ms.ReleaseDate.Value.Year); 
+                }
+                else
+                {
+                    m = u.GetMovie(ms.Title); //movie Summary has no release year so try to get it without. Only issue for unreleased movies it seems
+                }
+                
                 if (m == null)
                 {
                     selectedMovieSummary = lbMovies.SelectedItem as TmdbSearch.MovieSummary; //Could get Poster Path from here if faster response is desired..
@@ -221,26 +235,6 @@ namespace RelationMap
                     item.Order
                     );
 
-                ////Add Mapping of Character / Actor / Role
-                //MovieCharacterMap mcm = new MovieCharacterMap();
-                //mcm.MovieID = selectedMovie.TmdbId;
-                //mcm.PersonID = item.Id;
-                //mcm.CharacterId = c.Id;
-                //mcm.CreditID = item.CreditId;
-                //mcm.CastID = item.CastId;
-                //mcm.CreditOrder = item.Order;
-
-                //u.MovieCharacterMap.Add(mcm);
-
-                //selectedMovie.People.Add(item.Id); // Add Person id to People in Movie
-                ////Add Character to Movie.. but really think I just want to add any new aliases to the Character
-                ////Aliases are derived from item.Character. 
-                ////Item.Id is the Actor Id
-                ////Item.Order is the order of appearance of the Character
-                ////There are no Character IDs from TMDB - Wait what is the cast_id??!!??
-                //selectedMovie.AddCharacter(item.Character, item.Id, item.Order, item.CastId, item.CreditId);
-
-
                 //Get full person Info
                 //THis is a problem because TMDB will return delay if getting too many at once.
                 //Also SERIOUSLY consider only getting the first 10% of the cast - but probably have them already from other movies..
@@ -277,36 +271,15 @@ namespace RelationMap
 
             }
 
-            TmdbWrapper.Movies.CrewPerson item1 = null;
-            try
+            ////credits.Crew - Adds significant numbers of People and data Entry
+            #region Crew import
+            foreach (TmdbWrapper.Movies.CrewPerson crewPerson in credits.Crew)
             {
-                ////credits.Crew
-                foreach (TmdbWrapper.Movies.CrewPerson item in credits.Crew)
-                {
-                    item1 = item; // Debugging
-                    if (item1.Name == "Richard King")
-                    {
-
-                    }
-                    Person p = new Person(item.Name); 
-                    p.Id = item.Id;
-                    p.ProfilePath = item.ProfilePath;
-                    Crew c = u.GetCrew(item.Department, item.Job);
-
-                    MovieCrewMap mcm = new MovieCrewMap();
-                    mcm.CreditId = item.CreditId;
-                    mcm.CrewId = c.CrewID;
-                    mcm.MovieId = selectedMovie.TmdbId;
-                    mcm.PersonId = item.Id;
-                    u.MovieCrewMap.Add(mcm); // Adding Directly to HashSet
-                    u.AddPerson(p); // Will fail to add existing person and add basic and updated people.
-                }
+                u.AddCrewMember(crewPerson, selectedMovie);
             }
-            catch (Exception err)
-            {
+            #endregion
 
-            }
-
+            //Want this for movie search results..
             TmdbWrapper.Movies.Trailers t = await selectedMovieInfo.TrailersAsync(); // Want to have.. does nothing now..
             if (t != null && t.Youtube.Count > 0)
             {
@@ -318,7 +291,7 @@ namespace RelationMap
 
             u.AddMovie(selectedMovie);
             //Verify This is OK...
-            PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"), u);
+            PersistenceBase.Save(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"), u);
             return true;
         }
 

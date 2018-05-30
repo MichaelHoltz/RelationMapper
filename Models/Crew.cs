@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Newtonsoft.Json;
 namespace RelationMap.Models
 {
     /// <summary>
@@ -28,8 +28,11 @@ namespace RelationMap.Models
         /// <summary>
         /// Assigned ID for a Crew Member (App Generated)
         /// </summary>
+        [JsonProperty("C")]
         public int CrewID { get; set; }
+        [JsonProperty("J")]
         public String Job { get; set; }
+        [JsonProperty("D")]
         public String Department { get; set; }
 
         public Crew()
@@ -52,6 +55,8 @@ namespace RelationMap.Models
         #region HashCodes / Object Identification
         //TODO - use / include the "correct" id..
         private int _hashCode = 0;
+        [JsonIgnore]
+        [JsonProperty("H")]
         public int HashCode
         {
             get

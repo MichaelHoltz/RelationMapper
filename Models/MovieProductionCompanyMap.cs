@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace RelationMap.Models
 {
@@ -11,8 +12,11 @@ namespace RelationMap.Models
     /// </summary>
     public class MovieProductionCompanyMap
     {
+        [JsonProperty("A")]
         public int ProductionCompanyId { get; set; }
+        [JsonProperty("B")]
         public int MovieId { get; set; }
+
         #region Overrides
         /// <summary>
         /// Returns this instance ToString
@@ -25,6 +29,8 @@ namespace RelationMap.Models
         #region HashCodes / Object Identification
         //TODO - use / include the "correct" id..
         private int _hashCode = 0;
+        [JsonIgnore]
+        [JsonProperty("H")]
         public int HashCode
         {
             get

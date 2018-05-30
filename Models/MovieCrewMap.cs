@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Newtonsoft.Json;
 namespace RelationMap.Models
 {
     /// <summary>
@@ -11,10 +11,25 @@ namespace RelationMap.Models
     /// </summary>
     public class MovieCrewMap
     {
+        [JsonProperty("M")]
         public int MovieId { get; set;}
+        [JsonProperty("C")]
         public int CrewId { get; set; }
+        [JsonProperty("P")]
         public int PersonId { get; set; }
+        [JsonProperty("D")]
         public String CreditId { get; set; }
+        public MovieCrewMap()
+        {
+
+        }
+        public MovieCrewMap(int movieId, int personId, int crewId, String creditId)
+        {
+            MovieId = movieId;
+            PersonId = personId;
+            CrewId = crewId;
+            CreditId = creditId;
+        }
         #region Overrides
         /// <summary>
         /// Returns this instance ToString
@@ -27,6 +42,8 @@ namespace RelationMap.Models
         #region HashCodes / Object Identification
         //TODO - use / include the "correct" id..
         private int _hashCode = 0;
+        [JsonIgnore]
+        [JsonProperty("H")]
         public int HashCode
         {
             get
