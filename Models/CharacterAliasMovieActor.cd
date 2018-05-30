@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="RelationMap.Models.Character">
+    <Position X="0.5" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAECAAAIAACBgAAEgAEAAAQAAAAACIAAAAAgAAAgCAA=</HashCode>
+      <FileName>Models\Character.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RelationMap.Models.CharacterAlias">
+    <Position X="5.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAgAAAAAAQAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Models\CharacterAlias.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RelationMap.Models.RoleMaster">
+    <Position X="3.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAAAAAQAAAAAAAAAAAUAAAAAAAA=</HashCode>
+      <FileName>Models\RoleMaster.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RelationMap.Models.CharacterMovieMap">
+    <Position X="3.75" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAEAAkAAAAAAAAACAA=</HashCode>
+      <FileName>Models\CharacterMovieMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RelationMap.Models.CharacterAliasMap">
+    <Position X="5.75" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Models\CharacterAliasMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RelationMap.Models.MovieRole">
+    <Position X="8" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\MovieRole.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RelationMap.Models.Movie">
+    <Position X="10" Y="0.5" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AKQIAAAOAYAIAEBMiAEAAAAAAAAACIEBCQAgIAAAAEA=</HashCode>
+      <FileName>Models\Movie.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RelationMap.Models.Crew">
+    <Position X="8" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAACAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Models\Crew.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RelationMap.Models.Person">
+    <Position X="5.75" Y="4" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AICCAEANABABAAAEgAAQAARCAAAICIAASCAgAAAAAEo=</HashCode>
+      <FileName>Models\Person.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

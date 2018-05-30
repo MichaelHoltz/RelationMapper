@@ -25,63 +25,56 @@ namespace RelationMap.Models
         public String Name { get; set; }
 
         /// <summary>
-        /// Order of Appearance in Movie
+        /// Path to Profile Image (TBD web or local Cache)
         /// </summary>
-        public int Order { get; set; }
+        public String ProfilePath { get; set; }
         /// <summary>
-        /// Path to Picture of Character - But that would need to be manual and marked as such
+        /// Path to ThumbNail Image (TBD web or local Cache)
         /// </summary>
-        public String ProfilePath { get; set; } 
-       
-        /// <summary>
-        /// Still not sure what this is.
-        /// </summary>
-        public int CastId { get; set; }
+        public String ThumbNailPath { get; set; }
 
-        public String CreditId { get; set; }
-        /// <summary>
-        /// Character Aliases
-        /// </summary>
-        public HashSet<String> Aliases {get; set;} 
+        public Boolean IsMatch(String name)
+        {
+            //Much more efficient would be to see if u.RoleMater Contains exact match and move on.
 
-        /// <summary>
-        /// Actors that play this Character in this movie
-        /// </summary>
-        public HashSet<int> Actors { get; set; } 
+            //Split Name into parts
+            Char delimiter = '/'; // Alias Splitter
+            String[] substringsName = Name.Split(delimiter); // Split Source
+            String[] substringsSearch = name.Split(delimiter); // Split search
+            int maxConfidence = substringsName.Count();
+            int confidence = 0;
+            foreach (String n in substringsName)
+            {
+                foreach (String ns in substringsSearch)
+                {
+                    if (maxConfidence > 1 && ns.Contains(n))
+                    {
+
+                        confidence++;
+                    }
+                    else if (maxConfidence == 1 && ns == n)
+                    {
+                        confidence++;
+                    }
+                }
+                if (confidence >= maxConfidence)
+                {
+                    break;
+                }
+            }
+            return confidence >= maxConfidence;
+        }
+
 
         public Character()
         {
-            Aliases = new HashSet<string>();
-            Actors = new HashSet<int>();
-        }
-        public Character(String characterName, int actorId, int order, int castId, String creditId)
-        {
-            Actors = new HashSet<int>();
-            Aliases = new HashSet<string>();
-            Order = order;
-            CastId = castId;
-            CreditId = creditId;
-            assignCharacter(characterName);
-            Actors.Add(actorId);
-        }
-        /// <summary>
-        /// Function to split names into aliases
-        /// </summary>
-        /// <param name="characterName"></param>
-        private void assignCharacter(String characterName)
-        {
-            if (characterName != null)
-            {
-                Name = characterName;
-                Char delimiter = '/'; // Alias Splitter
-                String[] substrings = characterName.Split(delimiter);
-                foreach (String item in substrings)
-                {
-                    Aliases.Add(item.Trim());
-                }
-            }
 
         }
+        public Character(String characterName)
+        {
+            Name = characterName;
+        }
+
         #region Overrides
         /// <summary>
         /// Returns this instance ToString

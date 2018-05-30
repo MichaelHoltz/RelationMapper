@@ -13,12 +13,12 @@ namespace RelationMap.HelperForms
 {
     public partial class frmStudioGroupMaker : Form
     {
-        Universe u = null;
+        Universe3 u = null;
         //public frmStudioCollectionMaker()
         //{
         //    InitializeComponent();
         //}
-        public frmStudioGroupMaker(Universe univ)
+        public frmStudioGroupMaker(Universe3 univ)
         {
             InitializeComponent();
             u = univ; // Initialize Universe
@@ -29,7 +29,7 @@ namespace RelationMap.HelperForms
         {
             //List all Production companies in the universe
             lbProductionCompanies.Items.Clear();
-            lbProductionCompanies.Items.AddRange(u.ProductionCompanies.ToArray()); // Should add u.GetAllProductionCompanies
+            //lbProductionCompanies.Items.AddRange(u.ProductionCompanies.ToArray()); // Should add u.GetAllProductionCompanies
 
             lbStudioGroups.Items.Clear();
             lbStudioGroups.Items.AddRange(u.StudioGroups.ToArray());

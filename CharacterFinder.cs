@@ -23,16 +23,16 @@ namespace RelationMap
 {
     public partial class CharacterFinder : Form
     {
-        Universe u = new Universe();
+        Universe3 u = new Universe3();
         Movie m = new Movie();
         TmdbWrapper.Movies.Credits credits = new TmdbWrapper.Movies.Credits();
         public CharacterFinder()
         {
             InitializeComponent();
-            u = PersistanceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\uinverse2.json"));
+            u = PersistanceBase.Load<Universe3>(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"));
             //InitTheMovieDb();        
         }
-        public CharacterFinder(Movie m1, Universe u1)
+        public CharacterFinder(Movie m1, Universe3 u1)
         {
             InitializeComponent();
             u = u1;
@@ -58,7 +58,7 @@ namespace RelationMap
                 lbCharacters.Items.Clear();
 
                 m = u.GetMovie(cbMovie.SelectedItem.ToString());
-                credits = await TmdbWrapper.TheMovieDb.GetMovieCreditsAsync(m.DmdbId);
+                credits = await TmdbWrapper.TheMovieDb.GetMovieCreditsAsync(m.TmdbId);
                 foreach (TmdbWrapper.Movies.CastPerson item in credits.Cast)
                 {
                     lbCharacters.Items.Add(item.Character);
@@ -128,7 +128,7 @@ namespace RelationMap
             String movieTitle = m.Title;
             String characterName = lbCharacters.SelectedItem.ToString().Replace("/", ""); // Remove slash if it exists.
             String actor = "";
-            HashSet<int> peopleIDs =  m.GetActorsWhoPlayedCharacter(characterName);
+            HashSet<int> peopleIDs = new HashSet<int>(); // m.GetActorsWhoPlayedCharacter(characterName);
 
             if (peopleIDs.Count() > 0)
             {

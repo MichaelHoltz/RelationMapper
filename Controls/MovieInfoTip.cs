@@ -17,7 +17,7 @@ namespace RelationMap.Controls
     public partial class MovieInfoTip : UserControl
     {
         private Movie selectedMovie;
-        private Universe u;
+        private Universe3 u;
         public MovieInfoTip()
         {
             InitializeComponent();
@@ -27,7 +27,7 @@ namespace RelationMap.Controls
         /// </summary>
         /// <param name="movie"></param>
         /// <param name="univ"></param>
-        public void LoadMovieInfo(ref Movie movie, ref Universe univ)
+        public void LoadMovieInfo(ref Movie movie, ref Universe3 univ)
         {
             selectedMovie = movie;
             u = univ;
@@ -138,35 +138,35 @@ namespace RelationMap.Controls
         {
             flpProductionCompanies.Controls.Clear(); // Remove any Images from previous load
             //Loop through each production Company IDs
-            foreach (int pcId in selectedMovie.ProductionCompanies)
-            {
-                Image x;
-                ProductionCompany c = u.GetProductionCompany(pcId); //Cached Version
-                if (c != null)
-                    x = await c.GetLogo(TmdbWrapper.Utilities.LogoSize.w45);
-                else
-                {
-                    ProductionCompany pc = new ProductionCompany("dummy", pcId, null, null); // Hack
-                    x = await pc.GetLogo(pcId, TmdbWrapper.Utilities.LogoSize.w45);
-                }
-                if (x != null)
-                {
-                    PictureBox pb = new PictureBox();
-                    pb.BackgroundImageLayout = ImageLayout.Zoom;
-                    pb.Width = 45;
-                    pb.Height = 45;
-                    if (c.Homepage != null)
-                    {
-                        pb.Cursor = Cursors.Hand;
-                        pb.Click += Pb_Click;
-                        pb.Tag = c.Homepage;
-                    }
-                    pb.BackgroundImage = x;
+            //foreach (int pcId in selectedMovie.ProductionCompanies)
+            //{
+            //    Image x;
+            //    ProductionCompany c = u.GetProductionCompany(pcId); //Cached Version
+            //    if (c != null)
+            //        x = await c.GetLogo(TmdbWrapper.Utilities.LogoSize.w45);
+            //    else
+            //    {
+            //        ProductionCompany pc = new ProductionCompany("dummy", pcId, null, null); // Hack
+            //        x = await pc.GetLogo(pcId, TmdbWrapper.Utilities.LogoSize.w45);
+            //    }
+            //    if (x != null)
+            //    {
+            //        PictureBox pb = new PictureBox();
+            //        pb.BackgroundImageLayout = ImageLayout.Zoom;
+            //        pb.Width = 45;
+            //        pb.Height = 45;
+            //        if (c.Homepage != null)
+            //        {
+            //            pb.Cursor = Cursors.Hand;
+            //            pb.Click += Pb_Click;
+            //            pb.Tag = c.Homepage;
+            //        }
+            //        pb.BackgroundImage = x;
 
-                    flpProductionCompanies.Controls.Add(pb);
+            //        flpProductionCompanies.Controls.Add(pb);
 
-                }
-            }
+            //    }
+            //}
             
         }
         public void GetProductionCompanyLogos(IReadOnlyList<TmdbWrapper.Movies.ProductionCompany> prodCos)

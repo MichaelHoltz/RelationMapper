@@ -7,18 +7,27 @@ using System.Threading.Tasks;
 namespace RelationMap.Models
 {
     /// <summary>
-    /// Base Class for HashTable Collections
+    /// 
     /// </summary>
-    public class Hashable
+    public class MovieCollectionMap
     {
-        public String Name { get; set; }
+        
+        /// <summary>
+        /// ID of the Movie Collection which contains detailed information
+        /// </summary>
+        public int MovieCollectionId { get; set; }
+        /// <summary>
+        /// ID of a move in the collection
+        /// </summary>
+        public int MovieId { get; set; }
+
         #region Overrides
         /// <summary>
         /// Returns this instance ToString
         /// </summary>
         public override string ToString()
         {
-            return Name;
+            return MovieCollectionId.ToString() + "," + MovieId.ToString();
         }
         #endregion
         #region HashCodes / Object Identification
@@ -40,7 +49,7 @@ namespace RelationMap.Models
         {
             //THis is expensive and should be done only once since it will not be changing
             //TODO - use / include the "correct" id..
-            String key = this.GetType().Name + Name;
+            String key = this.GetType().Name + MovieCollectionId.ToString() + MovieId.ToString();
             //Google: "disable fips mode" if the line below fails
             System.Security.Cryptography.MD5 md5Hasher = System.Security.Cryptography.MD5.Create();
             var hashed = md5Hasher.ComputeHash(Encoding.UTF8.GetBytes(key));

@@ -7,18 +7,19 @@ using System.Threading.Tasks;
 namespace RelationMap.Models
 {
     /// <summary>
-    /// Base Class for HashTable Collections
+    /// Movie and Production Company Map
     /// </summary>
-    public class Hashable
+    public class MovieProductionCompanyMap
     {
-        public String Name { get; set; }
+        public int ProductionCompanyId { get; set; }
+        public int MovieId { get; set; }
         #region Overrides
         /// <summary>
         /// Returns this instance ToString
         /// </summary>
         public override string ToString()
         {
-            return Name;
+            return ProductionCompanyId.ToString() + "," + MovieId.ToString();
         }
         #endregion
         #region HashCodes / Object Identification
@@ -40,7 +41,7 @@ namespace RelationMap.Models
         {
             //THis is expensive and should be done only once since it will not be changing
             //TODO - use / include the "correct" id..
-            String key = this.GetType().Name + Name;
+            String key = this.GetType().Name + ProductionCompanyId.ToString() + MovieId.ToString();
             //Google: "disable fips mode" if the line below fails
             System.Security.Cryptography.MD5 md5Hasher = System.Security.Cryptography.MD5.Create();
             var hashed = md5Hasher.ComputeHash(Encoding.UTF8.GetBytes(key));

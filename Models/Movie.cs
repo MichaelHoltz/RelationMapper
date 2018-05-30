@@ -22,7 +22,7 @@ namespace RelationMap.Models
         public DateTime? ReleaseDate { get; set; }
         public String BackdropPath { get; set; }
         public String PosterPath { get; set; }
-        public int DmdbId { get; set; }
+        public int TmdbId { get; set; }
         /// <summary>
         /// Id of this movie in the IMDB.
         /// </summary>
@@ -31,12 +31,6 @@ namespace RelationMap.Models
         /// Home page of this movie
         /// </summary>
         public Uri HomePage { get; set; }
-
-        public HashSet<int> ProductionCompanies { get; set; }
-        /// <summary>
-        /// Id of Collection if movie belongs to a collection
-        /// </summary>
-        public int CollectionId { get; set; }
         /// <summary>
         /// Overview of this movie.
         /// </summary>
@@ -50,91 +44,20 @@ namespace RelationMap.Models
         /// </summary>
         public Int64 Revenue { get; set; }
         public String TrailerLink { get; set; }
-        /// <summary>
-        /// Characters in the movie
-        /// </summary>
-        public HashSet<Character> Characters { get; set; }
-        public HashSet<int> People { get; set; } // Ids of person objects
         
         public Movie()
         {
             Title = null;
             ReleaseYear = 1900;
-            ProductionCompanies = new HashSet<int>();
-            Characters = new HashSet<Character>();
-            People = new HashSet<int>();
 
         }
         public Movie(String name, int releaseYear)
         {
             Title = name;
             ReleaseYear = releaseYear;
-            ProductionCompanies = new HashSet<int>();
-            Characters = new HashSet<Character>(); // Characters in this Movie
-            People = new HashSet<int>();
-        }
-        public Character AddCharacter(String characterName, int actorId, int order, int castId, string creditId)
-        {
-            //Try to add the actor if the character Already exists.
-            Character c = null;
-            if (Characters.Select(o => o.Name).Contains(characterName))
-            {
-                c = Characters.First(o => o.Name == characterName);
-                c.Order = order;
-                c.Actors.Add(actorId);
-            }
-            else
-            {
-                c = new Character(characterName, actorId, order, castId, creditId);
-                Characters.Add(c);
-            }
-            return c;
-        }
-        public Character GetCharacter(String characterName)
-        {
-            return Characters.First(o => o.Name == characterName);
-        }
-        //public HashSet<Character> GetCharacters(String )
-        public HashSet<int> GetActorsWhoPlayedCharacter(String characterName)
-        {
-            HashSet<int> results = new HashSet<int>();
-            if (Characters.Select(o => o.Name == characterName).Contains(true))
-            {
-                Character c = Characters.First(o => o.Name == characterName);
-                results = c.Actors;
-            }
-            //////Character c = Characters.First(o => o.Name == characterName);
-            //////Person a = c.Actors.First(); //First Actor need to fix this
-            //////return c.Actors;
-            return results;
-        }
-        public HashSet<Person> GetAllActors()
-        {
-            //////HashSet<Person> actors = new HashSet<Person>();
-            //////foreach (Character c in this.Characters)
-            //////{
-            //////    foreach (Person a in c.Actors)
-            //////    {
-            //////        actors.Add(a);
-            //////    }
-
-            //////}
-            //////return actors;
-            return null;
         }
 
-        public HashSet<Character> GetCharactersPlayedByActor(int actorId)
-        {
-            HashSet<Character> cs = new HashSet<Character>();
-            foreach (Character c in Characters)
-            {
-                if (c.Actors.Contains(actorId))
-                {
-                    cs.Add(c);
-                }
-            }
-            return cs;
-        }
+
         /// <summary>
         /// Gets the actual Movie Poster for this Movie
         /// </summary>

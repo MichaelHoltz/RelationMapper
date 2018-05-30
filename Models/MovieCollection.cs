@@ -20,12 +20,12 @@ namespace RelationMap.Models
         /// <summary>
         /// Parts are the ids of the other movies
         /// </summary>
-        public HashSet<int> Parts { get; set; }
+       // public HashSet<int> Parts { get; set; }
 
         #endregion
         public MovieCollection()
         {
-            Parts = new HashSet<int>();
+            //Parts = new HashSet<int>();
         }
         /// <summary>
         /// Add move Collection from Movie Information
@@ -40,7 +40,7 @@ namespace RelationMap.Models
             Id = id;
             PosterPath = posterPath;
             BackdropPath = backdropPath;
-            Parts = new HashSet<int>();
+           // Parts = new HashSet<int>();
         }
         private Uri Uri(BackdropSize size)
         {

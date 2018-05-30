@@ -25,14 +25,14 @@ namespace RelationMap.Controls
     public partial class PersonInfoTip : UserControl
     {
         private Movie selectedMovie;
-        private Universe u;
+        private Universe3 u;
         private Person p;
         public PersonInfoTip()
         {
             InitializeComponent();
         }
 
-        public void LoadPersonInfo(ref Person person, ref Movie movie, ref Universe univ)
+        public void LoadPersonInfo(ref Person person, ref Movie movie, ref Universe3 univ)
         {
             p = person;
             selectedMovie = movie;
@@ -69,7 +69,7 @@ namespace RelationMap.Controls
             pbProfile.BackgroundImage = p.GetProfileImage(TmdbWrapper.Utilities.ProfileSize.w185);
 
             //Find Character(s !!!) this person played
-            HashSet<Character> cpba = selectedMovie.GetCharactersPlayedByActor(p.Id);
+            HashSet<Character> cpba = new HashSet<Character>();// selectedMovie.GetCharactersPlayedByActor(p.Id);
             Character c = cpba.First();
             String tnPath = PrivateData.GetAppPath() + @"\Cache\Images\Characters\tn_" + c.Name.Replace("/","") + ".png";
             String piath = PrivateData.GetAppPath() + @"\Cache\Images\Characters\pi_" + c.Name.Replace("/", "") + ".png";

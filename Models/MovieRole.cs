@@ -13,11 +13,11 @@ namespace RelationMap.Models
     {
         public int Id { get; set; }
 
-        public HashSet<String> Aliases { get; set; }
+
 
         public MovieRole()
         {
-            Aliases = new HashSet<string>();
+            //Aliases = new HashSet<string>();
         }
     }
 }

@@ -29,6 +29,10 @@ namespace TmdbWrapper.Collections
         /// </summary>
         public string Name { get; private set; }
         /// <summary>
+        /// Collection Overview
+        /// </summary>
+        public string Overview { get; private set; }
+        /// <summary>
         /// A list with all the parts of this collection
         /// </summary>
         public IReadOnlyList<Part> Parts { get; private set; }
@@ -52,7 +56,8 @@ namespace TmdbWrapper.Collections
             Id = (int)jsonObject.GetSafeNumber("id");
             Name = jsonObject.GetSafeString("name");
             PosterPath = jsonObject.GetSafeString("poster_path");
-            Parts = jsonObject.ProcessObjectArray<Part>("parts");         
+            Parts = jsonObject.ProcessObjectArray<Part>("parts");
+            Overview = jsonObject.GetSafeString("overview");
         }
         #endregion
 

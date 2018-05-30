@@ -48,7 +48,7 @@ namespace RelationMap
 
         List<DrawingEdge> aeMaster = new List<DrawingEdge>(); // All edges to prevent duplicates
         List<Image> imageList = new List<Image>(); // Image list to reduce file movement to just once
-        Universe u = new Universe();
+        Universe3 u = new Universe3();
 
         DrawingColor MovieColor = DrawingColor.PaleGreen;
         DrawingColor StudioColor = DrawingColor.PowderBlue;
@@ -105,7 +105,7 @@ namespace RelationMap
         private void frmGraphView_Load(object sender, EventArgs e)
         {
             LoadImages(PrivateData.GetRelativePath(@"\Cache\Images\")); // Load all known images for use in the Graph
-            u = PersistanceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\uinverse2.json"));
+            u = PersistanceBase.Load<Universe3>(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"));
             refreshLists();
             //viewer.Graph = SetViewAll();
             lblSelectedNode.Text = "Selected Node: " + selectedNode;
@@ -341,30 +341,30 @@ namespace RelationMap
         }
         private void ToggleCharactersForMovie(DrawingNode n)
         {
-            // Already have Characters showing // remove all Out Edges and descendants that only come from here.
-            if (n.OutEdges.Count() > 0) 
-            {
-                RemoveAllOutItems(n);
-            }
-            else
-            {
-                Movie m = n.UserData as Movie;
-                //String movieID = m.Title + " (" + m.ReleaseYear + ")";
-                String movieID = m.Title + " (" + m.ReleaseDate.Value.ToShortDateString() + ")";
-                foreach (Character c in m.Characters)
-                {
-                    AE(master, aeMaster, movieID, c.Name, CharacterColor, c);
-                    SetNodeDelegate(FN(master, c.Name)); // Allows this node to be custom draw
+            //// Already have Characters showing // remove all Out Edges and descendants that only come from here.
+            //if (n.OutEdges.Count() > 0) 
+            //{
+            //    RemoveAllOutItems(n);
+            //}
+            //else
+            //{
+            //    Movie m = n.UserData as Movie;
+            //    //String movieID = m.Title + " (" + m.ReleaseYear + ")";
+            //    String movieID = m.Title + " (" + m.ReleaseDate.Value.ToShortDateString() + ")";
+            //    foreach (Character c in m.Characters)
+            //    {
+            //        AE(master, aeMaster, movieID, c.Name, CharacterColor, c);
+            //        SetNodeDelegate(FN(master, c.Name)); // Allows this node to be custom draw
 
-                    //    foreach (Actor a in m.GetActorsWhoPlayedCharacter(c.Name))
-                    //    {
-                    //        AE(master, aeMaster, c.Name, a.Name, ActorColor, a);
-                    //        SetNodeDelegate(FN(master, a.Name)); // Allows this node to be custom draw
+            //        //    foreach (Actor a in m.GetActorsWhoPlayedCharacter(c.Name))
+            //        //    {
+            //        //        AE(master, aeMaster, c.Name, a.Name, ActorColor, a);
+            //        //        SetNodeDelegate(FN(master, a.Name)); // Allows this node to be custom draw
 
-                    //    }
+            //        //    }
 
-                }
-            }
+            //    }
+            //}
         }
         private void ToggleActorsForCharacter(DrawingNode n)
         {
@@ -608,10 +608,10 @@ namespace RelationMap
             //List<DrawingNode> nodeListLoaders = new List<DrawingNode>(); // List for Constraint
             master.LayerConstraints.RemoveAllConstraints();
 
-            HashSet<ProductionCompany> Studios = u.ProductionCompanies;
+           // HashSet<ProductionCompany> Studios = u.ProductionCompanies;
             HashSet<StudioGroup> StudioGroups = u.StudioGroups;
             //HashSet<Franchise> franchises = u.GetAllFranchises();
-            HashSet<Franchise> franchises = null;
+            //HashSet<Franchise> franchises = null;
             HashSet<Movie> movies = u.GetAllMovies();
 
             String studioStr = cbStudios.SelectedItem.ToString();
@@ -628,23 +628,23 @@ namespace RelationMap
             //}
             //StudioGroups
 
-            foreach (ProductionCompany s in Studios)
-            {
-                master.AddNode(s.Name).Attr.FillColor = StudioColor;
-                FN(master, s.Name).UserData = s;
-                nodeListStudios.Add(FN(master, s.Name));
-                SetNodeDelegate(FN(master, s.Name)); // Allows this node to be custom drawn
-                foreach (Movie m in u.Movies)
-                {
-                    if (m.ProductionCompanies.Contains(s.Id))
-                    {
-                        // String movieID = m.Title + " (" + m.ReleaseYear + ")";
-                        String movieID = m.Title + " (" + m.ReleaseDate.Value.ToShortDateString() + ")";
-                        AE(master, aeMaster, s.Name, movieID, MovieColor, m);
-                        SetNodeDelegate(FN(master, movieID)); // Allows this node to be custom draw
-                    }
-                }
-            }
+            //foreach (ProductionCompany s in Studios)
+            //{
+            //    master.AddNode(s.Name).Attr.FillColor = StudioColor;
+            //    FN(master, s.Name).UserData = s;
+            //    nodeListStudios.Add(FN(master, s.Name));
+            //    SetNodeDelegate(FN(master, s.Name)); // Allows this node to be custom drawn
+            //    //foreach (Movie m in u.Movies)
+            //    //{
+            //    //    if (m.ProductionCompanies.Contains(s.Id))
+            //    //    {
+            //    //        // String movieID = m.Title + " (" + m.ReleaseYear + ")";
+            //    //        String movieID = m.Title + " (" + m.ReleaseDate.Value.ToShortDateString() + ")";
+            //    //        AE(master, aeMaster, s.Name, movieID, MovieColor, m);
+            //    //        SetNodeDelegate(FN(master, movieID)); // Allows this node to be custom draw
+            //    //    }
+            //    //}
+            //}
             foreach (StudioGroup s in StudioGroups)
             {
                 //AE(master, aeMaster, "WEB Servers", item.Name, WebColor, item);
@@ -680,13 +680,13 @@ namespace RelationMap
                 //    }
                 //}
                 //Movies Not in a Franchise
-                foreach (Movie m in u.GetAllMoviesNotInAnyFranchise(s))
-                {
-                    //String movieID = m.Title + " (" + m.ReleaseYear + ")";
-                    String movieID = m.Title + " (" + m.ReleaseDate.Value.ToShortDateString() + ")";
-                    AE(master, aeMaster, s.Name, movieID, MovieColor, m);
-                    SetNodeDelegate(FN(master, movieID)); // Allows this node to be custom draw
-                }
+                //foreach (Movie m in u.GetAllMoviesNotInAnyFranchise(s))
+                //{
+                //    //String movieID = m.Title + " (" + m.ReleaseYear + ")";
+                //    String movieID = m.Title + " (" + m.ReleaseDate.Value.ToShortDateString() + ")";
+                //    AE(master, aeMaster, s.Name, movieID, MovieColor, m);
+                //    SetNodeDelegate(FN(master, movieID)); // Allows this node to be custom draw
+                //}
 
             }
             return master;

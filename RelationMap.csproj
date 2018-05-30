@@ -114,21 +114,33 @@
     <Compile Include="HelperForms\frmStudioGroupMaker.Designer.cs">
       <DependentUpon>frmStudioGroupMaker.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\CharacterAlias.cs" />
+    <Compile Include="Models\CharacterAliasMap.cs" />
+    <Compile Include="Models\Crew.cs" />
+    <Compile Include="Models\MovieCollectionMap.cs" />
+    <Compile Include="Models\MovieCrewMap.cs" />
+    <Compile Include="Models\MovieProductionCompanyMap.cs" />
     <Compile Include="Models\Hashable.cs" />
     <Compile Include="Models\MovieRole.cs" />
     <Compile Include="Models\CharacterImageSearchResult.cs" />
     <Compile Include="Models\CharacterImageSearchResults.cs" />
-    <Compile Include="Models\CharacterMovieMap.cs" />
+    <Compile Include="Models\MovieCharacterMap.cs" />
     <Compile Include="Models\MovieCollection.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\Character.cs" />
-    <Compile Include="Models\Fanchise.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\PersistanceBase.cs" />
     <Compile Include="Models\ProductionCompany.cs" />
     <Compile Include="Models\StudioGroup.cs" />
     <Compile Include="Models\TvShow.cs" />
     <Compile Include="Models\Universe.cs" />
+    <Compile Include="Models\Universe3.cs" />
+    <Compile Include="Models\UniverseCharacter.cs" />
+    <Compile Include="Models\UniverseCrew.cs" />
+    <Compile Include="Models\UniverseMovieCollections.cs" />
+    <Compile Include="Models\UniverseMovies.cs" />
+    <Compile Include="Models\UniversePerson.cs" />
+    <Compile Include="Models\UniverseStudios.cs" />
     <Compile Include="PrivateData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -176,6 +188,7 @@
     <EmbeddedResource Include="WelcomeForm.resx">
       <DependentUpon>WelcomeForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Models\CharacterAliasMovieActor.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -20,7 +20,7 @@ namespace TmdbWrapper.Movies
         /// </summary>
         public string Name { get; private set; }
         /// <summary>
-        /// Name of the job that is fullfilled.
+        /// Name of the job that is fulfilled.
         /// </summary>
         public string Job { get; private set; }
         /// <summary>
@@ -31,6 +31,10 @@ namespace TmdbWrapper.Movies
         /// Path of the profile picture
         /// </summary>
         public string ProfilePath { get; private set; }
+        /// <summary>
+        /// Credit ID for this role
+        /// </summary>
+        public string CreditId { get; private set; }
         #endregion
 
         #region overrides
@@ -48,9 +52,10 @@ namespace TmdbWrapper.Movies
         {
             Id = (int)jsonObject.GetSafeNumber("id");
             Name = jsonObject.GetSafeString("name");
-            Job = jsonObject.GetSafeString("Job");
+            Job = jsonObject.GetSafeString("job"); // Bug Fix
             Department = jsonObject.GetSafeString("department");
             ProfilePath = jsonObject.GetSafeString("profile_path");
+            CreditId = jsonObject.GetSafeString("credit_id");
         }
         #endregion
 

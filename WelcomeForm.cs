@@ -21,7 +21,7 @@ namespace RelationMap
 {
     public partial class WelcomeForm : Form
     {
-        Universe u;
+        Universe3 u;
         TmdbSearch.MovieSummary selectedMovieSummary = null;
         TmdbWrapper.Movies.Movie selectedMovieInfo = null;
         Movie selectedMovie = null;
@@ -29,7 +29,7 @@ namespace RelationMap
         {
             InitializeComponent();
             //Since this is a demo This is loaded for the full data universe
-            u = PersistanceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\uinverse2.json"));
+            u = PersistanceBase.Load<Universe3>(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"));
             
             
         }
@@ -102,11 +102,11 @@ namespace RelationMap
                     selectedMovie = m; //Need for Person Info 
                     movieInfoTip1.LoadMovieInfo(ref selectedMovie, ref u);
                     
-                    foreach (int pid in m.People)
-                    {
-                        Person p = u.People.First(o => o.Id == pid);
-                        lbActors.Items.Add(p);
-                    }
+                    //foreach (int pid in m.People)
+                    //{
+                    //    Person p = u.People.First(o => o.Id == pid);
+                    //    lbActors.Items.Add(p);
+                    //}
                 }
             }
         }
@@ -118,6 +118,7 @@ namespace RelationMap
                 return false;
             }
             //The movie might already exist in the universe so this would replace it
+            //This is a search Result for a specific movie
             selectedMovie = u.GetMovie(selectedMovieSummary.Id);
             if (selectedMovie != null)
             {
@@ -130,7 +131,7 @@ namespace RelationMap
             //Clear or create            
             selectedMovie = new Movie(selectedMovieInfo.Title, selectedMovieInfo.ReleaseDate.Value.Year);
             selectedMovie.BackdropPath = selectedMovieInfo.BackdropPath;
-            selectedMovie.DmdbId = selectedMovieInfo.Id;
+            selectedMovie.TmdbId = selectedMovieInfo.Id;
             selectedMovie.ImdbId = selectedMovieInfo.ImdbId;
             selectedMovie.OriginalTitle = selectedMovieInfo.OriginalTitle;
             selectedMovie.Overview = selectedMovieInfo.Overview;
@@ -139,27 +140,37 @@ namespace RelationMap
             selectedMovie.Revenue = selectedMovieInfo.Revenue;
             selectedMovie.Runtime = selectedMovieInfo.Runtime;
             selectedMovie.HomePage = selectedMovieInfo.Homepage;
+            //TODO - add remaining properties
 
             //Add Collection Id to movie ONLY if one exists
             if (selectedMovieInfo.BelongsToCollection != null)
             {
                 //Add Collection ID to Movie
-                selectedMovie.CollectionId = selectedMovieInfo.BelongsToCollection.Id;
+                //selectedMovie.CollectionId = selectedMovieInfo.BelongsToCollection.Id;
+                MovieCollection mc =  u.GetMovieCollection(selectedMovieInfo.Id);
+                if (mc == null)
+                {
+                    //Lookup selectedMovieInfo.BelongsToCollection.Id to see if it exists..
+                    //Add Collection to Universe
+                    MovieCollection m = u.AddMovieCollection(selectedMovieInfo.BelongsToCollection.Name, selectedMovieInfo.BelongsToCollection.Id, selectedMovieInfo.BelongsToCollection.PosterPath, selectedMovieInfo.BelongsToCollection.BackdropPath);
 
-                //Add Collection to Universe
-                MovieCollection m = u.AddMovieCollection(selectedMovieInfo.BelongsToCollection.Name, selectedMovieInfo.BelongsToCollection.Id, selectedMovieInfo.BelongsToCollection.PosterPath, selectedMovieInfo.BelongsToCollection.BackdropPath);
-                //update the parts of the collection below for Universe
-                TmdbWrapper.Collections.Collection coll = await selectedMovieInfo.BelongsToCollection.CollectionAsync();
-                if (coll != null)
-                {
-                    foreach (TmdbWrapper.Collections.Part p in coll.Parts)
+                    //ONly need to do this once per movie in the collection!!
+                    //update the parts of the collection below for Universe
+                    TmdbWrapper.Collections.Collection coll = await selectedMovieInfo.BelongsToCollection.CollectionAsync();
+                    if (coll != null)
                     {
-                        m.Parts.Add(p.Id); // Add the movie ids of the parts to the Movie Collection Part
+                        m.Overview = coll.Overview; //Update the Movie Collection Overview.
+                        foreach (TmdbWrapper.Collections.Part p in coll.Parts)
+                        {
+                            u.AddMovieToCollection(m.Id, p.Id); // Add the movie ids of the parts to the Movie Collection Part
+
+                            //m.Parts.Add(p.Id); // Add the movie ids of the parts to the Movie Collection Part
+                        }
                     }
-                }
-                else
-                {
-                    Console.WriteLine("Should never be here! Movie Belongs to a collection but Collection is null!");
+                    else
+                    {
+                        Console.WriteLine("Should never be here! Movie Belongs to a collection but Collection is null!");
+                    }
                 }
             }
 
@@ -168,28 +179,30 @@ namespace RelationMap
             
             foreach (var item in selectedMovieInfo.ProductionCompanies)
             {
-                // Add Production Company Id to Movie
-                selectedMovie.ProductionCompanies.Add(item.Id);
-                
-                if (u.ProductionCompanies.Select(o => o.Id == item.Id).Contains(true))
+                //Try to get the Production Company and see if it has been updated if Null or not updated then Do web lookup
+
+                ProductionCompany pc = u.GetProductionCompany(item.Id);
+                if (u.GetProductionCompany(item.Id) == null || pc.Updated == false)
                 {
-                    ProductionCompany testPC = u.ProductionCompanies.First(o => o.Id == item.Id);
-                    if (testPC != null && testPC.Updated)
-                        continue; // Skip this Production Company
+                    TmdbWrapper.Companies.Company c = await item.CompanyAsync(); // await FindProductionCompany(item.Id);
+                    pc = new ProductionCompany(item.Name, item.Id, item.LogoPath, item.OriginCountry);
+                    pc.Description = c.Description;
+                    pc.Headquarters = c.Headquarters;
+                    pc.Homepage = c.Homepage;
+                    pc.Updated = true; // Flag so it will not cause a lookup again.
+                                       //Add Parent Production Companies
+                    if (c.ParentCompany != null)
+                    {
+                        pc.ParentCompanyId = c.ParentCompany.Id; // This could change based on movie release data.. (before purchase of A by B)
+                    }
+                    u.AddProductionCompany(pc);
+
                 }
-                //id, logo_path, name, origin_country  probably already have the full info so don't want to get this over and over
-                TmdbWrapper.Companies.Company c = await item.CompanyAsync(); // await FindProductionCompany(item.Id);
-                ProductionCompany pc = new ProductionCompany(item.Name, item.Id, item.LogoPath, item.OriginCountry);
-                pc.Description = c.Description;
-                pc.Headquarters = c.Headquarters;
-                pc.Homepage = c.Homepage;
-                pc.Updated = true; // Flag so it will not cause a lookup again.
-                //Add Parent Production Companies
-                if (c.ParentCompany != null)
-                {
-                    pc.ParentCompanyId = c.ParentCompany.Id; // This could change based on movie release data.. (before purchase of A by B)
-                }
-                u.AddProductionCompany(pc);
+                MovieProductionCompanyMap mpcm = new MovieProductionCompanyMap();
+                mpcm.MovieId = selectedMovieInfo.Id;
+                mpcm.ProductionCompanyId = item.Id;
+                u.MovieProductionCompanyMap.Add(mpcm);
+
             }
             
             //Get the Movie Credits Now.
@@ -199,14 +212,33 @@ namespace RelationMap
             bool skip = false;
             foreach (TmdbWrapper.Movies.CastPerson item in credits.Cast)
             {
-                //Add Person to Movie
-                selectedMovie.People.Add(item.Id); // Add Person id to People in Movie
-                //Add Character to Movie.. but really think I just want to add any new aliases to the Character
-                //Aliases are derived from item.Character. 
-                //Item.Id is the Actor Id
-                //Item.Order is the order of appearance of the Character
-                //There are no Character IDs from TMDB - Wait what is the cast_id??!!??
-                selectedMovie.AddCharacter(item.Character, item.Id, item.Order, item.CastId, item.CreditId);
+                ////Add Character To Movie (Could be Alias able character so mapping would be necessary)
+                Character c =  u.AddCharacter(item.Character,
+                    selectedMovie.TmdbId,
+                    item.Id,
+                    item.CreditId,
+                    item.CastId,
+                    item.Order
+                    );
+
+                ////Add Mapping of Character / Actor / Role
+                //MovieCharacterMap mcm = new MovieCharacterMap();
+                //mcm.MovieID = selectedMovie.TmdbId;
+                //mcm.PersonID = item.Id;
+                //mcm.CharacterId = c.Id;
+                //mcm.CreditID = item.CreditId;
+                //mcm.CastID = item.CastId;
+                //mcm.CreditOrder = item.Order;
+
+                //u.MovieCharacterMap.Add(mcm);
+
+                //selectedMovie.People.Add(item.Id); // Add Person id to People in Movie
+                ////Add Character to Movie.. but really think I just want to add any new aliases to the Character
+                ////Aliases are derived from item.Character. 
+                ////Item.Id is the Actor Id
+                ////Item.Order is the order of appearance of the Character
+                ////There are no Character IDs from TMDB - Wait what is the cast_id??!!??
+                //selectedMovie.AddCharacter(item.Character, item.Id, item.Order, item.CastId, item.CreditId);
 
 
                 //Get full person Info
@@ -227,7 +259,7 @@ namespace RelationMap
                         skip = true;
                     }
                 }
-                if (!skip && personCount < 5)
+                if (!skip && personCount < 2)
                 {
                     Thread.Sleep(100); // Slow it down..
                     TmdbWrapper.Persons.Person tmdbPerson = await item.PersonAsync();
@@ -245,11 +277,35 @@ namespace RelationMap
 
             }
 
-            ////credits.Crew
-            //foreach (TmdbWrapper.Movies.CrewPerson item in credits.Crew)
-            //{
+            TmdbWrapper.Movies.CrewPerson item1 = null;
+            try
+            {
+                ////credits.Crew
+                foreach (TmdbWrapper.Movies.CrewPerson item in credits.Crew)
+                {
+                    item1 = item; // Debugging
+                    if (item1.Name == "Richard King")
+                    {
 
-            //}
+                    }
+                    Person p = new Person(item.Name); 
+                    p.Id = item.Id;
+                    p.ProfilePath = item.ProfilePath;
+                    Crew c = u.GetCrew(item.Department, item.Job);
+
+                    MovieCrewMap mcm = new MovieCrewMap();
+                    mcm.CreditId = item.CreditId;
+                    mcm.CrewId = c.CrewID;
+                    mcm.MovieId = selectedMovie.TmdbId;
+                    mcm.PersonId = item.Id;
+                    u.MovieCrewMap.Add(mcm); // Adding Directly to HashSet
+                    u.AddPerson(p); // Will fail to add existing person and add basic and updated people.
+                }
+            }
+            catch (Exception err)
+            {
+
+            }
 
             TmdbWrapper.Movies.Trailers t = await selectedMovieInfo.TrailersAsync(); // Want to have.. does nothing now..
             if (t != null && t.Youtube.Count > 0)
@@ -262,13 +318,14 @@ namespace RelationMap
 
             u.AddMovie(selectedMovie);
             //Verify This is OK...
-            PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\uinverse2.json"), u);
+            PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"), u);
             return true;
         }
 
         private async void btnSaveToMyMovies_Click(object sender, EventArgs e)
         {
             lbActors.Items.Clear();
+            MovieCollection mc = u.GetMovieCollection(selectedMovieInfo.Id); // Testing
             bool done = await SaveFullInfo(selectedMovieInfo);
             if (done)
             {
@@ -281,11 +338,11 @@ namespace RelationMap
         {
             //If viewing from Cache then the actors will be added at the same time as the move otherwise they must be added first..
             lbActors.Items.Clear();
-            foreach (int item in m.People)
-            {
-                Person p = u.People.First(o => o.Id == item); // Look up person from Universe Person ID.
-                lbActors.Items.Add(p);
-            }
+            //foreach (int item in m.People)
+            //{
+            //    Person p = u.People.First(o => o.Id == item); // Look up person from Universe Person ID.
+            //    lbActors.Items.Add(p);
+            //}
             
 
         }
@@ -319,39 +376,23 @@ namespace RelationMap
             }
             
         }
-        /// <summary>
-        /// Migration code helper to work on normalizing Character Data
-        /// 
-        /// Step1 - Figure out how to identify the same character in different movies by similar but not
-        /// identical aliases. (Ex. The Hulk vs Hulk and Doctor Steven Strange vs Steven Strange vs Dr Strange.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
         private void btnTransfer_Click(object sender, EventArgs e)
         {
-            HashSet<MovieRole> mrs = new HashSet<MovieRole>();
-            foreach (Movie m in u.Movies)
-            {
-                int movieID = m.DmdbId; // Hmm when did i name this wrong?
-                foreach (Character c in m.Characters)
-                {
-                    MovieRole mr = new MovieRole();
-                    
-                    //c is a unique character in a given movie, but other movies have the same character.
-                    foreach (String alias in c.Aliases)
-                    {
-                        mr.Aliases.Add(alias);
-                        //Need to decide on primary Alias to use or standardize on Full name?
+            //Try to use what I've Got...
+            Movie m = u.GetMovie("Avengers: Infinity War"); // Check
+            MovieCollection mc = u.GetMovieCollection(m.TmdbId);
+            HashSet<Movie> movies =  u.GetMoviesInCollection(mc.Id);
+            Person p = u.GetPerson("Chris Hemsworth");
+            HashSet<Character> cs = u.GetCharactersPlayedByActor(p.Id); // Chris Hemsworth -> Thor and Thor Odinson - Need Alias Case
+            p = u.GetPerson("Mark Ruffalo");
+            cs = u.GetCharactersPlayedByActor(p.Id); // Mark Ruffalo - Need Alias Case (Bruce Banner / Hulk and Bruce Banner / The Hulk) Need Alias Case
+            p = u.GetPerson("Scarlett Johansson");
+            cs = u.GetCharactersPlayedByActor(p.Id); // Scarlett Johansson 
 
-                    }
-                    foreach (int i in c.Actors)
-                    {
 
-                    }
-                    mrs.Add(mr);
-                }
 
-            }
+
         }
     }
 }

@@ -42,10 +42,14 @@ namespace RelationMap.Models
         /// </summary>
         public HashSet<Person> People { get; set; }
         public int NextCharacterIndex { get; set; }
+        
         /// <summary>
         /// All characters in all movies - (Seems could be role like Character or Crew - Producer etc.)
         /// </summary>
         public HashSet<Character> Characters { get; set; }
+        public HashSet<MovieCharacterMap> CharacterMovieMap { get; set; }
+        public HashSet<CharacterAlias> CharacterAliases { get; set; }
+        public HashSet<CharacterAliasMap> CharacterAliasMap { get; set; }
         public Universe()
         {
             StudioGroups = new HashSet<StudioGroup>();
@@ -54,6 +58,24 @@ namespace RelationMap.Models
             Movies = new HashSet<Movie>();
             People = new HashSet<Person>();
             Characters = new HashSet<Character>();
+            CharacterMovieMap = new HashSet<Models.MovieCharacterMap>();
+            CharacterAliases = new HashSet<CharacterAlias>();
+            CharacterAliasMap = new HashSet<Models.CharacterAliasMap>();
+        }
+        public String IdentifyCharacterFromTMDBAliasList(String aliasList)
+        {
+            //aliasList is Slash separated list
+            HashSet<String> Aliases = new HashSet<string>();
+            if (aliasList != null)
+            {
+                Char delimiter = '/'; // Alias Splitter
+                String[] substrings = aliasList.Split(delimiter);
+                foreach (String item in substrings)
+                {
+                    Aliases.Add(item.Trim());
+                }
+            }
+            return aliasList;
         }
         #region People
         public Boolean AddPerson(Person person)
@@ -231,49 +253,49 @@ namespace RelationMap.Models
             //}
             return m;
         }
-        /// <summary>
-        /// Get all Movies in a given Franchise
-        /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        public HashSet<Movie> GetAllMovies(Franchise f)
-        {
-            HashSet<Movie> m = new HashSet<Movie>();
-            //foreach (StudioGroup s in StudioGroups)
-            //{
-            //    if (s.Franchises.Contains(f))
-            //    {
-            //        foreach (Movie item in s.Movies)
-            //        {
-            //            if (f.Movies.Contains(item.HashCode)) // Only add if movie in Franchise
-            //            {
-            //                m.Add(item);
-            //            }
-            //        }
-            //    }
-            //}
-            return m;
-        }
+        ///// <summary>
+        ///// Get all Movies in a given Franchise
+        ///// </summary>
+        ///// <param name="s"></param>
+        ///// <returns></returns>
+        //public HashSet<Movie> GetAllMovies(Franchise f)
+        //{
+        //    HashSet<Movie> m = new HashSet<Movie>();
+        //    //foreach (StudioGroup s in StudioGroups)
+        //    //{
+        //    //    if (s.Franchises.Contains(f))
+        //    //    {
+        //    //        foreach (Movie item in s.Movies)
+        //    //        {
+        //    //            if (f.Movies.Contains(item.HashCode)) // Only add if movie in Franchise
+        //    //            {
+        //    //                m.Add(item);
+        //    //            }
+        //    //        }
+        //    //    }
+        //    //}
+        //    return m;
+        //}
         /// <summary>
         /// Get all Movies not in any Franchise
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public HashSet<Movie> GetAllMoviesNotInAnyFranchise(StudioGroup s)
-        {
-            HashSet<Movie> m = new HashSet<Movie>();
-            //foreach (Franchise f in s.Franchises) // All StudioGroup Franchises
-            //{
-            //    foreach (Movie item in s.Movies)
-            //    {
-            //        if (!f.Movies.Contains(item.HashCode)) // Only add if movie not in any franchise
-            //        {
-            //            m.Add(item);
-            //        }
-            //    }
-            //}
-            return m;
-        }
+        //public HashSet<Movie> GetAllMoviesNotInAnyFranchise(StudioGroup s)
+        //{
+        //    HashSet<Movie> m = new HashSet<Movie>();
+        //    //foreach (Franchise f in s.Franchises) // All StudioGroup Franchises
+        //    //{
+        //    //    foreach (Movie item in s.Movies)
+        //    //    {
+        //    //        if (!f.Movies.Contains(item.HashCode)) // Only add if movie not in any franchise
+        //    //        {
+        //    //            m.Add(item);
+        //    //        }
+        //    //    }
+        //    //}
+        //    return m;
+        //}
         public Movie GetMovie(String movieName)
         {
             Movie m = null;
@@ -288,9 +310,9 @@ namespace RelationMap.Models
         {
 
             Movie m = null;
-            if (Movies.Select(o => o.DmdbId).Contains(movieId))
+            if (Movies.Select(o => o.TmdbId).Contains(movieId))
             {
-                m = Movies.First(o => o.DmdbId == movieId);
+                m = Movies.First(o => o.TmdbId == movieId);
             }
             return m;
         }

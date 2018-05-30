@@ -15,7 +15,7 @@ namespace RelationMap
 {
     public partial class frmMain : Form
     {
-        Universe u;
+        Universe3 u;
         StudioGroup marvel; 
         StudioGroup dc;
         //Franchise mcu;
@@ -45,12 +45,12 @@ namespace RelationMap
             ////TestMovie2.AddCharacter("Character2", "Actor2");
             ////TestMovie2.AddCharacter("CharacterB", "ActorB");
             ////testStudio.AddMovieToFranchise(TestMovie2, "TestFranchise");
-            //PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\uinverse2.json"), u);
+            //PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"), u);
         }
 
         private void btnLoadFranchise_Click(object sender, EventArgs e)
         {
-            u = PersistanceBase.Load<Universe>(PrivateData.GetRelativePath(@"\Cache\uinverse2.json"));
+            u = PersistanceBase.Load<Universe3>(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"));
             lbActors.Items.Clear();
             lbCharacters.Items.Clear();
             tbActor.Clear();
@@ -71,7 +71,7 @@ namespace RelationMap
             lbMovies.Items.AddRange(u.GetAllMovies().ToArray());
 
             lbProductionCompanies.Items.Clear();
-            lbProductionCompanies.Items.AddRange(u.ProductionCompanies.ToArray()); // Should add u.GetAllProductionCompanies
+            //lbProductionCompanies.Items.AddRange(u.ProductionCompanies.ToArray()); // Should add u.GetAllProductionCompanies
 
         }
         private void lbMovies_SelectedValueChanged(object sender, EventArgs e)
@@ -82,15 +82,15 @@ namespace RelationMap
                 lbActors.Items.Clear();
                 lbCharacters.Items.Clear();
                 HashSet<String> actors = new HashSet<string>(); // Prevent Duplicates in list
-                foreach (Character c in m.Characters)
-                {
-                    lbCharacters.Items.Add(c.Name);
-                    //////foreach (Person a in c.Actors)
-                    //////{
-                    //////    actors.Add(a.Name); // Use hash set to prevent duplicates
+                //foreach (Character c in m.Characters)
+                //{
+                //    lbCharacters.Items.Add(c.Name);
+                //    //////foreach (Person a in c.Actors)
+                //    //////{
+                //    //////    actors.Add(a.Name); // Use hash set to prevent duplicates
                         
-                    //////}
-                }
+                //    //////}
+                //}
                 foreach (String item in actors)
                 {
                     lbActors.Items.Add(item);
@@ -102,7 +102,7 @@ namespace RelationMap
         private void btnSaveUniverse_Click(object sender, EventArgs e)
         {
 
-            PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\uinverse2.json"), u);
+            PersistanceBase.Save(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"), u);
         }
 
 
