@@ -9,6 +9,7 @@ namespace RelationMap.Models
 {
     /// <summary>
     /// UniverseCharacter - Code dealing with Character Relationships
+    /// https://www.youtube.com/watch?v=3SElPiIEBS4 - Every Single Marvel Post-Credits Scene before May 2016 - High Quality
     /// </summary>
     public partial class Universe
     {
@@ -524,6 +525,20 @@ namespace RelationMap.Models
             {
                 Character mc = Characters.FirstOrDefault(o => o.Id == mcm.CharacterId);
                 if(mc != null)
+                    cs.Add(mc);
+            }
+            return cs;
+        }
+        public HashSet<Character> GetCharactersInMovie(int movieId, int limit=0)
+        {
+            int initialLimit = limit;
+            HashSet<Character> cs = new HashSet<Character>();
+            foreach (MovieCharacterMap mcm in MovieCharacterMap.Where(o => o.MovieId == movieId).OrderBy(o=>o.CreditOrder))
+            {
+                if (initialLimit > 0 && limit-- < 1)
+                    break;
+                Character mc = Characters.FirstOrDefault(o => o.Id == mcm.CharacterId);
+                if (mc != null)
                     cs.Add(mc);
             }
             return cs;

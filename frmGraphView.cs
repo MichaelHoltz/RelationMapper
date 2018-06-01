@@ -341,30 +341,30 @@ namespace RelationMap
         }
         private void ToggleCharactersForMovie(DrawingNode n)
         {
-            //// Already have Characters showing // remove all Out Edges and descendants that only come from here.
-            //if (n.OutEdges.Count() > 0) 
-            //{
-            //    RemoveAllOutItems(n);
-            //}
-            //else
-            //{
-            //    Movie m = n.UserData as Movie;
-            //    //String movieID = m.Title + " (" + m.ReleaseYear + ")";
-            //    String movieID = m.Title + " (" + m.ReleaseDate.Value.ToShortDateString() + ")";
-            //    foreach (Character c in m.Characters)
-            //    {
-            //        AE(master, aeMaster, movieID, c.Name, CharacterColor, c);
-            //        SetNodeDelegate(FN(master, c.Name)); // Allows this node to be custom draw
+            // Already have Characters showing // remove all Out Edges and descendants that only come from here.
+            if (n.OutEdges.Count() > 0)
+            {
+                RemoveAllOutItems(n);
+            }
+            else
+            {
+                Movie m = n.UserData as Movie;
+                //String movieID = m.Title + " (" + m.ReleaseYear + ")";
+                String movieID = m.Title + " (" + m.ReleaseDate.Value.ToShortDateString() + ")";
+                foreach (Character c in u.GetCharactersInMovie(m.TmdbId,10)) // Need GetCharacters in Movie
+                {
+                    AE(master, aeMaster, movieID, c.Name, CharacterColor, c);
+                    SetNodeDelegate(FN(master, c.Name)); // Allows this node to be custom draw
 
-            //        //    foreach (Actor a in m.GetActorsWhoPlayedCharacter(c.Name))
-            //        //    {
-            //        //        AE(master, aeMaster, c.Name, a.Name, ActorColor, a);
-            //        //        SetNodeDelegate(FN(master, a.Name)); // Allows this node to be custom draw
+                    //    foreach (Actor a in m.GetActorsWhoPlayedCharacter(c.Name))
+                    //    {
+                    //        AE(master, aeMaster, c.Name, a.Name, ActorColor, a);
+                    //        SetNodeDelegate(FN(master, a.Name)); // Allows this node to be custom draw
 
-            //        //    }
+                    //    }
 
-            //    }
-            //}
+                }
+            }
         }
         private void ToggleActorsForCharacter(DrawingNode n)
         {
@@ -628,23 +628,24 @@ namespace RelationMap
             //}
             //StudioGroups
 
-            //foreach (ProductionCompany s in Studios)
-            //{
-            //    master.AddNode(s.Name).Attr.FillColor = StudioColor;
-            //    FN(master, s.Name).UserData = s;
-            //    nodeListStudios.Add(FN(master, s.Name));
-            //    SetNodeDelegate(FN(master, s.Name)); // Allows this node to be custom drawn
-            //    //foreach (Movie m in u.Movies)
-            //    //{
-            //    //    if (m.ProductionCompanies.Contains(s.Id))
-            //    //    {
-            //    //        // String movieID = m.Title + " (" + m.ReleaseYear + ")";
-            //    //        String movieID = m.Title + " (" + m.ReleaseDate.Value.ToShortDateString() + ")";
-            //    //        AE(master, aeMaster, s.Name, movieID, MovieColor, m);
-            //    //        SetNodeDelegate(FN(master, movieID)); // Allows this node to be custom draw
-            //    //    }
-            //    //}
-            //}
+            foreach (ProductionCompany s in u.ProductionCompanies)
+            {
+                master.AddNode(s.Name).Attr.FillColor = StudioColor;
+                FN(master, s.Name).UserData = s;
+                nodeListStudios.Add(FN(master, s.Name));
+                SetNodeDelegate(FN(master, s.Name)); // Allows this node to be custom drawn
+                foreach (Movie m in u.Movies)
+                {
+                    if(u.MovieProductionCompanyMap.Where(o=>o.ProductionCompanyId == s.Id && o.MovieId == m.TmdbId).Count()> 0)
+                    //if (m.ProductionCompanies.Contains(s.Id))
+                    {
+                        // String movieID = m.Title + " (" + m.ReleaseYear + ")";
+                        String movieID = m.Title + " (" + m.ReleaseDate.Value.ToShortDateString() + ")";
+                        AE(master, aeMaster, s.Name, movieID, MovieColor, m);
+                        SetNodeDelegate(FN(master, movieID)); // Allows this node to be custom draw
+                    }
+                }
+            }
             foreach (StudioGroup s in StudioGroups)
             {
                 //AE(master, aeMaster, "WEB Servers", item.Name, WebColor, item);
