@@ -12,7 +12,7 @@ namespace RelationMap.Models
     public partial class Universe
     {
         public HashSet<Movie> Movies { get; set; }
-        #region Movie
+
         public Boolean AddMovie(Movie movie)
         {
             Boolean result = Movies.Add(movie);
@@ -74,6 +74,23 @@ namespace RelationMap.Models
         {
             return Movies.FirstOrDefault(o => o.TmdbId == movieId);
         }
-        #endregion Movie
+
+        public HashSet<Movie> GetMoviesWithCharacter(int characterId)
+        {
+            HashSet<Movie> retVal = new HashSet<Movie>();
+            //For each MovieCharacterMap Entry for the movieId
+            foreach (var mcm in MovieCharacterMap.Where(o => o.CharacterId == characterId))
+            {
+                retVal.Add(GetMovie(mcm.MovieId));
+            }
+            return retVal;
+        }
+        public HashSet<Movie> GetMoviesWithCharacter(String characterName)
+        {
+            Character c = GetCharacter(characterName);
+            return GetMoviesWithCharacter(c.Id);
+        }
+        
+
     }
 }

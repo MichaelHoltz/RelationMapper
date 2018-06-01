@@ -16,38 +16,38 @@ namespace RelationMap.Models
         /// <summary>
         /// ID of Character
         /// </summary>
-        [JsonProperty("A")]
+        [JsonProperty("C")]
         public int CharacterId { get; set; }
         /// <summary>
         /// Original Character Name 
         /// </summary>
-        [JsonProperty("B")]
+        [JsonProperty("O")]
         public String OriginalCharacterName { get; set; }
         /// <summary>
         /// ID of Movie
         /// </summary>
-        [JsonProperty("C")]
+        [JsonProperty("M")]
         public int MovieId { get; set; }
         /// <summary>
         /// Credit Order
         /// Order of Character appears in Movie
         /// </summary>
-        [JsonProperty("D")]
+        [JsonProperty("CO")]
         public int CreditOrder { get; set; }
         /// <summary>
         /// Cast ID TMDB field related to Seasons and Episodes
         /// </summary>
-        [JsonProperty("E")]
+        [JsonProperty("CI")]
         public int CastId { get; set; }
         /// <summary>
         /// Credit Id - unique to movie
         /// </summary>
-        [JsonProperty("F")]
+        [JsonProperty("CRI")]
         public String CreditId { get; set; }
         /// <summary>
         /// ID of Person in this Role
         /// </summary>
-        [JsonProperty("G")]
+        [JsonProperty("P")]
         public int PersonId { get; set; }
         public MovieCharacterMap()
         {
@@ -93,7 +93,7 @@ namespace RelationMap.Models
         {
             //THis is expensive and should be done only once since it will not be changing
             //TODO - use / include the "correct" id..
-            String key = this.GetType().Name + CharacterId + MovieId + CreditId + CreditOrder + CastId + PersonId;
+            String key = this.GetType().Name + CharacterId + MovieId + CreditId + CreditOrder + CastId + PersonId + OriginalCharacterName;
             //Google: "disable fips mode" if the line below fails
             System.Security.Cryptography.MD5 md5Hasher = System.Security.Cryptography.MD5.Create();
             var hashed = md5Hasher.ComputeHash(Encoding.UTF8.GetBytes(key));

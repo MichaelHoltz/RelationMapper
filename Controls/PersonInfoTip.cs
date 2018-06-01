@@ -12,7 +12,7 @@ using TmdbWrapper;
 using System.IO;
 using System.Net;
 using RelationMap.Models;
-
+using RelationMap.Utility;
 namespace RelationMap.Controls
 {
     /// <summary>
@@ -52,6 +52,7 @@ namespace RelationMap.Controls
             }
             else
             {
+                //This can't be right.. no actor name in here.
                 String piPath = PrivateData.GetAppPath() + @"\Cache\Images\Characters\tn_" + lblName.Text.Replace("/", "") + ".png";
                 pbRoleProfile.BackgroundImage = Image.FromFile(piPath);
             }
@@ -68,9 +69,10 @@ namespace RelationMap.Controls
 
             pbProfile.BackgroundImage = p.GetProfileImage(TmdbWrapper.Utilities.ProfileSize.w185);
 
-            //Find Character(s !!!) this person played
-            HashSet<Character> cpba = new HashSet<Character>();// selectedMovie.GetCharactersPlayedByActor(p.Id);
-            Character c = cpba.First();
+            //Find Character(s !!!) this person played // BUG if Person played more than one Character in the selected Movie
+            HashSet<Character> cpba = u.GetCharactersPlayedByActor(p.Id, selectedMovie.TmdbId);
+            Character c = cpba.FirstOrDefault();
+            //TODO - Look for CharacterID after translating to them
             String tnPath = PrivateData.GetAppPath() + @"\Cache\Images\Characters\tn_" + c.Name.Replace("/","") + ".png";
             String piath = PrivateData.GetAppPath() + @"\Cache\Images\Characters\pi_" + c.Name.Replace("/", "") + ".png";
             if (File.Exists(tnPath))
@@ -89,7 +91,7 @@ namespace RelationMap.Controls
             {
                 pbRoleProfile.BackgroundImage = null;
             }
-            lblRole.Text = c.Name;
+            lblRole.Text = c.OriginalCharacterName;// .Name;
             lblName.Text = p.Name;
             if (p.Deathday != null)
             {
@@ -97,6 +99,7 @@ namespace RelationMap.Controls
                 {
                     DateTime deathDay = p.Deathday.Value.Date;
                     lblBirthday.Text = p.Birthday.Value.ToShortDateString() + " - " + deathDay.ToShortDateString();
+                    lblBirthday.Text += AgeHelper.GetAgeDelta(p.Birthday.Value, deathDay);
                 }
             }
             else
@@ -104,6 +107,7 @@ namespace RelationMap.Controls
                 if (p.Birthday.HasValue)
                 {
                     lblBirthday.Text = p.Birthday.Value.Date.ToShortDateString();
+                    lblBirthday.Text += AgeHelper.GetAgeDelta(p.Birthday.Value);
                 }
                 else
                 {

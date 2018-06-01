@@ -115,12 +115,7 @@ namespace RelationMap
                     selectedMovieInfo = await selectedMovieSummary.MovieAsync();
                     selectedMovie = m; //Need for Person Info 
                     movieInfoTip1.LoadMovieInfo(ref selectedMovie, ref u);
-                    
-                    //foreach (int pid in m.People)
-                    //{
-                    //    Person p = u.People.First(o => o.Id == pid);
-                    //    lbActors.Items.Add(p);
-                    //}
+                    showActorsInMovie(selectedMovie);
                 }
             }
         }
@@ -224,30 +219,54 @@ namespace RelationMap
             //credits.Cast
             int personCount = 0;
             bool skip = false;
-            foreach (TmdbWrapper.Movies.CastPerson item in credits.Cast)
+            int castLimit = 100;
+            foreach (TmdbWrapper.Movies.CastPerson cp in credits.Cast)
             {
-                ////Add Character To Movie (Could be Alias able character so mapping would be necessary)
-                Character c =  u.AddCharacter(item.Character,
-                    selectedMovie.TmdbId,
-                    item.Id,
-                    item.CreditId,
-                    item.CastId,
-                    item.Order
-                    );
+                //try
+                //{
+                    String cpCharacter = cp.Character;
+                    if (cpCharacter.Length == 0) // Seriously??!!??
+                    {
+                        switch (cp.Gender)
+                        {
+                            case 0:
+                                cpCharacter = "Themself";
+                                break;
+                            case 1:
+                                cpCharacter = "Herself";
+                                break;
+                            case 2:
+                                cpCharacter = "Himself";
+                                break;
+                        }
+                       
+                    }
+                    ////Add Character To Movie (Could be Alias able character so mapping would be necessary)
+                    Character c = u.AddCharacter(cpCharacter,
+                        selectedMovie.TmdbId,
+                        cp.Id,
+                        cp.CreditId,
+                        cp.CastId,
+                        cp.Order
+                        );
+                //}
+                //catch (Exception err)
+                //{
 
+                //}
                 //Get full person Info
                 //THis is a problem because TMDB will return delay if getting too many at once.
                 //Also SERIOUSLY consider only getting the first 10% of the cast - but probably have them already from other movies..
                 //Need on demand.
-                Person p = new Person(item.Name);
-                p.Id = item.Id;
-                p.ProfilePath = item.ProfilePath;
+                Person p = new Person(cp.Name);
+                p.Id = cp.Id;
+                p.ProfilePath = cp.ProfilePath;
                 skip = false;
                 //See if we already have the person in the list
-                if (u.People.Select(o => o.Id == item.Id).Contains(true))
+                if (u.People.Select(o => o.Id == cp.Id).Contains(true))
                 {
                     //Get the person and see if they have been updated with full information
-                    Person testPC = u.People.First(o => o.Id == item.Id);
+                    Person testPC = u.People.First(o => o.Id == cp.Id);
                     if (testPC.Updated)
                     {
                         skip = true;
@@ -256,7 +275,7 @@ namespace RelationMap
                 if (!skip && personCount < 2)
                 {
                     Thread.Sleep(100); // Slow it down..
-                    TmdbWrapper.Persons.Person tmdbPerson = await item.PersonAsync();
+                    TmdbWrapper.Persons.Person tmdbPerson = await cp.PersonAsync();
                     p.HomePage = tmdbPerson.Homepage;
                     p.Biography = tmdbPerson.Biography;
                     p.Birthday = tmdbPerson.Birthday;
@@ -265,17 +284,21 @@ namespace RelationMap
                     p.Updated = true;
                     personCount++;
                 }
-                u.AddPerson(p); // Will fail to add existing person and add basic and updated people.
-
+                bool personAdded = u.AddPerson(p); // Will fail to add existing person and add basic and updated people.
+                if (--castLimit == 0)
+                    break;
 
 
             }
 
             ////credits.Crew - Adds significant numbers of People and data Entry
             #region Crew import
+            int crewLimit = 10;
             foreach (TmdbWrapper.Movies.CrewPerson crewPerson in credits.Crew)
             {
                 u.AddCrewMember(crewPerson, selectedMovie);
+                if (--crewLimit == 0)
+                    break;
             }
             #endregion
 
@@ -298,7 +321,6 @@ namespace RelationMap
         private async void btnSaveToMyMovies_Click(object sender, EventArgs e)
         {
             lbActors.Items.Clear();
-            MovieCollection mc = u.GetMovieCollection(selectedMovieInfo.Id); // Testing
             bool done = await SaveFullInfo(selectedMovieInfo);
             if (done)
             {
@@ -311,13 +333,7 @@ namespace RelationMap
         {
             //If viewing from Cache then the actors will be added at the same time as the move otherwise they must be added first..
             lbActors.Items.Clear();
-            //foreach (int item in m.People)
-            //{
-            //    Person p = u.People.First(o => o.Id == item); // Look up person from Universe Person ID.
-            //    lbActors.Items.Add(p);
-            //}
-            
-
+            lbActors.Items.AddRange(u.GetActorsInMovie(m.TmdbId).ToArray());
         }
 
         private void lbActors_SelectedIndexChanged(object sender, EventArgs e)
@@ -352,19 +368,91 @@ namespace RelationMap
 
         private void btnTransfer_Click(object sender, EventArgs e)
         {
-            //Try to use what I've Got...
-            Movie m = u.GetMovie("Avengers: Infinity War"); // Check
-            MovieCollection mc = u.GetMovieCollection(m.TmdbId);
-            HashSet<Movie> movies =  u.GetMoviesInCollection(mc.Id);
-            Person p = u.GetPerson("Chris Hemsworth");
-            HashSet<Character> cs = u.GetCharactersPlayedByActor(p.Id); // Chris Hemsworth -> Thor and Thor Odinson - Need Alias Case
-            p = u.GetPerson("Mark Ruffalo");
-            cs = u.GetCharactersPlayedByActor(p.Id); // Mark Ruffalo - Need Alias Case (Bruce Banner / Hulk and Bruce Banner / The Hulk) Need Alias Case
-            p = u.GetPerson("Scarlett Johansson");
-            cs = u.GetCharactersPlayedByActor(p.Id); // Scarlett Johansson 
+
+            ////Debugging Character /Alias Additions
+            //u = new Universe(); // Clear previous
+            //int m = 1;
+            //int p = 1;
+            //int cr = 1;
+            //int cid = 1;
+            //int cro = 0;
+            ////u.AddCharacter("Agent Maria Hill", m, p, "Cr" + cr++, cid++, cro++);
+            //u.AddCharacter("Maria Hill", m, p, "Cr" + cr++, cid++, cro++);
+            //u.AddCharacter("Agent Maria Hill", m, p, "Cr" + cr++, cid++, cro++);
+
+            //u.AddCharacter("Nick Fury (uncredited)", m, p, "Cr" + cr++, cid++, cro++);
+            //u.AddCharacter("Nick Fury", m, p, "Cr" + cr++, cid++, cro++);
+
+            //u.AddCharacter("James \"Rhodey\" Rhodes / War Machine", m, p, "Cr" + cr++, cid++, cro++);
+            //u.AddCharacter("Lt. Col. James \"Rhodey\" Rhodes / War Machine", m, p, "Cr" + cr++, cid++, cro++);
+            //u.AddCharacter("Rhodey Rhodes", m, p, "Cr" + cr++, cid++, cro++);
+            //u.AddCharacter("Rhodey Rhodes / War Machine", m, p, "Cr" + cr++, cid++, cro++);
 
 
+            //u.AddCharacter("Virginia \"Pepper\" Potts", m, p, "Cr" + cr++, cid++, cro++);
+            //u.AddCharacter("Pepper Potts", m, p, "Cr" + cr++, cid++, cro++);
 
+            //u.AddCharacter("Bruce Banner / Hulk", m, p, "Cr" + cr++, cid++, cro++);
+            //u.AddCharacter("Bruce Banner / The Hulk", m, p, "Cr" + cr++, cid++, cro++);
+
+            //u.AddCharacter("Black Widow (uncredited)", m, p, "Cr" + cr++, cid++, cro++);
+            //u.AddCharacter("Natasha Romanoff / Black Widow", m, p, "Cr" + cr++, cid++, cro++);
+            //u.AddCharacter("Natalie Rushman / Natasha Romanoff / Black Widow", m, p, "Cr" + cr++, cid++, cro++);
+
+            //u.AddCharacter("Stephen Strange", m, p, "Cr" + cr++, cid++, cro++);
+            //u.AddCharacter("Doctor Stephen Strange", m, p, "Cr" + cr++, cid++, cro++);
+            //u.AddCharacter("Stephen Strange / Doctor Strange", m, p, "Cr" + cr++, cid++, cro++);
+
+            //u.AddCharacter("Thor Odinson", m, p, "Cr" + cr++, cid++, cro++);
+            //u.AddCharacter("Thor", m, p, "Cr" + cr++, cid++, cro++);
+
+            //u.AddCharacter("Loki", m, p, "Cr" + cr++, cid++, cro++);
+            //u.AddCharacter("Actor Loki", m, p, "Cr" + cr++, cid++, cro++);
+
+            //u.AddCharacter("Cop", m, p, "Cr" + cr++, cid++, cro++);
+            //u.AddCharacter("Brave Cop", m, p, "Cr" + cr++, cid++, cro++);
+            //u.AddCharacter("Cop", m, p, "Cr" + cr++, cid++, cro++);
+            //u.AddCharacter("Brave Cop", m, p, "Cr" + cr++, cid++, cro++);
+
+            //u.AddCharacter("Helicopter Pilot", m, p, "Cr" + cr++, cid++, cro++);
+            //u.AddCharacter("Apache Helicopter Pilot", m, p, "Cr" + cr++, cid++, cro++);
+
+            //////Try to use what I've Got...
+            ////Movie m = u.GetMovie("Avengers: Infinity War"); // Check
+            ////MovieCollection mc = u.GetMovieCollection(m.TmdbId);
+            ////HashSet<Movie> movies =  u.GetMoviesInCollection(mc.Id);
+            ////Person p = u.GetPerson("Chris Hemsworth");
+            ////HashSet<Character> cs = u.GetCharactersPlayedByActor(p.Id); // Chris Hemsworth -> Thor and Thor Odinson - Need Alias Case
+            ////p = u.GetPerson("Mark Ruffalo");
+            ////cs = u.GetCharactersPlayedByActor(p.Id); // Mark Ruffalo - Need Alias Case (Bruce Banner / Hulk and Bruce Banner / The Hulk) Need Alias Case
+
+            ////p = u.GetPerson("Scarlett Johansson");
+            ////cs = u.GetCharactersPlayedByActor(p.Id); // Scarlett Johansson 
+            ////p = u.GetPerson("Benedict Cumberbatch");
+            ////cs = u.GetCharactersPlayedByActor(p.Id); // Scarlett Johansson 
+
+            //PersistenceBase.Save(PrivateData.GetRelativePath(@"\Cache\uinverse3.json"), u);
+            //foreach (Movie m in u.GetMoviesWithCharacter("Peggy Carter"))
+            //{
+            //    MessageBox.Show(m.Title);
+            //}
+            //List<Character> top20Characters = u.GetTopCharacters();
+            String msg = "";
+            foreach (Character item in u.GetTopCharacters(30))
+            {
+                msg = item.Name + " is in: \r\n\r\n";
+                foreach (Movie m in u.GetMoviesWithCharacter(item.Id))
+                {
+                    msg += "( " + u.GetActorsWhoPlayedCharacter(item.Id, m.TmdbId).FirstOrDefault() + " )";
+                    msg += m.Title + "\r\n";
+                    
+                }
+                MessageBox.Show(msg);
+            }
+            //foreach (Movie m in u.GetMoviesWithCharacter("Peggy Carter"))
+            //{
+            //    MessageBox.Show(m.Title);
+            //}
 
         }
     }

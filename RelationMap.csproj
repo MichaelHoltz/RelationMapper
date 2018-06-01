@@ -141,6 +141,7 @@
     <Compile Include="PrivateData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\AgeHelper.cs" />
     <Compile Include="Utility\ImageHelper.cs" />
     <Compile Include="Utility\XorDrawing.cs" />
     <Compile Include="WelcomeForm.cs">

@@ -27,6 +27,11 @@ namespace RelationMap.Models
         public String Name { get; set; }
 
         /// <summary>
+        /// Used by mapping 
+        /// </summary>
+        [JsonIgnore]
+        public String OriginalCharacterName { get; set; }
+        /// <summary>
         /// Path to Profile Image (TBD web or local Cache)
         /// </summary>
         [JsonProperty("C")]
@@ -42,7 +47,7 @@ namespace RelationMap.Models
             //Much more efficient would be to see if u.RoleMater Contains exact match and move on.
 
             //Split Name into parts
-            Char delimiter = '/'; // Alias Splitter
+            Char delimiter = '~'; // Alias Splitter
             String[] substringsName = Name.Split(delimiter); // Split Source
             String[] substringsSearch = name.Split(delimiter); // Split search
             int maxConfidence = substringsName.Count();

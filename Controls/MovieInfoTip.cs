@@ -12,6 +12,7 @@ using TmdbWrapper;
 using System.IO;
 using System.Net;
 using RelationMap.Models;
+using RelationMap.Utility;
 namespace RelationMap.Controls
 {
     public partial class MovieInfoTip : UserControl
@@ -35,7 +36,7 @@ namespace RelationMap.Controls
             if (movie.ReleaseDate.HasValue)
             {
                 lblReleaseDate.Text = movie.ReleaseDate.Value.ToShortDateString();
-                lblReleaseDate.Text += GetAgeString(movie.ReleaseDate.Value);
+                lblReleaseDate.Text += AgeHelper.GetReleaseDateDelta(movie.ReleaseDate.Value);
             }
             else
             {
@@ -63,42 +64,7 @@ namespace RelationMap.Controls
             GetMoviePoster();
             GetProductionCompanyLogos();
         }
-        public static String GetAgeString(DateTime releaseDate)
-        {
-            String retVal = String.Empty;
-            int age = CalculateAge(releaseDate);
-            if (age == 1)
-            {
-                retVal = " (" + age + " Year ago)";
-            }
-            else if (age < 0)
-            {
-                age = Math.Abs(age);  // remove negative sign
-                if (age == 1)
-                {
-                    retVal = " (coming in " + age + " Year)";
-                }
-                else
-                {
-                    retVal = " (coming in " + age + " Years)";
-                }
-            }
-            else
-            {
-                retVal = " (" + age + " Years ago)";
-            }
-            return retVal;
-        }
-        public static int CalculateAge(DateTime BirthDate)
-        {
-            int YearsPassed = DateTime.Now.Year - BirthDate.Year;
-            // Are we before the birth date this year? If so subtract one year from the mix
-            if (DateTime.Now.Month < BirthDate.Month || (DateTime.Now.Month == BirthDate.Month && DateTime.Now.Day < BirthDate.Day))
-            {
-                YearsPassed--;
-            }
-            return YearsPassed;
-        }
+
         /// <summary>
         /// Load using Preview information..
         /// </summary>
@@ -109,7 +75,7 @@ namespace RelationMap.Controls
             if (selectedMovieInfo.ReleaseDate.HasValue)
             {
                 lblReleaseDate.Text = selectedMovieInfo.ReleaseDate.Value.ToShortDateString();
-                lblReleaseDate.Text += GetAgeString(selectedMovieInfo.ReleaseDate.Value);
+                lblReleaseDate.Text += AgeHelper.GetReleaseDateDelta(selectedMovieInfo.ReleaseDate.Value);
             }
             else
             {
